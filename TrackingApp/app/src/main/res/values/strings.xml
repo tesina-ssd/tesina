@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">TrackingApp</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- activity_sign_in strings -->
+    <string name="string_login_title">Accedi</string>
+    <string name="string_title_alternative_login">Oppure accedi con</string>
+    <string name="string_email_button">e-mail</string>
+
+    <!-- navbar strings -->
+    <string name="string_track">Traccia</string>
+    <string name="string_follow">Segui</string>
+    <string name="string_notification_center">Notifiche</string>
+    <string name="string_settings">Impostazioni</string>
+
+    <!-- Mapbox token -->
+    <string name="access_token">pk.eyJ1IjoidHJhY2tpbmdhcHAiLCJhIjoiY2pyczZlcDRsMjB0azQ0bnRuNHgwaXptYiJ9.ef-BXxvp9qnffAr8UL-jdA</string>
+</resources>
