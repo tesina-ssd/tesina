@@ -18,4 +18,7 @@
 
     <!-- Mapbox token -->
     <string name="access_token">pk.eyJ1IjoidHJhY2tpbmdhcHAiLCJhIjoiY2pyczZlcDRsMjB0azQ0bnRuNHgwaXptYiJ9.ef-BXxvp9qnffAr8UL-jdA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
