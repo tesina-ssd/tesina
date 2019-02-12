@@ -17,5 +17,15 @@
     <string name="string_settings">Impostazioni</string>
 
     <!-- Mapbox token -->
-    <string name="access_token">pk.eyJ1IjoidHJhY2tpbmdhcHAiLCJhIjoiY2pyczZlcDRsMjB0azQ0bnRuNHgwaXptYiJ9.ef-BXxvp9qnffAr8UL-jdA</string>
+    <string name="access_token">pk.eyJ1IjoidHJhY2tpbmdhcHAiLCJhIjoiY2pyczZlcDRsMjB0azQ0bnRuNHgwaXptYiJ9
+        .ef-BXxvp9qnffAr8UL-jdA</string>
+    <!-- Account Settings -->
+    <string name="userNameSurname">Nome Completo</string>
+    <string name="personal_telephone_number">Numero di telefono</string>
+    <string name="connected_telephone_number">Numero della persona connessa</string>
+    <string name="alarm_telephone_number">Numero di Allarme</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
