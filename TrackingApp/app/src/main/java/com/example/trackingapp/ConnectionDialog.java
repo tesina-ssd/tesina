@@ -13,15 +13,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class ConnectionDialog extends DialogFragment implements  AvantiTestFragment.OnFragmentInteractionListener {
+public class ConnectionDialog extends DialogFragment implements
+        ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
+        ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
+
     private String connectionCode = null;
     private FragmentManager fragmentManager = null;
-    //ConnectionDialogListener mListener = null;
+    ConnectionDialogListener mListener = null;
 
-    /*public interface ConnectionDialogListener {
+    public interface ConnectionDialogListener {
         void onConnectionDialogOkClicked();
         void onConnectionDialogCancelClicked();
-    }*/
+    }
 
     static ConnectionDialog newInstance(String connectionCode) {
         ConnectionDialog dialog = new ConnectionDialog();
@@ -38,14 +41,14 @@ public class ConnectionDialog extends DialogFragment implements  AvantiTestFragm
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*try {
+        try {
             if(getTargetFragment() != null)
                 // Viene collegato il chiamante
                 mListener = (ConnectionDialogListener) getTargetFragment();
             else throw new ClassCastException();
         } catch (ClassCastException e) {
-            throw  new ClassCastException(ConnectionCodeGeneratorDialogFragment.class + ": Deve essere implementata l'interfaccia di comunicazione nel chiamante");
-        }*/
+            throw  new ClassCastException(ConnectionDialog.class + ": Deve essere implementata l'interfaccia di comunicazione nel chiamante");
+        }
     }
 
     @Override
@@ -63,7 +66,7 @@ public class ConnectionDialog extends DialogFragment implements  AvantiTestFragm
         View v = inflater.inflate(R.layout.connection_dialog, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Fragment avantiFragment = AvantiTestFragment.newInstance();
+        Fragment avantiFragment = ExcursionSheetFragment.newInstance();
         fragmentManager.beginTransaction().replace(R.id.cardViewConnectionDialog,  avantiFragment, "avantiTest").commit();
 
 
@@ -72,9 +75,24 @@ public class ConnectionDialog extends DialogFragment implements  AvantiTestFragm
     }
 
     @Override
-    public void onFragmentInteraction() {
+    public void onExcursionSheetFragmentCancelPressed() {
+        mListener.onConnectionDialogCancelClicked();
+    }
+
+    @Override
+    public void onExcursionSheetFragmentNextPressed() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
         transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance("xdrt56ghy"), "connCode").commit();
+    }
+
+    @Override
+    public void onConnectionCodeFragmentCancelPressed() {
+        mListener.onConnectionDialogCancelClicked();
+    }
+
+    @Override
+    public void onConnectionCodeFragmentOkPressed() {
+        mListener.onConnectionDialogOkClicked();
     }
 }

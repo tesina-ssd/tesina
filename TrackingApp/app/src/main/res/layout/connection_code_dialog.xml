@@ -6,20 +6,20 @@
     android:layout_width="350dp"
     android:layout_height="500dp"
     android:background="@android:color/transparent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="40dp"
+    android:paddingBottom="20dp">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/ConnectionDialog_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Codice di connessione"
+        android:text="@string/str_ConnectionDialog_Title"
         android:textColor="@android:color/black"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,24 +27,25 @@
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/ConnectionDialog_Info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/poppins"
-        android:text="Fornisci il codice di connessione ad una persona fidata: le darai accesso alle tue informazioni per permettere un tempestivo soccorso"
+        android:text="@string/str_ConnectionDialog_Info"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintBottom_toTopOf="@+id/ConnectionFialog_Code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Title" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/ConnectionFialog_Code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -54,46 +55,45 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_ok"
+        app:layout_constraintBottom_toTopOf="@+id/ConnectionCode_BtnOk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Info" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_ok"
+        android:id="@+id/ConnectionCode_BtnOk"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="OK"
+        android:text="@string/str_ConnectionDialog_BtnOk"
         android:textColor="@color/colorPrimary"
         app:backgroundTint="@color/fui_transparent"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_avanti"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ConnectionCode_BtnCanel"
         app:rippleColor="@color/colorPrimary" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_avanti"
+        android:id="@+id/ConnectionCode_BtnCanel"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="CANCELLA"
+        android:text="@string/str_ConnectionDialog_BtnAvanti"
         android:textColor="@color/fui_bgAnonymous"
         app:backgroundTint="@color/fui_transparent"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ConnectionCode_BtnOk"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_ok"
+        app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="@color/fui_bgAnonymous" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

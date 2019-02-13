@@ -1,31 +1,20 @@
 package com.example.trackingapp;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- *  interface
- * to handle interaction events.
- * Use the {@link ConnectionCodeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
 
     private String connectionCode;
-    //private OnFragmentInteractionListener mListener;
+    private OnConnectionCodeFragmentInteractionListener mListener;
 
-    public ConnectionCodeFragment() {
-        // Required empty public constructor
-    }
+    public ConnectionCodeFragment() {}
 
     public static ConnectionCodeFragment newInstance(String connectionCode) {
         ConnectionCodeFragment fragment = new ConnectionCodeFragment();
@@ -49,48 +38,60 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.connection_code_dialog, container, false);
-        TextView code = v.findViewById(R.id.textView6);
+
+        Button btnCancel = (Button) v.findViewById(R.id.ConnectionCode_BtnCanel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onConnectionCodeFragmentCancelPressed();
+            }
+        });
+
+        Button btnOk = (Button) v.findViewById(R.id.ConnectionCode_BtnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onConnectionCodeFragmentOkPressed();
+            }
+        });
+
+        TextView code = v.findViewById(R.id.ConnectionFialog_Code);
         code.setText(connectionCode);
 
         return v;
     }
 
-/*    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onConnectionCodeFragmentCancelPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onConnectionCodeFragmentCancelPressed();
         }
-    }*/
+    }
+
+    public void onConnectionCodeFragmentOkPressed() {
+        if (mListener != null) {
+            mListener.onConnectionCodeFragmentOkPressed();
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (getParentFragment() != null) {
+            mListener = (OnConnectionCodeFragmentInteractionListener) getParentFragment();
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
+                    + " must implement OnConnectionCodeFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-/*    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
+   public interface OnConnectionCodeFragmentInteractionListener {
+        void onConnectionCodeFragmentCancelPressed();
+        void onConnectionCodeFragmentOkPressed();
+    }
 }

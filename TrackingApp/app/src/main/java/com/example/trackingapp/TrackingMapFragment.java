@@ -24,7 +24,7 @@ import androidx.fragment.app.FragmentManager;
  * Fragment rappresentate la mappa per il tracciamento dell'utente.
  * Contiene una mappa e un menu espandibile tramite un floating action button.
  */
-public class TrackingMapFragment extends Fragment {
+public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
 
     FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
     MapView mapView; //Mappa
@@ -91,5 +91,15 @@ public class TrackingMapFragment extends Fragment {
             ret += (char) (random.nextInt(120 - 70) + 70);
         Log.i("ConnCode", ret);
         return ret;
+    }
+
+    @Override
+    public void onConnectionDialogOkClicked() {
+        onConnectionDialogCancelClicked();
+    }
+
+    @Override
+    public void onConnectionDialogCancelClicked() {
+        connectionCodeGeneratorDialogFragment.dismiss();
     }
 }
