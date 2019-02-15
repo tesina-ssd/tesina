@@ -1,11 +1,20 @@
 package com.example.trackingapp;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.fragment.app.DialogFragment;
 
 
 public class ExcursionSheetFragment extends androidx.fragment.app.Fragment {
@@ -44,6 +53,19 @@ public class ExcursionSheetFragment extends androidx.fragment.app.Fragment {
             @Override
             public void onClick(View view) {
                 onCancelPressed();
+            }
+        });
+
+        TextInputEditText txtStartingTimeTimeText = (TextInputEditText) v.findViewById(R.id.ExcursionSheet_StartingTimeTime_Text);
+        txtStartingTimeTimeText.setInputType(InputType.TYPE_NULL);
+
+        txtStartingTimeTimeText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    DialogFragment timePicker = new TimePickerFragment();
+                    timePicker.show(getChildFragmentManager(), "timePicker");
+                }
             }
         });
 
