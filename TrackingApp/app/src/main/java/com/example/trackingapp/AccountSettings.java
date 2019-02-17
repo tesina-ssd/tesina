@@ -12,13 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -33,6 +37,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -57,32 +62,36 @@ import static android.app.Activity.RESULT_OK;
  * create an instance of this fragment.
  */
 public class AccountSettings extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private de.hdodenhof.circleimageview.CircleImageView cm;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private int REQUEST_CODE=1;
+    private de.hdodenhof.circleimageview.CircleImageView cm;
+    private int REQUEST_CODE = 1;
     private OnFragmentInteractionListener mListener;
     private FirebaseFirestore db;
-    private String userid;
-    private FirebaseAuth auth;
-    private EditText txtPhone;
-    private EditText txtName;
-    private EditText txtConnectedPhone;
-    private EditText txtAlarmPhome;
-    private Uri imageuri;
-    private FirebaseUser user;
-    private DocumentReference docRef;
-    Userinformation userinfo ;
-    private StorageReference mStorageRef;
-    private String imageURL="";
-    private StorageTask uploadTask;
-    //private StorageReference storageReference;
+    private String userid = "";
+    private FirebaseAuth auth= null;
+    private EditText txtPhone= null;
+    private EditText txtName= null;
+    private EditText txtConnectedPhone= null;
+    private EditText txtAlarmPhome= null;
+    private Button btnSalva= null;
+    private Button btnModifica= null;
+    private Uri imageuri= null;
+    private FirebaseUser user= null;
+    private DocumentReference docRef= null;
+    Userinformation userinfo= null;
+    private StorageReference mStorageRef= null;
+    private String imageURL = "";
+    private StorageTask uploadTask= null;
+    private boolean nameChanged = false;
+    private boolean phoneChanged = false;
+    private boolean connectedChanged = false;
+    private boolean alarmChanged = false;
+    private boolean canWrite = false;
+    private boolean userModifiedWrite= false;
+    private String KEY_IMAGE_PATH = "PathImg";
+    private String KEY_USER_PHONE = "NumeroDiTelefono";
+    private String KEY_PHONE_CONNECTED_TO_USER = "NumeroPersonaConnessa";
+    private String KEY_ALARM_PHONE = "NumeroDiAllarme";
     public AccountSettings() {
         // Required empty public constructor
     }
@@ -91,28 +100,23 @@ public class AccountSettings extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-   //  * @param param1 Parameter 1.
-  //   * @param param2 Parameter 2.
      * @return A new instance of fragment AccountSettings.
      */
-  /*  // TODO: Rename and change types and number of parameters
-    public static AccountSettings newInstance(String param1, String param2) {
-        AccountSettings fragment = new AccountSettings();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+ /*
+   public static AccountSettings newInstance() {
+       AccountSettings fragment = new AccountSettings();
+       Bundle args = new Bundle();
+       args.stuff........
+       fragment.setArguments(args);
+       return fragment;
+   }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
-
+  /* if (getArguments() != null) {
+       stuff
+   }*/
 
     }
 
@@ -122,94 +126,228 @@ public class AccountSettings extends Fragment {
         View v = inflater.inflate(R.layout.accountsettings, container, false);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        txtPhone = (EditText) v.findViewById(R.id.txtUserPhone) ;
-        txtName = (EditText) v.findViewById(R.id.txtUserName) ;
-        txtConnectedPhone = (EditText) v.findViewById(R.id.txtUserConnectedPhone) ;
-        txtAlarmPhome = (EditText) v.findViewById(R.id.txtalarmPhone) ;
-
-
-
+        txtPhone = (EditText) v.findViewById(R.id.txtUserPhone);
+        txtName = (EditText) v.findViewById(R.id.txtUserName);
+        txtConnectedPhone = (EditText) v.findViewById(R.id.txtUserConnectedPhone);
+        txtAlarmPhome = (EditText) v.findViewById(R.id.txtalarmPhone);
+        btnSalva = (Button) v.findViewById(R.id.btnsalvainfo) ;
+        btnModifica = (Button) v.findViewById(R.id.btnModicainfo) ;
+        btnSalva.setEnabled(false);
         loadData();
-        //container.removeAllViews();
-     /*   txtName.setText(userinfo.getNameSurname());
-        txtPhone.setText(userinfo.getPhone_num());
-        txtConnectedPhone.setText(userinfo.getConnected_num());
-        txtAlarmPhome.setText(userinfo.getAlarm_num());
-*/
+        userinfo = new Userinformation();
+        userinfo.setNameSurname(txtName.getText().toString());
+        userinfo.setPhone_num(txtPhone.getText().toString());
+        userinfo.setConnected_num(txtConnectedPhone.getText().toString());
+        userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
         txtPhone.setEnabled(false);
         txtName.setEnabled(false);
         txtConnectedPhone.setEnabled(false);
         txtAlarmPhome.setEnabled(false);
+        cm = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
 
-
-
-        cm= (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
+        cm.setEnabled(false);
         cm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Seleziona un immagine"),REQUEST_CODE);
+                startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
+            }
+        });
+        btnModifica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cm.setEnabled(true);
+                btnSalva.setEnabled(true);
+                btnModifica.setEnabled(false);
+                txtPhone.setEnabled(true);
+                txtName.setEnabled(true);
+                txtConnectedPhone.setEnabled(true);
+                txtAlarmPhome.setEnabled(true);
+            }
+        });
+        btnSalva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cm.setEnabled(false);
+                String name=txtName.getText().toString();
+                String phone = txtPhone.getText().toString();
+                String cphone = txtConnectedPhone.getText().toString();
+                String alarmphone = txtAlarmPhome.getText().toString();
+                Map<String, Object> data = new HashMap<>();
+                btnSalva.setEnabled(false);
+                btnModifica.setEnabled(true);
+                txtPhone.setEnabled(false);
+                txtName.setEnabled(false);
+                txtConnectedPhone.setEnabled(false);
+                txtAlarmPhome.setEnabled(false);
+
+                if(nameChanged){
+                    if(!name.equals(userinfo.getNameSurname())){
+                        userModifiedWrite=true;
+                    }
+                }
+                if(phoneChanged){
+                    if(!phone.equals(userinfo.getPhone_num())){
+                        canWrite=true;
+                        data.put(KEY_USER_PHONE,phone);
+                    }
+                }
+                if(connectedChanged){
+                    if(!cphone.equals(userinfo.getConnected_num())){
+                        canWrite=true;
+                        data.put(KEY_PHONE_CONNECTED_TO_USER,cphone);
+                    }
+                }
+                if(alarmChanged){
+                    if(!alarmphone.equals(userinfo.getAlarm_num())){
+                        canWrite=true;
+                        data.put(KEY_ALARM_PHONE,alarmphone);
+                    }
+                }
+                if(canWrite || userModifiedWrite){
+                    writeData(data,name);
+                }
             }
         });
 
+        txtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
 
-        // Inflate the layout for this fragment
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                nameChanged = true;
+            }
+        });
+        txtPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                phoneChanged = true;
+            }
+        });
+        txtConnectedPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                connectedChanged = true;
+            }
+        });
+        txtAlarmPhome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                alarmChanged = true;
+            }
+        });
         return v;
     }
+    private void writeData(Map<String, Object> data,String name){
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.show();
+        pd.setMessage("Updating data...");
+        if(user!=null && userModifiedWrite){
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build();
 
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                toastMessage("User profile updated.");
+                            }
+                        }
+                    });
+        }
+        if(!userid.equals("") && canWrite){
+            db.collection("users").document(userid)
+                    .set(data, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                           toastMessage( "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            toastMessage("Error writing document");
+                        }
+                    });
+            pd.dismiss();
+        }
+
+    }
     private void loadData() {
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.show();
+        pd.setMessage("Getting information...");
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        Uri photoUrl ;
+        Uri photoUrl;
         String username;
-        userinfo = new Userinformation();
         if (user != null) {
             // Name, email address, and profile photo Url
-             username = user.getDisplayName();
-             txtName.setText(username);
-             // The user's ID, unique to the Firebase project. Do NOT use this value to
+            username = user.getDisplayName();
+            txtName.setText(username);
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
             userid = auth.getUid();
-
-          /*  String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();*/
-
-
-            photoUrl = user.getPhotoUrl();
-            if(photoUrl!= null){
-             //   setImage(photoUrl);
-            }
-
-
-            db=FirebaseFirestore.getInstance();
-
+            db = FirebaseFirestore.getInstance();
             docRef = db.collection("users").document(userid);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            docRef.get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                public void onComplete(@NonNull Task < DocumentSnapshot > task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            //userinfo.setPhone_num(document.get("NumeroDiTelefono").toString());
-                            txtPhone.setText(document.get("NumeroDiTelefono").toString());
-                            txtConnectedPhone.setText(document.get("NumeroPersonaConnessa").toString());
-                            txtAlarmPhome.setText(document.get("NumeroDiAllarme").toString());
-                            imageURL = document.get("PathImg").toString();
-                           // userinfo.setConnected_num(document.get("NumeroPersonaConnessa").toString());
-                            //userinfo.setAlarm_num(document.get("NumeroDiAllarme").toString());
-                            if(!imageURL.equals("")){
-
+                            txtPhone.setText(document.get(KEY_USER_PHONE).toString());
+                            txtConnectedPhone.setText(document.get(KEY_PHONE_CONNECTED_TO_USER).toString());
+                            txtAlarmPhome.setText(document.get(KEY_ALARM_PHONE).toString());
+                            imageURL = document.get(KEY_IMAGE_PATH).toString();
+                            if (!imageURL.equals("")) {
                                 setImageFromdb();
                             }
-
-
+                            pd.dismiss();
                         } else {
                             toastMessage("No such document");
                         }
@@ -218,6 +356,7 @@ public class AccountSettings extends Fragment {
                     }
                 }
             });
+
         }
 
 
@@ -227,55 +366,49 @@ public class AccountSettings extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
-
-           imageuri = data.getData();
-           if(uploadTask != null && uploadTask.isInProgress()){
-               toastMessage("upload in progress");
-           }else{
-               uploadImage();
-               setImageFromStorage();
-           }
-
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageuri = data.getData();
+            if (uploadTask != null && uploadTask.isInProgress()) {
+                toastMessage("upload in progress");
+            } else {
+                uploadImage();
+                setImageFromStorage();
+            }
         }
-
     }
-    private void uploadImage(){
+    private void uploadImage() {
         Random rand = new Random();
-
         // Obtain a number between [0 - 49].
-        int n = rand.nextInt(10000)+1;
+        int n = rand.nextInt(10000) + 1;
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setMessage("Uploading");
         pd.show();
 
-        if(imageuri != null){
-            final StorageReference fileReference = mStorageRef.child("images/users/" + userid + "/" + n + "."+getFileExtension(imageuri));
-            fileReference.putFile(imageuri).continueWithTask(new Continuation <UploadTask.TaskSnapshot,Task<Uri>>() {
+        if (imageuri != null) {
+            final StorageReference fileReference = mStorageRef.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
+            fileReference.putFile(imageuri).continueWithTask(new Continuation < UploadTask.TaskSnapshot, Task < Uri >> () {
                 @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                public Task < Uri > then(@NonNull Task < UploadTask.TaskSnapshot > task) throws Exception {
 
-                    if(!task.isSuccessful()){
+                    if (!task.isSuccessful()) {
                         throw task.getException();
                     }
-                    return  fileReference.getDownloadUrl();
+                    return fileReference.getDownloadUrl();
                 }
             }).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         Uri doownloadUri = (Uri) task.getResult();
                         String muri = doownloadUri.toString();
 
-                        Map<String ,Object > usermap = new HashMap<>();
+                        Map < String, Object > usermap = new HashMap < > ();
 
-                        usermap.put("PathImg",muri);
+                        usermap.put("PathImg", muri);
 
                         db.collection("users").document(userid).update(usermap);
                         pd.dismiss();
-                    }else {
+                    } else {
                         toastMessage("Failed uploading");
                     }
                 }
@@ -286,30 +419,30 @@ public class AccountSettings extends Fragment {
                 }
             });
 
-        }else{
+        } else {
             toastMessage("No image selected");
         }
 
 
     }
-    private String getFileExtension(Uri uri){
+    private String getFileExtension(Uri uri) {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mtm = MimeTypeMap.getSingleton();
         return mtm.getExtensionFromMimeType(cr.getType(uri));
     }
-    private void setImageFromdb(){
+    private void setImageFromdb() {
 
-        if(!imageURL.equals("")){
+        if (!imageURL.equals("")) {
             Picasso.get()
                     .load(imageURL)
                     .into(cm);
         }
     }
 
-    private void setImageFromStorage(){
+    private void setImageFromStorage() {
         Bitmap btmap = null;
         try {
-            btmap = MediaStore.Images.Media.getBitmap(((MainActivity)getActivity()).getContex().getContentResolver(),imageuri);
+            btmap = MediaStore.Images.Media.getBitmap(((MainActivity) getActivity()).getContex().getContentResolver(), imageuri);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -328,8 +461,8 @@ public class AccountSettings extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() +
+                    " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -357,8 +490,8 @@ public class AccountSettings extends Fragment {
      * customizable toast
      * @param message
      */
-    private void toastMessage(String message){
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    private void toastMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 }

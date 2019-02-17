@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,9 @@ public class FragSettings extends Fragment {
         lblAccountset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fm.beginTransaction().replace(R.id.frame_layout,new AccountSettings(),"accountsettings")
+                AccountSettings accFrag = new AccountSettings();
+
+                fm.beginTransaction().replace(R.id.frame_layout,accFrag,"accountsettings")
                         .addToBackStack(null).commit();
             }
         });
