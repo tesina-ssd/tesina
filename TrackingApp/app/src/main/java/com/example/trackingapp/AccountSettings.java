@@ -75,11 +75,13 @@ public class AccountSettings extends Fragment {
     private EditText txtAlarmPhome= null;
     private Button btnSalva= null;
     private Button btnModifica= null;
+    private Button btnLogout= null;
     private Uri imageuri= null;
     private FirebaseUser user= null;
     private DocumentReference docRef= null;
     Userinformation userinfo= null;
     private StorageReference mStorageRef= null;
+    private WriteData writeData;
     private String imageURL = "";
     private StorageTask uploadTask= null;
     private boolean nameChanged = false;
@@ -117,6 +119,13 @@ public class AccountSettings extends Fragment {
   /* if (getArguments() != null) {
        stuff
    }*/
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        userid = auth.getUid();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
+        writeData = new WriteData(this.getContext());
+        inizializeClassWriteData();
 
     }
 
@@ -124,25 +133,21 @@ public class AccountSettings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.accountsettings, container, false);
-
-        mStorageRef = FirebaseStorage.getInstance().getReference();
         txtPhone = (EditText) v.findViewById(R.id.txtUserPhone);
         txtName = (EditText) v.findViewById(R.id.txtUserName);
         txtConnectedPhone = (EditText) v.findViewById(R.id.txtUserConnectedPhone);
         txtAlarmPhome = (EditText) v.findViewById(R.id.txtalarmPhone);
+        loadData();
         btnSalva = (Button) v.findViewById(R.id.btnsalvainfo) ;
         btnModifica = (Button) v.findViewById(R.id.btnModicainfo) ;
+        btnLogout = (Button) v.findViewById(R.id.btnLogout) ;
         btnSalva.setEnabled(false);
-        loadData();
-        userinfo = new Userinformation();
-        userinfo.setNameSurname(txtName.getText().toString());
-        userinfo.setPhone_num(txtPhone.getText().toString());
-        userinfo.setConnected_num(txtConnectedPhone.getText().toString());
-        userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
         txtPhone.setEnabled(false);
         txtName.setEnabled(false);
         txtConnectedPhone.setEnabled(false);
         txtAlarmPhome.setEnabled(false);
+
+
         cm = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
 
         cm.setEnabled(false);
@@ -165,6 +170,11 @@ public class AccountSettings extends Fragment {
                 txtName.setEnabled(true);
                 txtConnectedPhone.setEnabled(true);
                 txtAlarmPhome.setEnabled(true);
+                userinfo = new Userinformation();
+                userinfo.setNameSurname(txtName.getText().toString());
+                userinfo.setPhone_num(txtPhone.getText().toString());
+                userinfo.setConnected_num(txtConnectedPhone.getText().toString());
+                userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
             }
         });
         btnSalva.setOnClickListener(new View.OnClickListener() {
@@ -207,8 +217,23 @@ public class AccountSettings extends Fragment {
                     }
                 }
                 if(canWrite || userModifiedWrite){
-                    writeData(data,name);
+                        writeData.updateProfile(data,name,userModifiedWrite,canWrite);
                 }
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.signOut();
+                if(getActivity() != null){
+                    getActivity().finish();
+                    startActivity(new Intent(getContext(),SignInActivity.class));
+                }else {
+                    startActivity(new Intent(getContext(),SignInActivity.class));
+                }
+
+
             }
         });
 
@@ -278,61 +303,16 @@ public class AccountSettings extends Fragment {
         });
         return v;
     }
-    private void writeData(Map<String, Object> data,String name){
-        final ProgressDialog pd = new ProgressDialog(getContext());
-        pd.show();
-        pd.setMessage("Updating data...");
-        if(user!=null && userModifiedWrite){
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build();
 
-            user.updateProfile(profileUpdates)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                toastMessage("User profile updated.");
-                            }
-                        }
-                    });
-        }
-        if(!userid.equals("") && canWrite){
-            db.collection("users").document(userid)
-                    .set(data, SetOptions.merge())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                           toastMessage( "DocumentSnapshot successfully written!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            toastMessage("Error writing document");
-                        }
-                    });
-            pd.dismiss();
-        }
-
-    }
     private void loadData() {
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.show();
         pd.setMessage("Getting information...");
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        Uri photoUrl;
         String username;
         if (user != null) {
             // Name, email address, and profile photo Url
             username = user.getDisplayName();
             txtName.setText(username);
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            userid = auth.getUid();
-            db = FirebaseFirestore.getInstance();
             docRef = db.collection("users").document(userid);
             docRef.get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
                 @Override
@@ -347,13 +327,14 @@ public class AccountSettings extends Fragment {
                             if (!imageURL.equals("")) {
                                 setImageFromdb();
                             }
-                            pd.dismiss();
+
                         } else {
                             toastMessage("No such document");
                         }
                     } else {
                         toastMessage("get failed with ");
                     }
+                    pd.dismiss();
                 }
             });
 
@@ -361,7 +342,6 @@ public class AccountSettings extends Fragment {
 
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -371,65 +351,18 @@ public class AccountSettings extends Fragment {
             if (uploadTask != null && uploadTask.isInProgress()) {
                 toastMessage("upload in progress");
             } else {
-                uploadImage();
+                    writeData.uploadImage(imageuri);
+
                 setImageFromStorage();
             }
         }
     }
-    private void uploadImage() {
-        Random rand = new Random();
-        // Obtain a number between [0 - 49].
-        int n = rand.nextInt(10000) + 1;
-        final ProgressDialog pd = new ProgressDialog(getContext());
-        pd.setMessage("Uploading");
-        pd.show();
 
-        if (imageuri != null) {
-            final StorageReference fileReference = mStorageRef.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
-            fileReference.putFile(imageuri).continueWithTask(new Continuation < UploadTask.TaskSnapshot, Task < Uri >> () {
-                @Override
-                public Task < Uri > then(@NonNull Task < UploadTask.TaskSnapshot > task) throws Exception {
-
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return fileReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()) {
-                        Uri doownloadUri = (Uri) task.getResult();
-                        String muri = doownloadUri.toString();
-
-                        Map < String, Object > usermap = new HashMap < > ();
-
-                        usermap.put("PathImg", muri);
-
-                        db.collection("users").document(userid).update(usermap);
-                        pd.dismiss();
-                    } else {
-                        toastMessage("Failed uploading");
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    toastMessage("Failed");
-                }
-            });
-
-        } else {
-            toastMessage("No image selected");
-        }
-
-
+    private void inizializeClassWriteData (){
+        writeData.setStorageReference(mStorageRef).setUser(user)
+                .setUserid(userid).setDb(db);
     }
-    private String getFileExtension(Uri uri) {
-        ContentResolver cr = getContext().getContentResolver();
-        MimeTypeMap mtm = MimeTypeMap.getSingleton();
-        return mtm.getExtensionFromMimeType(cr.getType(uri));
-    }
+
     private void setImageFromdb() {
 
         if (!imageURL.equals("")) {

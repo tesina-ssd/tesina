@@ -44,7 +44,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="10dp"
-            android:text="Cambia Immagine"
+            android:text=""
+            android:drawableLeft="@drawable/ic_baseline_create_24px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="175dp" />
@@ -103,7 +104,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtUserPhone"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp" />
+                    android:layout_height="54dp"
+                    android:inputType="phone"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,7 +122,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtUserConnectedPhone"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp" />
+                    android:layout_height="54dp"
+                    android:inputType="phone"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,7 +140,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtalarmPhone"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp" />
+                    android:layout_height="54dp"
+                    android:inputType="phone"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,6 +165,18 @@
                 android:text="@string/salvaInfo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtAlarmContainer" />
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/btnLogout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnModicainfo"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
