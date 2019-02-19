@@ -306,6 +306,7 @@ public class AccountSettings extends Fragment {
 
     private void loadData() {
         final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setCancelable(false);
         pd.show();
         pd.setMessage("Getting information...");
         String username;

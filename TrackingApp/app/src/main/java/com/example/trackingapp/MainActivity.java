@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 case R.id.navigation_notification_center:
                     return true;
                 case R.id.navigation_settings:
+
                     fragmentManager.beginTransaction().replace(R.id.frame_layout, new FragSettings(), "map")
                             .addToBackStack(null).commit();
                     return true;
