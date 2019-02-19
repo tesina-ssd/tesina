@@ -20,6 +20,7 @@ import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,9 +29,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener,FragSettings.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     private FragmentManager fragmentManager = null;
@@ -51,11 +54,18 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_notification_center:
                     return true;
                 case R.id.navigation_settings:
+                    fragmentManager.beginTransaction().replace(R.id.frame_layout, new FragSettings(), "map")
+                            .addToBackStack(null).commit();
                     return true;
             }
             return false;
         }
     };
+    public Context getContex (){
+
+
+        return getApplicationContext();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,5 +80,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         navigation.setSelectedItemId(R.id.navigation_track);
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
