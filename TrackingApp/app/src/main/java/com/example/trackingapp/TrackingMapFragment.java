@@ -24,33 +24,12 @@ import androidx.fragment.app.FragmentManager;
  * Fragment rappresentate la mappa per il tracciamento dell'utente.
  * Contiene una mappa e un menu espandibile tramite un floating action button.
  */
-public class TrackingMapFragment extends Fragment implements ConnectionCodeGeneratorDialogFragment.NoticeConnectionCodeGenerationDialogListener {
+public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
 
     FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
     MapView mapView; //Mappa
     TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
-    ConnectionCodeGeneratorDialogFragment connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
-
-    /* Metodi da implementare per soddisfare i requisiti del ConnectionCodeGeneratorDialogFragment:
-     * i metodi vengono utilizzati per la comunicazione tra il fragment e il dialog */
-    /**
-     * Metodo che viene risvegliato quando viene premuto il tasto Ok del ConnectionCodeGeneratorDialogFragment
-     */
-    @Override
-    public void onConnectionCodeGeneratorOkClick(DialogFragment dialogFragment) {
-        //Questa è semplicemente una prova
-        connectionCodeGeneratorDialogFragment.dismiss(); //Rimuove il dialog
-        Toast.makeText(getContext(),"ok", Toast.LENGTH_LONG).show(); //Visualizza un toast
-    }
-
-    /**
-     * Metodo che viene risvegliato quando viene premuto il tasto Cancella del ConnectionCodeGeneratorDialogFragment
-     */
-    @Override
-    public void onConnectionCodeGeneratorCancellaClick(DialogFragment dialogFragment) {
-        //Questa è semplicemente una prova
-        Toast.makeText(getContext(),"cancel", Toast.LENGTH_LONG);
-    }
+    ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
 
     /**
      * Costruttore base vuoto, richiesto per l'implementazione (non chiedetemi il perchè)
@@ -90,7 +69,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionCodeGener
             @Override
             public void onClick(View view) {
                 // Apertura del dialog
-                connectionCodeGeneratorDialogFragment = ConnectionCodeGeneratorDialogFragment.newInstance(randomCode(8));
+                connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance(randomCode(8));
                 connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
                 connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
             }
@@ -112,5 +91,15 @@ public class TrackingMapFragment extends Fragment implements ConnectionCodeGener
             ret += (char) (random.nextInt(120 - 70) + 70);
         Log.i("ConnCode", ret);
         return ret;
+    }
+
+    @Override
+    public void onConnectionDialogOkClicked() {
+        onConnectionDialogCancelClicked();
+    }
+
+    @Override
+    public void onConnectionDialogCancelClicked() {
+        connectionCodeGeneratorDialogFragment.dismiss();
     }
 }

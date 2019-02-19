@@ -17,8 +17,22 @@
     <string name="string_settings">Impostazioni</string>
 
     <!-- Mapbox token -->
-    <string name="access_token">pk.eyJ1IjoidHJhY2tpbmdhcHAiLCJhIjoiY2pyczZlcDRsMjB0azQ0bnRuNHgwaXptYiJ9
-        .ef-BXxvp9qnffAr8UL-jdA</string>
+
+    <string name="access_token">pk.eyJ1IjoidHJhY2tpbmdhcHAiLCJhIjoiY2pyczZlcDRsMjB0azQ0bnRuNHgwaXptYiJ9.ef-BXxvp9qnffAr8UL-jdA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_ConnectionDialog_Title">Codice di connessione</string>
+    <string name="str_ConnectionDialog_Info">Fornisci il codice di connessione ad una persona fidata: le darai accesso alle tue informazioni per permettere un tempestivo soccorso</string>
+    <string name="str_ConnectionDialog_BtnOk">OK</string>
+    <string name="str_ConnectionDialog_BtnAvanti">ANNULLA</string>
+
+    <string-array name="activities">
+        <item name="Trekking">Escursionismo</item>
+        <item name="mtb">Roba da figette (mtb)</item>
+        <item name="Ski">Sci alpinismo</item>
+    </string-array>
+
     <!-- Account Settings -->
     <string name="userNameSurname">Nome Completo</string>
     <string name="personal_telephone_number">Numero di telefono</string>
@@ -31,4 +45,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
+
 </resources>
