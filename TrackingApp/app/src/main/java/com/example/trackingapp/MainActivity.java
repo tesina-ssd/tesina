@@ -1,10 +1,13 @@
 package com.example.trackingapp;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -16,13 +19,21 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimerTask;
+
+public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener,FragSettings.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     private FragmentManager fragmentManager = null;
@@ -34,66 +45,44 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_track:
-                    loadMapboxMap();
+                    //loadMapboxMap();
+                    fragmentManager.beginTransaction().replace(R.id.frame_layout, new TrackingMapFragment(), "map").commit();
+
                     return true;
                 case R.id.navigation_follow:
                     return true;
                 case R.id.navigation_notification_center:
                     return true;
                 case R.id.navigation_settings:
+                    fragmentManager.beginTransaction().replace(R.id.frame_layout, new FragSettings(), "map")
+                            .addToBackStack(null).commit();
                     return true;
             }
             return false;
         }
     };
+    public Context getContex (){
+
+
+        return getApplicationContext();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Loading fragment manager
+        fragmentManager = getSupportFragmentManager();
+
+        // Navigation bar
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        fragmentManager = getSupportFragmentManager();
     }
 
-    private void loadMapboxMap() {
-        // Mapbox access token is configured here. This needs to be called either in your application
-        // object or in the same activity which contains the mapview.
-        Mapbox.getInstance(this, getString(R.string.access_token));
 
-        // Create supportMapFragment
-        SupportMapFragment mapFragment;
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-        // Create fragment
-        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        // Build mapboxMap
-        MapboxMapOptions options = new MapboxMapOptions();
-        options.camera(new CameraPosition.Builder()
-                .target(new LatLng(44.353630, 7.680283))
-                .zoom(9)
-                .build());
-
-        // Create map fragment
-        mapFragment = SupportMapFragment.newInstance(options);
-
-        // Add map fragment to parent container
-        transaction.add(R.id.container, mapFragment, "com.mapbox.map");
-        transaction.commit();
-
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-
-                mapboxMap.setStyle(Style.DARK, new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                    }
-                });
-            }
-        });
     }
 }
