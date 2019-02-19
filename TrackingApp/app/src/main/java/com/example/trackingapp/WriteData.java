@@ -25,6 +25,7 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 
 public class WriteData {
+    private  ProgressDialog pd =null;
     private FirebaseUser user = null;
     private FirebaseFirestore db;
     private String userid = null;
@@ -32,6 +33,7 @@ public class WriteData {
     private Context contex;
     public WriteData(Context context){
         this.contex=context;
+        this.pd = new ProgressDialog(this.contex);
     }
 
     public WriteData setDb(FirebaseFirestore db) {
@@ -43,7 +45,7 @@ public class WriteData {
         Random rand = new Random();
         // Obtain a number between [0 - 49].
         int n = 1;
-        final ProgressDialog pd = new ProgressDialog(this.contex);
+        pd.setCancelable(false);
         pd.setMessage("Uploading");
         pd.show();
 
@@ -89,7 +91,7 @@ public class WriteData {
 
     }
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite, boolean canWrite){
-        final ProgressDialog pd = new ProgressDialog(this.contex);
+        pd.setCancelable(false);
         pd.show();
         pd.setMessage("Updating data...");
         if(user!=null && userModifiedWrite){

@@ -9,10 +9,11 @@
     <TextView
         android:id="@+id/lblAccountSettings"
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="58dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/bottomborder"
         android:fontFamily="@font/poppins_light"
         android:text="Account Settings"
         android:textAlignment="center"
