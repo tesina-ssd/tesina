@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 public class WriteData {
     private  ProgressDialog pd =null;
     private FirebaseUser user = null;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = null;
     private String userid = null;
     private StorageReference storageReference= null;
     private Context contex;
