@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 public class WriteData {
     private  ProgressDialog pd =null;
     private FirebaseUser user = null;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = null;
     private String userid = null;
     private StorageReference storageReference= null;
     private Context contex;
@@ -90,11 +90,12 @@ public class WriteData {
 
 
     }
-    public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite, boolean canWrite){
+    public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         pd.setCancelable(false);
-        pd.show();
-        pd.setMessage("Updating data...");
+
         if(user!=null && userModifiedWrite){
+            pd.show();
+            pd.setMessage("Updating data...");
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
                     .build();
@@ -103,13 +104,17 @@ public class WriteData {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
 
+                            if (task.isSuccessful()) {
+                                toastMessage("User profile updated.");
                             }
+                            pd.dismiss();
                         }
                     });
         }
-        if(!userid.equals("") && canWrite){
+        if(!userid.equals("")){
+            pd.show();
+            pd.setMessage("Updating data...");
             db.collection("users").document(userid).update(data)
                     //.set(data, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -118,16 +123,17 @@ public class WriteData {
                             if(!userModifiedWrite){
                                 toastMessage("User profile updated.");
                             }
-
+                            pd.dismiss();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             toastMessage("Error writing document");
+                            pd.dismiss();
                         }
                     });
-            pd.dismiss();
+
         }
 
     }

@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/fui_bgPhone">
+        android:background="@color/colorAccent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
@@ -32,8 +32,7 @@
             app:civ_border_width="2dp"
             app:layout_constraintBottom_toTopOf="@+id/lblChangeimage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-             />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/lblChangeimage"

@@ -84,11 +84,10 @@ public class AccountSettings extends Fragment {
     private WriteData writeData;
     private String imageURL = "";
     private StorageTask uploadTask= null;
-    private boolean nameChanged = false;
     private boolean phoneChanged = false;
     private boolean connectedChanged = false;
     private boolean alarmChanged = false;
-    private boolean canWrite = false;
+    private Map<String, Object> data =null;
     private boolean userModifiedWrite= false;
     private String KEY_IMAGE_PATH = "PathImg";
     private String KEY_USER_PHONE = "NumeroDiTelefono";
@@ -132,25 +131,26 @@ public class AccountSettings extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.accountsettings, container, false);
+        View v = inflater.inflate(R.layout.account_settings, container, false);
+        ImageView backimg = (ImageView) v.findViewById(R.id.background_image_mountains);
+        Picasso.get()
+                .load("https://firebasestorage.googleapis.com/v0/b/tracking-app-1b565.appspot.com/o/images%2Fbackground%2Fback3.png?alt=media&token=2e3f83e2-5b77-4288-ac1e-5bbb904c774d")
+                .fit()
+                .into(backimg);
         txtPhone = (EditText) v.findViewById(R.id.txtUserPhone);
         txtName = (EditText) v.findViewById(R.id.txtUserName);
         txtConnectedPhone = (EditText) v.findViewById(R.id.txtUserConnectedPhone);
         txtAlarmPhome = (EditText) v.findViewById(R.id.txtalarmPhone);
-        loadData();
         btnSalva = (Button) v.findViewById(R.id.btnsalvainfo) ;
-        btnModifica = (Button) v.findViewById(R.id.btnModicainfo) ;
         btnLogout = (Button) v.findViewById(R.id.btnLogout) ;
-        btnSalva.setEnabled(false);
-        txtPhone.setEnabled(false);
-        txtName.setEnabled(false);
-        txtConnectedPhone.setEnabled(false);
-        txtAlarmPhome.setEnabled(false);
+        userinfo = new Userinformation();
+        loadData();
+        data = new HashMap<>();
 
 
         cm = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
 
-        cm.setEnabled(false);
+
         cm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,65 +160,19 @@ public class AccountSettings extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
             }
         });
-        btnModifica.setOnClickListener(new View.OnClickListener() {
+
+        btnSalva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cm.setEnabled(true);
-                btnSalva.setEnabled(true);
-                btnModifica.setEnabled(false);
-                txtPhone.setEnabled(true);
-                txtName.setEnabled(true);
-                txtConnectedPhone.setEnabled(true);
-                txtAlarmPhome.setEnabled(true);
-                userinfo = new Userinformation();
+                btnSalva.setEnabled(false);
+                String name=txtName.getText().toString();
+                writeData.updateProfile(data,name,userModifiedWrite);
                 userinfo.setNameSurname(txtName.getText().toString());
                 userinfo.setPhone_num(txtPhone.getText().toString());
                 userinfo.setConnected_num(txtConnectedPhone.getText().toString());
                 userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
-            }
-        });
-        btnSalva.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cm.setEnabled(false);
-                String name=txtName.getText().toString();
-                String phone = txtPhone.getText().toString();
-                String cphone = txtConnectedPhone.getText().toString();
-                String alarmphone = txtAlarmPhome.getText().toString();
-                Map<String, Object> data = new HashMap<>();
-                btnSalva.setEnabled(false);
-                btnModifica.setEnabled(true);
-                txtPhone.setEnabled(false);
-                txtName.setEnabled(false);
-                txtConnectedPhone.setEnabled(false);
-                txtAlarmPhome.setEnabled(false);
 
-                if(nameChanged){
-                    if(!name.equals(userinfo.getNameSurname())){
-                        userModifiedWrite=true;
-                    }
-                }
-                if(phoneChanged){
-                    if(!phone.equals(userinfo.getPhone_num())){
-                        canWrite=true;
-                        data.put(KEY_USER_PHONE,phone);
-                    }
-                }
-                if(connectedChanged){
-                    if(!cphone.equals(userinfo.getConnected_num())){
-                        canWrite=true;
-                        data.put(KEY_PHONE_CONNECTED_TO_USER,cphone);
-                    }
-                }
-                if(alarmChanged){
-                    if(!alarmphone.equals(userinfo.getAlarm_num())){
-                        canWrite=true;
-                        data.put(KEY_ALARM_PHONE,alarmphone);
-                    }
-                }
-                if(canWrite || userModifiedWrite){
-                        writeData.updateProfile(data,name,userModifiedWrite,canWrite);
-                }
+
             }
         });
 
@@ -250,7 +204,16 @@ public class AccountSettings extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                nameChanged = true;
+                if(!txtName.getText().toString().equals(userinfo.getNameSurname())){
+                    userModifiedWrite=true;
+                }else{
+                    userModifiedWrite=false;
+                }
+                if(userModifiedWrite || phoneChanged || alarmChanged || connectedChanged){
+                    btnSalva.setEnabled(true);
+                }else{
+                    btnSalva.setEnabled(false);
+                }
             }
         });
         txtPhone.addTextChangedListener(new TextWatcher() {
@@ -266,7 +229,19 @@ public class AccountSettings extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                phoneChanged = true;
+                String phone = txtPhone.getText().toString();
+                if(!phone.equals(userinfo.getPhone_num())){
+                    phoneChanged=true;
+                    data.put(KEY_USER_PHONE,phone);
+                }else{
+                    phoneChanged=false;
+                }
+                if(userModifiedWrite || phoneChanged || alarmChanged || connectedChanged){
+                    btnSalva.setEnabled(true);
+                }else{
+                    btnSalva.setEnabled(false);
+                }
+
             }
         });
         txtConnectedPhone.addTextChangedListener(new TextWatcher() {
@@ -282,7 +257,21 @@ public class AccountSettings extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                connectedChanged = true;
+                String cphone = txtConnectedPhone.getText().toString();
+                    if(!cphone.equals(userinfo.getConnected_num())){
+                        connectedChanged=true;
+                        data.put(KEY_PHONE_CONNECTED_TO_USER,cphone);
+                        btnSalva.setEnabled(true);
+                    }else{
+                        connectedChanged=false;
+                        btnSalva.setEnabled(false);
+                    }
+                    if(userModifiedWrite || phoneChanged || alarmChanged || connectedChanged){
+                        btnSalva.setEnabled(true);
+                    }else{
+                        btnSalva.setEnabled(false);
+                    }
+
             }
         });
         txtAlarmPhome.addTextChangedListener(new TextWatcher() {
@@ -298,7 +287,21 @@ public class AccountSettings extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                alarmChanged = true;
+                String alarmphone = txtAlarmPhome.getText().toString();
+                if(!alarmphone.equals(userinfo.getAlarm_num())){
+                    alarmChanged=true;
+                    data.put(KEY_ALARM_PHONE,alarmphone);
+                    btnSalva.setEnabled(true);
+                }else{
+                    alarmChanged=false;
+                    btnSalva.setEnabled(false);
+                }
+                if(userModifiedWrite || phoneChanged || alarmChanged || connectedChanged){
+                    btnSalva.setEnabled(true);
+                }else{
+                    btnSalva.setEnabled(false);
+                }
+
             }
         });
         return v;
@@ -325,17 +328,33 @@ public class AccountSettings extends Fragment {
                             txtConnectedPhone.setText(document.get(KEY_PHONE_CONNECTED_TO_USER).toString());
                             txtAlarmPhome.setText(document.get(KEY_ALARM_PHONE).toString());
                             imageURL = document.get(KEY_IMAGE_PATH).toString();
+
                             if (!imageURL.equals("")) {
                                 setImageFromdb();
                             }
+                            userinfo.setNameSurname(txtName.getText().toString());
+                            userinfo.setPhone_num(txtPhone.getText().toString());
+                            userinfo.setConnected_num(txtConnectedPhone.getText().toString());
+                            userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
+                            phoneChanged = false;
+                            userModifiedWrite= false ;
+                            alarmChanged= false;
+                            connectedChanged= false;
 
                         } else {
                             toastMessage("No such document");
+                            btnSalva.setEnabled(false);
+
+
                         }
+                        btnSalva.setEnabled(false);
+                        pd.dismiss();
                     } else {
                         toastMessage("get failed with ");
+                        btnSalva.setEnabled(false);
+                        pd.dismiss();
                     }
-                    pd.dismiss();
+
                 }
             });
 
@@ -353,8 +372,7 @@ public class AccountSettings extends Fragment {
                 toastMessage("upload in progress");
             } else {
                     writeData.uploadImage(imageuri);
-
-                setImageFromStorage();
+                    setImageFromStorage();
             }
         }
     }
