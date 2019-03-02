@@ -34,7 +34,7 @@ public class FragSettings extends Fragment {
             public void onClick(View view) {
                 AccountSettings accFrag = new AccountSettings();
 
-                fm.beginTransaction().replace(R.id.frame_layout,accFrag,"accountsettings")
+                fm.beginTransaction().replace(R.id.frameLayout,accFrag,"accountsettings")
                         .addToBackStack(null).commit();
             }
         });

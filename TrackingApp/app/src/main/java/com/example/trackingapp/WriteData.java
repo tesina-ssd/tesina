@@ -1,9 +1,12 @@
 package com.example.trackingapp;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import java.util.Map;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 public class WriteData {
     private  ProgressDialog pd =null;
@@ -31,9 +35,12 @@ public class WriteData {
     private String userid = null;
     private StorageReference storageReference= null;
     private Context contex;
-    public WriteData(Context context){
+    private FragmentManager fragmentManager;
+
+    public WriteData(Context context , FragmentManager fm){
         this.contex=context;
         this.pd = new ProgressDialog(this.contex);
+        this.fragmentManager = fm;
     }
 
     public WriteData setDb(FirebaseFirestore db) {
@@ -48,7 +55,7 @@ public class WriteData {
         pd.setCancelable(false);
         pd.setMessage("Uploading");
         pd.show();
-
+        timerDelayRemoveDialog(15000,pd);
         if (imageuri != null) {
             final StorageReference fileReference = storageReference.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
             fileReference.putFile(imageuri).continueWithTask(new Continuation< UploadTask.TaskSnapshot, Task< Uri >>() {
@@ -81,6 +88,7 @@ public class WriteData {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     toastMessage("Failed");
+                    pd.dismiss();
                 }
             });
 
@@ -95,6 +103,7 @@ public class WriteData {
 
         if(user!=null && userModifiedWrite){
             pd.show();
+            timerDelayRemoveDialog(15000,pd);
             pd.setMessage("Updating data...");
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -114,6 +123,7 @@ public class WriteData {
         }
         if(!userid.equals("")){
             pd.show();
+            timerDelayRemoveDialog(15000,pd);
             pd.setMessage("Updating data...");
             db.collection("users").document(userid).update(data)
                     //.set(data, SetOptions.merge())
@@ -163,4 +173,18 @@ public class WriteData {
     private void toastMessage(String message) {
         Toast.makeText(this.contex, message, Toast.LENGTH_SHORT).show();
     }
+    public void timerDelayRemoveDialog(long time, final Dialog d){
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                if(d.isShowing()){
+                    NoConnectionDialog noConnectionDialog =  NoConnectionDialog.newInstance(2);
+                    noConnectionDialog.show(fragmentManager,"SlowConn");
+                    d.dismiss();
+                }
+
+            }
+        }, time);
+    }
+
 }

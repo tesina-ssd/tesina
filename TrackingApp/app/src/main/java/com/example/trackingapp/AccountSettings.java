@@ -5,6 +5,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -74,7 +76,6 @@ public class AccountSettings extends Fragment {
     private EditText txtConnectedPhone= null;
     private EditText txtAlarmPhome= null;
     private Button btnSalva= null;
-    private Button btnModifica= null;
     private Button btnLogout= null;
     private Uri imageuri= null;
     private FirebaseUser user= null;
@@ -87,8 +88,11 @@ public class AccountSettings extends Fragment {
     private boolean phoneChanged = false;
     private boolean connectedChanged = false;
     private boolean alarmChanged = false;
+    private boolean connected = false;
     private Map<String, Object> data =null;
     private boolean userModifiedWrite= false;
+    private int SLOWCONN = 2;
+    private int NO_CONN = 1;
     private String KEY_IMAGE_PATH = "PathImg";
     private String KEY_USER_PHONE = "NumeroDiTelefono";
     private String KEY_PHONE_CONNECTED_TO_USER = "NumeroPersonaConnessa";
@@ -123,8 +127,9 @@ public class AccountSettings extends Fragment {
         userid = auth.getUid();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
-        writeData = new WriteData(this.getContext());
+        writeData = new WriteData(this.getContext(),getFragmentManager());
         inizializeClassWriteData();
+        checkConnection();
 
     }
 
@@ -308,58 +313,75 @@ public class AccountSettings extends Fragment {
     }
 
     private void loadData() {
-        final ProgressDialog pd = new ProgressDialog(getContext());
-        pd.setCancelable(false);
-        pd.show();
-        pd.setMessage("Getting information...");
-        String username;
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            username = user.getDisplayName();
-            txtName.setText(username);
-            docRef = db.collection("users").document(userid);
-            docRef.get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
-                @Override
-                public void onComplete(@NonNull Task < DocumentSnapshot > task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            txtPhone.setText(document.get(KEY_USER_PHONE).toString());
-                            txtConnectedPhone.setText(document.get(KEY_PHONE_CONNECTED_TO_USER).toString());
-                            txtAlarmPhome.setText(document.get(KEY_ALARM_PHONE).toString());
-                            imageURL = document.get(KEY_IMAGE_PATH).toString();
+        if(connected){
+            final ProgressDialog pd = new ProgressDialog(getContext());
+            pd.setCancelable(false);
+            pd.show();
+            writeData.timerDelayRemoveDialog(15000,pd);
+            pd.setMessage("Getting information...");
+            String username;
+            if (user != null) {
+                // Name, email address, and profile photo Url
+                username = user.getDisplayName();
+                txtName.setText(username);
+                docRef = db.collection("users").document(userid);
+                docRef.get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
+                    @Override
+                    public void onComplete(@NonNull Task < DocumentSnapshot > task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                txtPhone.setText(document.get(KEY_USER_PHONE).toString());
+                                txtConnectedPhone.setText(document.get(KEY_PHONE_CONNECTED_TO_USER).toString());
+                                txtAlarmPhome.setText(document.get(KEY_ALARM_PHONE).toString());
+                                imageURL = document.get(KEY_IMAGE_PATH).toString();
 
-                            if (!imageURL.equals("")) {
-                                setImageFromdb();
+                                if (!imageURL.equals("")) {
+                                    setImageFromdb();
+                                }
+                                userinfo.setNameSurname(txtName.getText().toString());
+                                userinfo.setPhone_num(txtPhone.getText().toString());
+                                userinfo.setConnected_num(txtConnectedPhone.getText().toString());
+                                userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
+                                phoneChanged = false;
+                                userModifiedWrite= false ;
+                                alarmChanged= false;
+                                connectedChanged= false;
+
+                            } else {
+                                toastMessage("No such document");
+                                btnSalva.setEnabled(false);
+
+
                             }
-                            userinfo.setNameSurname(txtName.getText().toString());
-                            userinfo.setPhone_num(txtPhone.getText().toString());
-                            userinfo.setConnected_num(txtConnectedPhone.getText().toString());
-                            userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
-                            phoneChanged = false;
-                            userModifiedWrite= false ;
-                            alarmChanged= false;
-                            connectedChanged= false;
-
-                        } else {
-                            toastMessage("No such document");
                             btnSalva.setEnabled(false);
-
-
+                            pd.dismiss();
+                        } else {
+                            toastMessage("get failed with ");
+                            btnSalva.setEnabled(false);
+                            pd.dismiss();
                         }
-                        btnSalva.setEnabled(false);
-                        pd.dismiss();
-                    } else {
-                        toastMessage("get failed with ");
-                        btnSalva.setEnabled(false);
-                        pd.dismiss();
+
                     }
+                });
 
-                }
-            });
-
+            }
+        }else {
+            shownoConnection(NO_CONN);
         }
 
+    }
+
+    private void shownoConnection(int conn) {
+
+        if(conn==2){
+            NoConnectionDialog noConnectionDialog =  NoConnectionDialog.newInstance(SLOWCONN);
+            noConnectionDialog.show(getFragmentManager(),"SlowConn");
+        }
+        if(conn==1){
+            NoConnectionDialog noConnectionDialog =  NoConnectionDialog.newInstance(NO_CONN);
+            noConnectionDialog.show(getFragmentManager(),"NoConn");
+        }
 
     }
 
@@ -444,6 +466,16 @@ public class AccountSettings extends Fragment {
      */
     private void toastMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    private void checkConnection(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(connectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(connectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        }
+        else
+            connected = false;
     }
 
 }

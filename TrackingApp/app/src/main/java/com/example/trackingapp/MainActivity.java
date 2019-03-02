@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
             switch (item.getItemId()) {
                 case R.id.navigation_track:
                     //loadMapboxMap();
-                    fragmentManager.beginTransaction().replace(R.id.frame_layout, new TrackingMapFragment(), "map").commit();
+                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new TrackingMapFragment(), "map").commit();
 
                     return true;
                 case R.id.navigation_follow:
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                     return true;
                 case R.id.navigation_settings:
 
-                    fragmentManager.beginTransaction().replace(R.id.frame_layout, new FragSettings(), "map")
+                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "map")
                             .addToBackStack(null).commit();
                     return true;
             }
