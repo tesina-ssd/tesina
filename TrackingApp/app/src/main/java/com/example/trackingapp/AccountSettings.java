@@ -93,6 +93,8 @@ public class AccountSettings extends Fragment {
     private boolean userModifiedWrite= false;
     private int SLOWCONN = 2;
     private int NO_CONN = 1;
+    private boolean isImageExist= false;
+    private boolean newUser = false;
     private String KEY_IMAGE_PATH = "PathImg";
     private String KEY_USER_PHONE = "NumeroDiTelefono";
     private String KEY_PHONE_CONNECTED_TO_USER = "NumeroPersonaConnessa";
@@ -107,21 +109,21 @@ public class AccountSettings extends Fragment {
      *
      * @return A new instance of fragment AccountSettings.
      */
- /*
-   public static AccountSettings newInstance() {
-       AccountSettings fragment = new AccountSettings();
-       Bundle args = new Bundle();
-       args.stuff........
-       fragment.setArguments(args);
-       return fragment;
-   }*/
+
+    public static AccountSettings newInstance(boolean newUser) {
+        AccountSettings fragment = new AccountSettings();
+        Bundle args = new Bundle();
+        args.putBoolean("newUser",newUser);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-  /* if (getArguments() != null) {
-       stuff
-   }*/
+        if (getArguments() != null) {
+            this.newUser = getArguments().getBoolean("newUser");
+        }
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         userid = auth.getUid();
@@ -145,7 +147,14 @@ public class AccountSettings extends Fragment {
         btnSalva = (Button) v.findViewById(R.id.btnsalvainfo) ;
         btnLogout = (Button) v.findViewById(R.id.btnLogout) ;
         userinfo = new Userinformation();
-        loadData();
+        if(!newUser){
+            loadData();
+        }else{
+            btnSalva.setEnabled(false);
+            loadUserName();
+            toastMessage("Per favore inserire informazioni\nfondamentali");
+        }
+
         data = new HashMap<>();
 
 
@@ -166,13 +175,18 @@ public class AccountSettings extends Fragment {
             @Override
             public void onClick(View view) {
                 btnSalva.setEnabled(false);
-                String name=txtName.getText().toString();
-                writeData.updateProfile(data,name,userModifiedWrite);
-                writeData.keysCollection();
-                userinfo.setNameSurname(txtName.getText().toString());
-                userinfo.setPhone_num(txtPhone.getText().toString());
-                userinfo.setConnected_num(txtConnectedPhone.getText().toString());
-                userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
+                if(checkData() && isImageExist){
+                    String name=txtName.getText().toString();
+                    writeData.updateProfile(data,name,userModifiedWrite);
+                    writeData.uploadImage(imageuri);
+                    userinfo.setNameSurname(txtName.getText().toString());
+                    userinfo.setPhone_num(txtPhone.getText().toString());
+                    userinfo.setConnected_num(txtConnectedPhone.getText().toString());
+                    userinfo.setAlarm_num(txtAlarmPhome.getText().toString());
+                }else {
+                    toastMessage("Completa i campi\ne\nSeleziona una tua foto");
+                }
+
 
 
             }
@@ -260,19 +274,19 @@ public class AccountSettings extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 String cphone = txtConnectedPhone.getText().toString();
-                    if(!cphone.equals(userinfo.getConnected_num())){
-                        connectedChanged=true;
-                        data.put(KEY_PHONE_CONNECTED_TO_USER,cphone);
-                        btnSalva.setEnabled(true);
-                    }else{
-                        connectedChanged=false;
-                        btnSalva.setEnabled(false);
-                    }
-                    if(userModifiedWrite || phoneChanged || alarmChanged || connectedChanged){
-                        btnSalva.setEnabled(true);
-                    }else{
-                        btnSalva.setEnabled(false);
-                    }
+                if(!cphone.equals(userinfo.getConnected_num())){
+                    connectedChanged=true;
+                    data.put(KEY_PHONE_CONNECTED_TO_USER,cphone);
+                    btnSalva.setEnabled(true);
+                }else{
+                    connectedChanged=false;
+                    btnSalva.setEnabled(false);
+                }
+                if(userModifiedWrite || phoneChanged || alarmChanged || connectedChanged){
+                    btnSalva.setEnabled(true);
+                }else{
+                    btnSalva.setEnabled(false);
+                }
 
             }
         });
@@ -309,6 +323,50 @@ public class AccountSettings extends Fragment {
         return v;
     }
 
+    private void loadUserName() {
+        if(connected) {
+            final ProgressDialog pd = new ProgressDialog(getContext());
+            pd.setCancelable(false);
+            pd.show();
+            writeData.timerDelayRemoveDialog(15000, pd);
+            pd.setMessage("Getting information...");
+            String username;
+            if (user != null) {
+                // Name, email address, and profile photo Url
+                username = user.getDisplayName();
+                txtName.setText(username);
+                pd.dismiss();
+            }
+        }else {
+            shownoConnection(NO_CONN);
+        }
+    }
+
+    private boolean checkData() {
+        boolean ret = true;
+        if(txtName.getText().toString().equals("")) {
+            txtName.setError("Compilare il campo");
+            ret = false;
+        }
+
+        if(txtPhone.getText().toString().equals("")) {
+            txtPhone.setError("Compilare il campo");
+            ret = false;
+        }
+
+        if(txtConnectedPhone.getText().toString().equals("")) {
+            txtConnectedPhone.setError("Compilare il campo");
+            ret = false;
+        }
+
+        if(txtAlarmPhome.getText().toString().equals("")) {
+            txtAlarmPhome.setError("Compilare il campo");
+            ret = false;
+        }
+
+        return ret;
+    }
+
     private void loadData() {
         if(connected){
             final ProgressDialog pd = new ProgressDialog(getContext());
@@ -332,10 +390,8 @@ public class AccountSettings extends Fragment {
                                 txtConnectedPhone.setText(document.get(KEY_PHONE_CONNECTED_TO_USER).toString());
                                 txtAlarmPhome.setText(document.get(KEY_ALARM_PHONE).toString());
                                 imageURL = document.get(KEY_IMAGE_PATH).toString();
-
-                                if (!imageURL.equals("")) {
-                                    setImageFromdb();
-                                }
+                                setImageFromdb();
+                                isImageExist = true;
                                 userinfo.setNameSurname(txtName.getText().toString());
                                 userinfo.setPhone_num(txtPhone.getText().toString());
                                 userinfo.setConnected_num(txtConnectedPhone.getText().toString());
@@ -344,9 +400,8 @@ public class AccountSettings extends Fragment {
                                 userModifiedWrite= false ;
                                 alarmChanged= false;
                                 connectedChanged= false;
-
                             } else {
-                                toastMessage("No such document");
+                                toastMessage("Documento non esiste");
                                 btnSalva.setEnabled(false);
 
 
@@ -390,8 +445,9 @@ public class AccountSettings extends Fragment {
             if (uploadTask != null && uploadTask.isInProgress()) {
                 toastMessage("upload in progress");
             } else {
-                    writeData.uploadImage(imageuri);
-                    setImageFromStorage();
+                setImageFromStorage();
+                isImageExist = true;
+                btnSalva.setEnabled(true);
             }
         }
     }

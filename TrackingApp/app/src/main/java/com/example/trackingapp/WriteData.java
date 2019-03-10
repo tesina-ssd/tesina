@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -81,7 +82,7 @@ public class WriteData {
 
                         usermap.put("PathImg", imageuri);
 
-                        db.collection("users").document(userid).update(usermap);
+                        db.collection("users").document(userid).set(usermap,SetOptions.merge());
                         pd.dismiss();
                     } else {
                         toastMessage("Failed uploading");
@@ -177,8 +178,8 @@ public class WriteData {
             pd.show();
             timerDelayRemoveDialog(15000,pd);
             pd.setMessage("Updating data...");
-            db.collection("users").document(userid).update(data)
-                    //.set(data, SetOptions.merge())
+            db.collection("users").document(userid)
+                    .set(data, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
