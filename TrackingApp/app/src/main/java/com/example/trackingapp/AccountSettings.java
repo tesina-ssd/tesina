@@ -178,7 +178,9 @@ public class AccountSettings extends Fragment {
                 if(checkData() && isImageExist){
                     String name=txtName.getText().toString();
                     writeData.updateProfile(data,name,userModifiedWrite);
-                    writeData.uploadImage(imageuri);
+                    if(imageuri != null){
+                      writeData.uploadImage(imageuri);
+                    }
                     userinfo.setNameSurname(txtName.getText().toString());
                     userinfo.setPhone_num(txtPhone.getText().toString());
                     userinfo.setConnected_num(txtConnectedPhone.getText().toString());
