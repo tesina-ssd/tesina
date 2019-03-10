@@ -32,7 +32,8 @@ public class WriteData {
     private  ProgressDialog pd =null;
     private FirebaseUser user = null;
     private FirebaseFirestore db = null;
-    private String userid = null;
+    private String userid = "";
+    private String mkey = "";
     private StorageReference storageReference= null;
     private Context contex;
     private FragmentManager fragmentManager;
@@ -41,7 +42,9 @@ public class WriteData {
         this.contex=context;
         this.pd = new ProgressDialog(this.contex);
         this.fragmentManager = fm;
+        pd.setCancelable(false);
     }
+
 
     public WriteData setDb(FirebaseFirestore db) {
         this.db = db;
@@ -98,9 +101,58 @@ public class WriteData {
 
 
     }
-    public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
-        pd.setCancelable(false);
+    public WriteData setExcursion(Map<String, Object> excursionData){
+        if(!mkey.equals("") && !userid.equals("") && db!=null){
+            pd.show();
+            timerDelayRemoveDialog(15000,pd);
+            pd.setMessage("Setting Excursion...");
+            db.collection("excursion").document(userid)
+                    .set(excursionData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            toastMessage("Excursion Activated");
+                            pd.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    toastMessage("Failed Activating Excursion");
+                    pd.dismiss();
+                }
+            });
 
+        }
+        return this;
+    }
+    public void keysCollection(){
+        Map<Object,String> key_userid= new HashMap<>();
+        if(!mkey.equals("") && !userid.equals("") && db!=null){
+            pd.show();
+            key_userid.put("useid",userid);
+            timerDelayRemoveDialog(15000,pd);
+            pd.setMessage("Setting Excursion...");
+            db.collection("excursionKeys").document(mkey).set(key_userid)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            toastMessage("Key Set");
+                            pd.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    toastMessage("Failed Setting Key");
+                    pd.dismiss();
+                }
+            });
+
+        }else{
+            toastMessage("Please try to set Key");
+        }
+    }
+
+    public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
             pd.show();
             timerDelayRemoveDialog(15000,pd);
@@ -163,7 +215,11 @@ public class WriteData {
         this.userid = userid;
         return this;
     }
+    public WriteData setMkey(String mkey) {
+        this.mkey = mkey;
 
+        return this;
+    }
 
     public WriteData setStorageReference(StorageReference storageReference) {
         this.storageReference = storageReference;

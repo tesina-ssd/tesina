@@ -4,10 +4,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.security.SecureRandom;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,9 +24,13 @@ public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
         ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
 
-    private String connectionCode = null;
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
+    private String connection_Key ="";
     private FragmentManager fragmentManager = null;
     ConnectionDialogListener mListener = null;
+
+    private Map<String,Object> excursionSheet;
 
     public interface ConnectionDialogListener {
         void onConnectionDialogOkClicked();
@@ -28,7 +39,6 @@ public class ConnectionDialog extends DialogFragment implements
 
     static ConnectionDialog newInstance(String connectionCode) {
         ConnectionDialog dialog = new ConnectionDialog();
-
         // I parametri non vengono passati al costruttore, ma sotto forma di parametro di newInstance e poi
         // passati come bundle al metodo OnCreate()
         Bundle args = new Bundle();
@@ -54,8 +64,6 @@ public class ConnectionDialog extends DialogFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Viene prelevato il codice passato come parametro e valorizzata la proprietà corrispondente dell'istanza corrente
-        connectionCode = getArguments().getString("connectionCode");
     }
 
     @Override
@@ -69,7 +77,6 @@ public class ConnectionDialog extends DialogFragment implements
         Fragment avantiFragment = ExcursionSheetFragment.newInstance();
         fragmentManager.beginTransaction().replace(R.id.cardViewConnectionDialog,  avantiFragment, "avantiTest").commit();
 
-
         // Viene ritornata la View corrente
         return v;
     }
@@ -80,10 +87,12 @@ public class ConnectionDialog extends DialogFragment implements
     }
 
     @Override
-    public void onExcursionSheetFragmentNextPressed() {
+    public void onExcursionSheetFragmentNextPressed(Map<String,Object> excursionSheet) {
+        this.excursionSheet = excursionSheet;
+        connection_Key = randomCode(10);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
-        transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance("xdrt56ghy"), "connCode").commit();
+        transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
     }
 
     @Override
@@ -93,6 +102,22 @@ public class ConnectionDialog extends DialogFragment implements
 
     @Override
     public void onConnectionCodeFragmentOkPressed() {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            WriteData wrd = new WriteData(getContext(),getFragmentManager());
+            wrd.setDb(db)
+                .setUserid(auth.getUid())
+                .setMkey(connection_Key)
+                .setExcursion(excursionSheet)
+                .keysCollection();
+
         mListener.onConnectionDialogOkClicked();
+    }
+
+    private String randomCode( int len ){
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
     }
 }

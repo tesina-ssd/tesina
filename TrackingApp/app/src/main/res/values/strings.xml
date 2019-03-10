@@ -28,7 +28,7 @@
 
     <string-array name="activities">
         <item name="Trekking">Escursionismo</item>
-        <item name="mtb">Roba da figette (mtb)</item>
+        <item name="mtb">MTB</item>
         <item name="Ski">Sci alpinismo</item>
     </string-array>
 

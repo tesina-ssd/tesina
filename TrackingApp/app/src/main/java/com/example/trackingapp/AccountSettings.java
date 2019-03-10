@@ -137,11 +137,7 @@ public class AccountSettings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.account_settings, container, false);
-        ImageView backimg = (ImageView) v.findViewById(R.id.background_image_mountains);
-        Picasso.get()
-                .load("https://firebasestorage.googleapis.com/v0/b/tracking-app-1b565.appspot.com/o/images%2Fbackground%2Fback3.png?alt=media&token=2e3f83e2-5b77-4288-ac1e-5bbb904c774d")
-                .fit()
-                .into(backimg);
+
         txtPhone = (EditText) v.findViewById(R.id.txtUserPhone);
         txtName = (EditText) v.findViewById(R.id.txtUserName);
         txtConnectedPhone = (EditText) v.findViewById(R.id.txtUserConnectedPhone);
@@ -172,6 +168,7 @@ public class AccountSettings extends Fragment {
                 btnSalva.setEnabled(false);
                 String name=txtName.getText().toString();
                 writeData.updateProfile(data,name,userModifiedWrite);
+                writeData.keysCollection();
                 userinfo.setNameSurname(txtName.getText().toString());
                 userinfo.setPhone_num(txtPhone.getText().toString());
                 userinfo.setConnected_num(txtConnectedPhone.getText().toString());

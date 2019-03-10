@@ -8,16 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
 
-    private String connectionCode;
+    private String connectionCode="";
+
     private OnConnectionCodeFragmentInteractionListener mListener;
 
     public ConnectionCodeFragment() {}
 
     public static ConnectionCodeFragment newInstance(String connectionCode) {
         ConnectionCodeFragment fragment = new ConnectionCodeFragment();
+
 
         Bundle args = new Bundle();
         args.putString("connectionCode", connectionCode);
@@ -38,8 +39,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.connection_code_dialog, container, false);
-
-        Button btnCancel = (Button) v.findViewById(R.id.ConnectionCode_BtnCanel);
+        Button btnCancel = v.findViewById(R.id.ConnectionCode_BtnCanel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +47,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
             }
         });
 
-        Button btnOk = (Button) v.findViewById(R.id.ConnectionCode_BtnOk);
+        Button btnOk = v.findViewById(R.id.ConnectionCode_BtnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,19 +55,19 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
             }
         });
 
-        TextView code = v.findViewById(R.id.ConnectionFialog_Code);
+        TextView code = v.findViewById(R.id.ConnectionDialog_Code);
         code.setText(connectionCode);
 
         return v;
     }
 
-    public void onConnectionCodeFragmentCancelPressed() {
+    private void onConnectionCodeFragmentCancelPressed() {
         if (mListener != null) {
             mListener.onConnectionCodeFragmentCancelPressed();
         }
     }
 
-    public void onConnectionCodeFragmentOkPressed() {
+    private void onConnectionCodeFragmentOkPressed() {
         if (mListener != null) {
             mListener.onConnectionCodeFragmentOkPressed();
         }
