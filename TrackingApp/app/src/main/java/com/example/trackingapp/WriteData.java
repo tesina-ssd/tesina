@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -32,7 +33,8 @@ public class WriteData {
     private  ProgressDialog pd =null;
     private FirebaseUser user = null;
     private FirebaseFirestore db = null;
-    private String userid = null;
+    private String userid = "";
+    private String mkey = "";
     private StorageReference storageReference= null;
     private Context contex;
     private FragmentManager fragmentManager;
@@ -41,7 +43,9 @@ public class WriteData {
         this.contex=context;
         this.pd = new ProgressDialog(this.contex);
         this.fragmentManager = fm;
+        pd.setCancelable(false);
     }
+
 
     public WriteData setDb(FirebaseFirestore db) {
         this.db = db;
@@ -78,7 +82,7 @@ public class WriteData {
 
                         usermap.put("PathImg", imageuri);
 
-                        db.collection("users").document(userid).update(usermap);
+                        db.collection("users").document(userid).set(usermap,SetOptions.merge());
                         pd.dismiss();
                     } else {
                         toastMessage("Failed uploading");
@@ -98,9 +102,68 @@ public class WriteData {
 
 
     }
-    public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
-        pd.setCancelable(false);
+    public WriteData setEcursion(Map<String, Object> data){
+        if(!mkey.equals("") && !userid.equals("") && db!=null){
+            pd.show();
+            timerDelayRemoveDialog(15000,pd);
+            pd.setMessage("Setting Excursion...");
+            uploadGenericData("excursion",data);
+        }
+        return this;
+    }
+    public void setUserLocation (Map<String, Object> data){
+        if(db!=null && !userid.equals("")){
+            uploadGenericData("excursion",data);
+        }else{
+            toastMessage("setkey,db");
+        }
 
+    }
+    private void uploadGenericData(String collection,Map<String,Object> data){
+        db.collection(collection).document(userid)
+                .set(data,SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        pd.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toastMessage("Failed");
+                pd.dismiss();
+            }
+        });
+    }
+
+    public void keysCollection(){
+        Map<Object,String> key_userid= new HashMap<>();
+        if(!mkey.equals("") && !userid.equals("") && db!=null){
+            pd.show();
+            key_userid.put("useid",userid);
+            timerDelayRemoveDialog(15000,pd);
+            pd.setMessage("Setting Excursion...");
+            db.collection("excursionKeys").document(mkey).set(key_userid)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            toastMessage("Key Set");
+                            pd.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    toastMessage("Failed Setting Key");
+                    pd.dismiss();
+                }
+            });
+
+        }else{
+            toastMessage("Please try to set Key");
+        }
+    }
+
+    public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
             pd.show();
             timerDelayRemoveDialog(15000,pd);
@@ -125,8 +188,8 @@ public class WriteData {
             pd.show();
             timerDelayRemoveDialog(15000,pd);
             pd.setMessage("Updating data...");
-            db.collection("users").document(userid).update(data)
-                    //.set(data, SetOptions.merge())
+            db.collection("users").document(userid)
+                    .set(data, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -163,7 +226,11 @@ public class WriteData {
         this.userid = userid;
         return this;
     }
+    public WriteData setMkey(String mkey) {
+        this.mkey = mkey;
 
+        return this;
+    }
 
     public WriteData setStorageReference(StorageReference storageReference) {
         this.storageReference = storageReference;

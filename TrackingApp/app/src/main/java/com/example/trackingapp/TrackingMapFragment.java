@@ -1,10 +1,13 @@
 package com.example.trackingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.Mapbox;
@@ -16,6 +19,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -27,6 +31,7 @@ import androidx.fragment.app.FragmentManager;
 public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
 
     FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
+    private Button btnser;
     MapView mapView; //Mappa
     TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
     ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
@@ -37,6 +42,11 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     public TrackingMapFragment() {}
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Alla prima creazione viene richiesta l'istanza attraverso la chiave
         if(savedInstanceState == null)
@@ -45,6 +55,13 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         // Settaggio del layout
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
         fragmentManager = getFragmentManager();
+        btnser = view.findViewById(R.id.btnStopService);
+        if(IsServiceWorking.isWorking){
+            btnser.setText("ExcusionWorking");
+            btnser.setVisibility(View.VISIBLE);
+        }else{
+            btnser.setVisibility(View.GONE);
+        }
 
         // Da qui in poi è codice copiato da MapBox per mettere la mappa
         mapView = (MapView) view.findViewById(R.id.mapView);
@@ -68,11 +85,25 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         view.findViewById(R.id.menu_item_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Apertura del dialog
-                connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance(randomCode(8));
-                connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
-                connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
+                if(!btnser.isShown()){
+                    // Apertura del dialog
+                    connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance(randomCode(8));
+                    connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
+                    connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
+                }else{
+                    Toast.makeText(getContext(),"ALREADY EXCURSION ACTIVE",Toast.LENGTH_LONG).show();
+                }
+
             }
+        });
+        btnser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserinfoUpdateService.shouldContinue=false;
+                Toast.makeText(getContext(),"STOPPED0",Toast.LENGTH_LONG).show();
+                btnser.setVisibility(View.GONE);
+            }
+
         });
         return  view;
     }
@@ -96,6 +127,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     @Override
     public void onConnectionDialogOkClicked() {
         onConnectionDialogCancelClicked();
+        btnser.setText("ExcusionWorking");
+        btnser.setVisibility(View.VISIBLE);
     }
 
     @Override

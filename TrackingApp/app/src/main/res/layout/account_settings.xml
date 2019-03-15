@@ -6,17 +6,23 @@
     android:layout_height="match_parent">
 
 
-    <ImageView
-        android:id="@+id/background_image_mountains"
-        android:layout_width="0dp"
-        android:layout_height="205dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorAccent"/>
-       <!-- app:srcCompat="@drawable/fui_idp_button_background_anonymous" -->
+    <!-- app:srcCompat="@drawable/fui_idp_button_background_anonymous" -->
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/google_button2"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="140dp"
+        android:backgroundTint="#ffffff"
+        app:borderWidth="0dp"
+        app:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_outline_create_24" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -26,38 +32,22 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp"
+        android:layout_marginStart="141dp"
+        android:layout_marginEnd="140dp"
         android:src="@color/browser_actions_bg_grey"
-        app:civ_border_color="@color/imageBorder"
-        app:civ_border_width="6dp"
-        app:layout_constraintEnd_toStartOf="@+id/background_image_mountains"
-        app:layout_constraintStart_toEndOf="@+id/background_image_mountains"
-        app:layout_constraintTop_toTopOf="@+id/background_image_mountains"
-        tools:src="@tools:sample/avatars[0]" />
-
-    <TextView
-        android:id="@+id/lblChangeimage2"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_below="@+id/profile_image"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:drawableLeft="@drawable/ic_baseline_create_24px"
-        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/AccountSetting_NameSurname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars[0]" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/AccountSetting_NameSurname"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:hint="Nome e cognome"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
@@ -80,9 +70,9 @@
         android:id="@+id/AccountSetting_PhoneNumber"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:hint="Numero di telefono"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
@@ -105,9 +95,9 @@
         android:id="@+id/AccountSetting_ConnectedPhoneNumber"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:hint="Numero di telefono connesso"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
@@ -130,9 +120,9 @@
         android:id="@+id/AccountSetting_AlarmPhoneNumber"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:hint="Numero di telefono di allarme"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
@@ -152,8 +142,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/asdas"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -166,6 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btnLogout"
+            app:cornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnsalvainfo"
             app:layout_constraintHorizontal_bias="0.5"
@@ -178,6 +171,8 @@
             android:layout_width="wrap_content"
             android:layout_height="51dp"
             android:text="@string/salvaInfo"
+            app:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
