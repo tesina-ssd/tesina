@@ -1,5 +1,6 @@
 package com.example.trackingapp;
 
+import android.app.job.JobScheduler;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,12 +25,16 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import static android.content.Context.JOB_SCHEDULER_SERVICE;
+import static com.firebase.ui.auth.AuthUI.TAG;
+
 /**
  * Fragment rappresentate la mappa per il tracciamento dell'utente.
  * Contiene una mappa e un menu espandibile tramite un floating action button.
  */
 public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
-
+    private static final int JOB_ID = 122;
+    static final String TAG = "0123";
     FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
     private Button btnser;
     MapView mapView; //Mappa
@@ -100,6 +105,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             @Override
             public void onClick(View view) {
                 UserinfoUpdateService.shouldContinue=false;
+                IsServiceWorking.isWorking=false;
                 Toast.makeText(getContext(),"STOPPED0",Toast.LENGTH_LONG).show();
                 btnser.setVisibility(View.GONE);
             }

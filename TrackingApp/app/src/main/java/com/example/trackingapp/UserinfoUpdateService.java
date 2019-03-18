@@ -39,6 +39,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.JobIntentService;
 import androidx.fragment.app.FragmentManager;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -50,14 +51,13 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class UserinfoUpdateService extends IntentService implements GoogleApiClient.ConnectionCallbacks,
+public class UserinfoUpdateService extends JobIntentService implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private PowerManager.WakeLock wakeLock;
     private FirebaseFirestore db = null;
-    private String userid = "";
+    private static String userid = "";
     private final static String TAG_USERID = "USERID";
     private Calendar calendar = null;
-    private long time = 0;
+    private static long time = 0;
     public  static volatile  boolean shouldContinue = true;
     private long systemTime = 0;
     private Context context = null;
@@ -70,13 +70,8 @@ public class UserinfoUpdateService extends IntentService implements GoogleApiCli
     private Date date;
     private WriteData wrData;
     private Map<String,Object> userLocation=null;
-    private static final long UPDATE_INTERVAL = 30000, FASTEST_INTERVAL = 5000; // = 5 seconds
-
-
-    public UserinfoUpdateService() {
-        super("UserinfoUpdateService");
-        setIntentRedelivery(true);
-    }
+    private static final long UPDATE_INTERVAL = 5000, FASTEST_INTERVAL = 5000; // = 5 seconds
+    private static final int JOB_ID = 122;
 
     /**
      * Starts this service to perform action Foo with the given parameters. If
@@ -85,11 +80,9 @@ public class UserinfoUpdateService extends IntentService implements GoogleApiCli
      * @see IntentService
      */
     // TODO: Customize helper method
-    public static void startService(Context context, String userid) {
-        Intent intent = new Intent(context, UserinfoUpdateService.class);
-        //intent.setAction(ACTION_FOO);
-        intent.putExtra(TAG_USERID, userid);
-        context.startService(intent);
+    static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, UserinfoUpdateService.class, JOB_ID, work);
+
     }
 
     @Override
@@ -98,11 +91,6 @@ public class UserinfoUpdateService extends IntentService implements GoogleApiCli
         shouldContinue=true;
         IsServiceWorking.isWorking=false;
         Log.d(TAG, "onCreate");
-        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                "ExampleApp:Wakelock");
-        wakeLock.acquire();
-        Log.d(TAG, "Wakelock acquired");
         db = FirebaseFirestore.getInstance();
         // we build google api client
         googleApiClient = new GoogleApiClient.Builder(this).
@@ -130,41 +118,28 @@ public class UserinfoUpdateService extends IntentService implements GoogleApiCli
         calendar=new GregorianCalendar();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper());
+        IsServiceWorking.isWorking=true;
+        if (googleApiClient != null) {
+            googleApiClient.connect();
+        }
+
 
     }
 
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(Intent intent) {
         if (intent != null) {
             IsServiceWorking.isWorking=true;
-            if (googleApiClient != null) {
-                googleApiClient.connect();
-            }
-
             userid = intent.getStringExtra(TAG_USERID);
-            db.collection("excursion").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()){
-                        DocumentSnapshot doc = task.getResult();
-                        Timestamp timestamp =  (Timestamp)doc.get("finishingTimeDate");
-                        date=timestamp.toDate();
-                        calendar.setTime(date);
-                        time = calendar.getTimeInMillis();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    stopSelf();
-                }
-            });
+            time=  intent.getLongExtra("Time",1L);
             while(true){
+                Log.d("time-",""+time);
                 if(time!=0){
                     if(shouldContinue){
                         date= new Date();
                         systemTime =date.getTime();
+                        Log.d("timesystem-",""+systemTime);
                         if(systemTime<time){
                             wrData.setDb(db)
                                     .setUserid(userid)
@@ -178,10 +153,10 @@ public class UserinfoUpdateService extends IntentService implements GoogleApiCli
 
                     }else{
                         Log.i("Stopped","serviceStopped");
-                        stopSelf();
+                        return;
                     }
                 }
-                SystemClock.sleep(10000);
+                SystemClock.sleep(5000);
             }
         }
     }
@@ -199,16 +174,16 @@ public class UserinfoUpdateService extends IntentService implements GoogleApiCli
     };
 
 
-
+    @Override
+    public boolean onStopCurrentWork() {
+        return super.onStopCurrentWork();
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
-
-        wakeLock.release();
+        Log.d(TAG, "onDestroyKILLEDD");
         IsServiceWorking.isWorking=false;
-        Log.d(TAG, "Wakelock released");
     }
 
 
