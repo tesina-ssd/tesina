@@ -41,36 +41,36 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener,FragSettings.OnFragmentInteractionListener {
 
-    private TextView mTextMessage;
     private FragmentManager fragmentManager = null;
+    private MenuItem selectedMenuItem = null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_track:
-                    //loadMapboxMap();
-                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new TrackingMapFragment(), "map").commit();
-
-                    return true;
-                case R.id.navigation_follow:
-                    return true;
-                case R.id.navigation_notification_center:
-                    return true;
-                case R.id.navigation_settings:
-
-                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "map")
-                            .addToBackStack(null).commit();
-                    return true;
+            if(selectedMenuItem != item) {
+                selectedMenuItem = item;
+                switch (item.getItemId()) {
+                    case R.id.navigation_track:
+                        //loadMapboxMap();
+                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new TrackingMapFragment(), "mapTracking").commit();
+                        return true;
+                    case R.id.navigation_follow:
+                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new FollowMapFragment(), "mapFollow").commit();
+                        return true;
+                    case R.id.navigation_notification_center:
+                        return true;
+                    case R.id.navigation_settings:
+                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "settings")
+                                .addToBackStack(null).commit();
+                        return true;
+                }
             }
             return false;
         }
     };
     public Context getContex (){
-
-
         return getApplicationContext();
     }
 
@@ -108,6 +108,5 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
 }

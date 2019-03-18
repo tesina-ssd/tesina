@@ -11,7 +11,7 @@
     android:paddingBottom="20dp">
 
     <TextView
-        android:id="@+id/ConnectionDialog_Title"
+        android:id="@+id/FollowConnectionDialog_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -27,14 +27,14 @@
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
-        android:id="@+id/ConnectionDialog_Info"
+        android:id="@+id/FollowConnectionDialog_Info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/poppins"
-        android:text="@string/str_ConnectionDialog_Info"
+        android:text="Inserisci il codice di connessione fornito dalla persona che desideri tracciare. Ti darà accesso alla sua posizione e ad utili informazioni per allertare tempestivamente i soccorsi"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="16sp"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Title" />
+        app:layout_constraintTop_toBottomOf="@+id/FollowConnectionDialog_Title" />
 
     <TextView
         android:id="@+id/ConnectionDialog_Code"
@@ -58,14 +58,14 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/ConnectionCode_BtnOk"
+        app:layout_constraintBottom_toTopOf="@+id/FollowConnectionDialog_BtnOk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Info" />
+        app:layout_constraintTop_toBottomOf="@+id/FollowConnectionDialog_Info" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/ConnectionCode_BtnOk"
+        android:id="@+id/FollowConnectionDialog_BtnOk"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,11 +77,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ConnectionCode_BtnCanel"
+        app:layout_constraintStart_toEndOf="@+id/FollowConnectionDialog_BtnCancel"
         app:rippleColor="@color/colorPrimary" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/ConnectionCode_BtnCanel"
+        android:id="@+id/FollowConnectionDialog_BtnCancel"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
         app:backgroundTint="@color/fui_transparent"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ConnectionCode_BtnOk"
+        app:layout_constraintEnd_toStartOf="@+id/FollowConnectionDialog_BtnOk"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="@color/fui_bgAnonymous" />

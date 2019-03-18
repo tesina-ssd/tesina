@@ -43,7 +43,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ExcursionSheet_PeopleNumber"
+        android:id="@+id/FollowConnectionDialod_Code"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
         android:id="@+id/ExcursionSheet_RowFinishingTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/ExcursionSheet_PeopleNumber"
+        app:layout_constraintBottom_toTopOf="@+id/FollowConnectionDialod_Code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

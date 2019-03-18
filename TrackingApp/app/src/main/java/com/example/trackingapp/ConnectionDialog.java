@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.SecureRandom;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -110,7 +108,6 @@ public class ConnectionDialog extends DialogFragment implements
                 .setMkey(connection_Key)
                 .setExcursion(excursionSheet)
                 .keysCollection();
-
         mListener.onConnectionDialogOkClicked();
     }
 

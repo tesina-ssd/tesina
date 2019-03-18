@@ -9,10 +9,7 @@ public class Userinformation {
     private String Connected_num;
     private String Alarm_num;
 
-    public Userinformation() {
-
-
-    }
+    public Userinformation() {}
 
     public String getNameSurname() {
         return nameSurname;

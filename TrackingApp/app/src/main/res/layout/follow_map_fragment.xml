@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FollowMapFragment_Base"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/FollowMapFragment_FabMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:elevation="21dp"
+        android:visibility="visible"
+        app:fab_addButtonColorNormal="@color/colorPrimary"
+        app:fab_addButtonColorPressed="@color/colorPrimary"
+        app:fab_addButtonSize="normal"
+        app:fab_addButtonStrokeVisible="false"
+        app:fab_expandDirection="up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_conversion_absoluteHeight="237dp"
+        tools:layout_conversion_absoluteWidth="74dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FollowMapFragment_FabMenu_StartFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/fui_bgGoogle"
+            app:fab_colorPressed="@color/fui_bgGoogle"
+            app:fab_icon="@drawable/icon_outline_my_location_24"
+            app:fab_size="mini"
+            app:fab_title="Start Following"
+            tools:layout_conversion_absoluteHeight="58dp"
+            tools:layout_conversion_absoluteWidth="58dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="163dp" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FollowMapFragment_FabMenu_ShowInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/fui_bgGoogle"
+            app:fab_colorPressed="@color/fui_bgGoogle"
+            app:fab_icon="@drawable/icon_outline_person_pin_circle_24"
+            app:fab_size="mini"
+            app:fab_title="Show Info"
+            tools:layout_conversion_absoluteHeight="58dp"
+            tools:layout_conversion_absoluteWidth="58dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="163dp" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/FollowMapFragment_Map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

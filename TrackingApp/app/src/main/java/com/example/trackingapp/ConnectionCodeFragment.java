@@ -19,7 +19,6 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
     public static ConnectionCodeFragment newInstance(String connectionCode) {
         ConnectionCodeFragment fragment = new ConnectionCodeFragment();
 
-
         Bundle args = new Bundle();
         args.putString("connectionCode", connectionCode);
         fragment.setArguments(args);
@@ -39,7 +38,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.connection_code_dialog, container, false);
-        Button btnCancel = v.findViewById(R.id.ConnectionCode_BtnCanel);
+        Button btnCancel = v.findViewById(R.id.FollowConnectionDialog_BtnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +46,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
             }
         });
 
-        Button btnOk = v.findViewById(R.id.ConnectionCode_BtnOk);
+        Button btnOk = v.findViewById(R.id.FollowConnectionDialog_BtnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
