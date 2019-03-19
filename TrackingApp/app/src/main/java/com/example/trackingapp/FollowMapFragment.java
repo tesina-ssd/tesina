@@ -1,32 +1,50 @@
 package com.example.trackingapp;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-
-import java.util.Random;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class FollowMapFragment extends Fragment implements FollowConnectionDialog.FollowConnectionDialogListener  {
 
-    FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
-    MapView mapView; //Mappa
-    FollowMapFragment thisFragment = this; //Rappresenta l'istanza corrente
-    FollowConnectionDialog followConnectionDialog = null;
-    FollowInfoDialog followInfoDialog = null;
-    String connectionCode = null;
+    private final String followConnectionDialogTAG = "fllwConnDialogTAG";
+    private final int followConnectionDialogRequestCode = 1;
+    private final String followInfoDialogTAG = "fllwInfoDialogTAG";
+    private final int followInfoDialogRequestCode = 2;
+
+    private FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
+    private MapView mapView; //Mappa
+    private FollowMapFragment thisFragment = this; //Rappresenta l'istanza corrente
+    private FollowConnectionDialog followConnectionDialog = null;
+    private FollowInfoDialog followInfoDialog = null;
+    private String connectionCode = null;
+    private GeoJsonSource userPositionGeoJson = null;
+    private Style mapStyle;
 
     /**
      * Costruttore base vuoto, richiesto per l'implementazione (non chiedetemi il perchè)
@@ -37,22 +55,33 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Alla prima creazione viene richiesta l'istanza attraverso la chiave
         if(savedInstanceState == null)
-            Mapbox.getInstance(getContext(), getString(R.string.access_token));
+            Mapbox.getInstance(container.getContext(), getString(R.string.access_token));
 
         // Settaggio del layout
         View view = inflater.inflate(R.layout.follow_map_fragment, container, false);
         fragmentManager = getFragmentManager();
 
         // Da qui in poi è codice copiato da MapBox per mettere la mappa
-        mapView = (MapView) view.findViewById(R.id.FollowMapFragment_Map);
+        mapView = view.findViewById(R.id.FollowMapFragment_Map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
                                 @Override
-                                public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                                public void onMapReady(@NonNull final MapboxMap mapboxMap) {
                                     mapboxMap.setStyle(Style.OUTDOORS, new Style.OnStyleLoaded() {
                                         @Override
                                         public void onStyleLoaded(@NonNull Style style) {
-                                            // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+                                            mapStyle = style;
+                                            style.addImage("marker-icon-id",
+                                                    BitmapFactory.decodeResource(
+                                                            FollowMapFragment.this.getResources(), R.drawable.mapbox_marker_icon_default));
+                                            userPositionGeoJson = new GeoJsonSource("userPosition");
+                                            style.addSource(userPositionGeoJson);
+
+                                            SymbolLayer symbolLayer = new SymbolLayer("layer-id", "userPosition");
+                                            symbolLayer.withProperties(
+                                                    PropertyFactory.iconImage("marker-icon-id")
+                                            );
+                                            style.addLayer(symbolLayer);
                                         }
                                     });
                                 }
@@ -61,8 +90,8 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
             @Override
             public void onClick(View view) {
                 followConnectionDialog = FollowConnectionDialog.newInstance();
-                followConnectionDialog.setTargetFragment((Fragment) thisFragment, 123);
-                followConnectionDialog.show(fragmentManager, "followConnectionDialog");
+                followConnectionDialog.setTargetFragment(thisFragment, followConnectionDialogRequestCode);
+                followConnectionDialog.show(fragmentManager, followConnectionDialogTAG);
             }
         });
 
@@ -70,11 +99,10 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
             @Override
             public void onClick(View view) {
                 followInfoDialog = FollowInfoDialog.newInstance(connectionCode);
-                followInfoDialog.setTargetFragment((Fragment) thisFragment, 124);
-                followInfoDialog.show(fragmentManager, "followInfoDialog");
+                followInfoDialog.setTargetFragment( thisFragment, followInfoDialogRequestCode);
+                followInfoDialog.show(fragmentManager, followInfoDialogTAG);
             }
         });
-
 
         return  view;
     }
@@ -90,11 +118,37 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
     @Override
     public void onFollowConnectionDialogOkClicked(String connectionCode) {
         this.connectionCode = connectionCode;
+        startFollowing();
         onFollowConnectionDialogCancelClicked();
     }
 
     @Override
     public void onFollowConnectionDialogCancelClicked() {
         followConnectionDialog.dismiss();
+    }
+
+    private void startFollowing() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final DocumentReference docRef = db.collection("excursion").document(connectionCode);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("Listen", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("Listen", "Current data: " + snapshot.getData());
+                    GeoPoint geo = snapshot.getGeoPoint("userLocation");
+                    userPositionGeoJson.setGeoJson(Feature.fromGeometry(
+                            Point.fromLngLat(geo.getLongitude(), geo.getLatitude())));
+                } else {
+                    Log.d("Listen", "Current data: null");
+                }
+            }
+        });
+
     }
 }

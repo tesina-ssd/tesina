@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.Map;
 
@@ -29,8 +32,6 @@ public class FollowInfoUserInfoFragment extends androidx.fragment.app.Fragment {
         args.putString("finishingTimeDate", data.get("finishingTimeDate").toString());
         args.putString("finishingTimeTime", data.get("finishingTimeTime").toString());
         args.putString("picPath", data.get("picPath").toString());
-
-        Log.d("args", args.toString());
 
         fragment.setArguments(args);
         return fragment;
