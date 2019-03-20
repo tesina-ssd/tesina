@@ -116,6 +116,11 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="channel_name">UserNotificationChannel</string>
+    <string name="channel_description">Questo canale è usato per notificare
+        all utente che il servizio in background è in funzione</string>
+    <string name="titoloEscursione">Escursione in funzione</string>
+    <string name="testoEscursione">Stiamo inviando la tua posizione ai nostri server in Background</string>
 
 
 </resources>

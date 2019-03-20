@@ -39,7 +39,7 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="163dp" />
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/menu_item_stopservice"
+            android:id="@+id/menu_item_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/fui_bgGoogle"

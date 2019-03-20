@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -144,7 +145,7 @@ public class ConnectionDialog extends DialogFragment implements
         serviceIntent.putExtra("USERID", auth.getUid());
         serviceIntent.putExtra("Time", time);
 
-        UserinfoUpdateService.enqueueWork(getContext(), serviceIntent);
+        ContextCompat.startForegroundService(getContext(), serviceIntent);
         mListener.onConnectionDialogOkClicked();
     }
 

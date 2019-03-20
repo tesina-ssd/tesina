@@ -1,7 +1,9 @@
 package com.example.trackingapp;
 
+import android.annotation.SuppressLint;
 import android.app.job.JobScheduler;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +13,14 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -21,6 +30,7 @@ import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,6 +48,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
     private Button btnser;
     MapView mapView; //Mappa
+    private static MapboxMap mapbox;
     TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
     ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
 
@@ -73,20 +84,25 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
                                 @Override
-                                public void onMapReady(@NonNull MapboxMap mapboxMap) {
-
+                                public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+                                    mapbox = mapboxMap;
                                     mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                                         @Override
                                         public void onStyleLoaded(@NonNull Style style) {
-
                                             // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-
+                                            enableLocationComponent();
 
                                         }
                                     });
                                 }
                             });
 
+        view.findViewById(R.id.menu_item_center).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //mapbox.setCameraPosition();
+            }
+        });
         view.findViewById(R.id.menu_item_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +120,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         btnser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserinfoUpdateService.shouldContinue=false;
+                Intent serviceIntent = new Intent(getContext(), UserinfoUpdateService.class);
+                getContext().stopService(serviceIntent);
                 IsServiceWorking.isWorking=false;
                 Toast.makeText(getContext(),"STOPPED0",Toast.LENGTH_LONG).show();
                 btnser.setVisibility(View.GONE);
@@ -112,6 +129,34 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
         });
         return  view;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void enableLocationComponent() {
+        CameraPosition position = new CameraPosition.Builder()
+                .zoom(10)
+                .tilt(20)
+                .build();
+            mapbox.setCameraPosition(position);
+        // Get an instance of the component
+            LocationComponent locationComponent = mapbox.getLocationComponent();
+
+            // Activate with options
+            locationComponent.activateLocationComponent(getContext(), mapbox.getStyle());
+
+            // Enable to make component visible
+            locationComponent.setLocationComponentEnabled(true);
+
+            // Set the component's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING_GPS);
+
+            // Set the component's render mode
+            locationComponent.setRenderMode(RenderMode.GPS);
+            new LocationUpdater();
+
+    }
+    public static MapboxMap getMapBox(){
+        return mapbox;
     }
 
     @Override

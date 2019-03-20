@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         }
     };
     public Context getContex (){
-
-
         return getApplicationContext();
     }
 
