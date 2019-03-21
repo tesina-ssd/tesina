@@ -166,14 +166,6 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView.onDestroy();
     }
 
-    private String randomCode(int num) {
-        Random random = new Random();
-        String ret = "";
-        for(int i = 0; i < num; i++)
-            ret += (char) (random.nextInt(120 - 70) + 70);
-        Log.i("ConnCode", ret);
-        return ret;
-    }
 
     @Override
     public void onConnectionDialogOkClicked() {
