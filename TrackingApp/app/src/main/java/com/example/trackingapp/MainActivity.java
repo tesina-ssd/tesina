@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                     return true;
                 case R.id.navigation_settings:
 
-                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "map")
+                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "settings")
                             .addToBackStack(null).commit();
                     return true;
             }

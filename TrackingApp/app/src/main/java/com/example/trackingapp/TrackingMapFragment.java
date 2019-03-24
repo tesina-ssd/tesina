@@ -90,7 +90,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                                         @Override
                                         public void onStyleLoaded(@NonNull Style style) {
                                             // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                                            enableLocationComponent();
+                                           enableLocationComponent();
 
                                         }
                                     });
@@ -133,11 +133,11 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
     @SuppressLint("MissingPermission")
     private void enableLocationComponent() {
-        CameraPosition position = new CameraPosition.Builder()
+      /*  CameraPosition position = new CameraPosition.Builder()
                 .zoom(10)
                 .tilt(20)
-                .build();
-            mapbox.setCameraPosition(position);
+                .build();*/
+           // mapbox.setCameraPosition(position);
         // Get an instance of the component
             LocationComponent locationComponent = mapbox.getLocationComponent();
 
@@ -152,11 +152,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.GPS);
-            new LocationUpdater();
+            new LocationUpdater(locationComponent);
 
-    }
-    public static MapboxMap getMapBox(){
-        return mapbox;
     }
 
     @Override

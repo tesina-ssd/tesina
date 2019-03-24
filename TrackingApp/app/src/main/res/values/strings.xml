@@ -121,6 +121,17 @@
         all utente che il servizio in background è in funzione</string>
     <string name="titoloEscursione">Escursione in funzione</string>
     <string name="testoEscursione">Stiamo inviando la tua posizione ai nostri server in Background</string>
-
+    <string name="keyword">Parola Chiave</string>
+    <string name="ablita_sms">Abilità SMS</string>
+    <string name="title_settings">Settings</string>
+    <string name="sms_settings">Sms Settings</string>
+    <string name="accuracy">Accuracy:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="altitude">Altitude:</string>
+    <string name="speed">Speed:</string>
+    <string name="abilita_googleMapsSms">Invia google Maps SMS\nLink con la posizione</string>
+    <string name="abilita_locationSms">Invia un SMS con :\nLatitudine,Longitudine,Precizione,Velocità</string>
+    <string name="salvasharedpref">Salva impostazioni</string>
 
 </resources>

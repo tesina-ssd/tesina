@@ -39,6 +39,14 @@ public class FragSettings extends Fragment {
             }
         });
 
+        view.findViewById(R.id.lblSmsSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SmsFragment smsFrag = new SmsFragment();
+                fm.beginTransaction().replace(R.id.frameLayout,smsFrag,"smsSetting")
+                        .addToBackStack(null).commit();
+            }
+        });
 
 
 

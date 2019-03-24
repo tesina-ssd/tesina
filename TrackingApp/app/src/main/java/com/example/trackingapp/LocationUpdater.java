@@ -31,8 +31,8 @@ public class LocationUpdater {
 
     private static Map<String, Object> userLocation = null;
     static LocationComponent comp;
-    LocationUpdater() {
-        comp= TrackingMapFragment.getMapBox().getLocationComponent();
+    LocationUpdater(LocationComponent component) {
+        comp= component;
         userLocation = new HashMap<>();
 
     }
