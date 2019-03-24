@@ -108,7 +108,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             public void onClick(View view) {
                 if(!btnser.isShown()){
                     // Apertura del dialog
-                    connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance(randomCode(8));
+                    connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance("aaaa");
                     connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
                     connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
                 }else{
@@ -163,6 +163,35 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView.onDestroy();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 
     @Override
     public void onConnectionDialogOkClicked() {
