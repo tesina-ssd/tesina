@@ -1,6 +1,7 @@
 package com.example.trackingapp;
 
 import android.Manifest;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,40 +13,36 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.maps.SupportMapFragment;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.provider.Settings;
+
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.TimerTask;
+
+
+import static com.example.trackingapp.Constants.KEY_ALARM_PHONE;
+import static com.example.trackingapp.Constants.KEY_PHONE_CONNECTED_TO_USER;
+import static com.example.trackingapp.Constants.CONNECTED_PHONE_NUMBER;
+import static com.example.trackingapp.Constants.ALARM_PHONE_NUMBER;
+
 
 public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener,FragSettings.OnFragmentInteractionListener {
 
@@ -57,27 +54,33 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
     private ArrayList<String> permissions = new ArrayList<>();
     // integer for permissions results request
     private static final int ALL_PERMISSIONS_RESULT = 1011;
+
+    private MenuItem selectedMenuItem = null;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_track:
-                    //loadMapboxMap();
-                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new TrackingMapFragment(), "map").commit();
+            if (selectedMenuItem != item) {
+                selectedMenuItem = item;
 
-                    return true;
-                case R.id.navigation_follow:
-                    return true;
-                case R.id.navigation_notification_center:
-                    return true;
-                case R.id.navigation_settings:
-
-                    fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "settings")
-                            .addToBackStack(null).commit();
-                    return true;
+                switch (item.getItemId()) {
+                    case R.id.navigation_track:
+                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new TrackingMapFragment(), "mapTracking").commit();
+                        return true;
+                    case R.id.navigation_follow:
+                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new FollowMapFragment(), "mapFollow").commit();
+                        return true;
+                    case R.id.navigation_notification_center:
+                        return true;
+                    case R.id.navigation_settings:
+                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "settings")
+                                .addToBackStack(null).commit();
+                        return true;
+                }
             }
+
             return false;
         }
     };
@@ -102,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                         transaction.replace(R.id.frameLayout, AccountSettings.newInstance(true),"AccountSettings");
                         transaction.addToBackStack(null);
                         transaction.commit();
+                    }else{
+                        CONNECTED_PHONE_NUMBER= doc.get(KEY_PHONE_CONNECTED_TO_USER).toString();
+                        ALARM_PHONE_NUMBER =( doc.get(KEY_ALARM_PHONE).toString());
+                        Log.d("conn",CONNECTED_PHONE_NUMBER);
+                        Log.d("alarm",CONNECTED_PHONE_NUMBER);
                     }
                 }
             }
@@ -110,6 +118,17 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         // we add permissions we need to request location of the users
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissions.add(Manifest.permission.READ_SMS);
+        permissions.add(Manifest.permission.BROADCAST_SMS);
+        permissions.add(Manifest.permission.SEND_SMS);
+        permissions.add(Manifest.permission.RECEIVE_SMS);
+        permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        permissions.add(Manifest.permission.INTERNET);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            permissions.add(Manifest.permission.FOREGROUND_SERVICE);
+        }
+        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+
 
         permissionsToRequest = permissionsToRequest(permissions);
 
@@ -129,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         navigation.setSelectedItemId(R.id.navigation_track);
     }
+
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
         ArrayList<String> result = new ArrayList<>();
 

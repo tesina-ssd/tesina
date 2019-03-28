@@ -1,6 +1,5 @@
 package com.example.trackingapp;
 
-import android.Manifest;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -10,56 +9,40 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.PowerManager;
-import android.os.SystemClock;
+import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.FragmentManager;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
-import static com.example.trackingapp.CreateNotficationChannel.CHANNEL_ID;
-import static com.example.trackingapp.SmsFragment.SHARED_PREFS;
-import static com.example.trackingapp.SmsFragment.SWITCH_ENABLESMS;
-import static com.example.trackingapp.SmsFragment.TEXT_KEYWORD;
+import static com.example.trackingapp.Constants.ALARM_PHONE_NUMBER;
+import static com.example.trackingapp.Constants.BOOL_ALARM_MSG;
+import static com.example.trackingapp.Constants.BOOL_CONNECTED_MSG;
+import static com.example.trackingapp.Constants.CHANNEL_ID;
+import static com.example.trackingapp.Constants.CONNECTED_PHONE_NUMBER;
+import static com.example.trackingapp.Constants.EMERGENCY_MSG;
+import static com.example.trackingapp.Constants.IS_WORKING;
+import static com.example.trackingapp.Constants.LOCATION_MSG;
+import static com.example.trackingapp.Constants.PHONE_NUMBER;
+import static com.example.trackingapp.Constants.SHARED_PREFS;
+import static com.example.trackingapp.Constants.SWITCH_ENABLESMS;
+import static com.example.trackingapp.Constants.TEXT_KEYWORD;
+import static com.example.trackingapp.Constants.WHO_CALLING;
+
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -74,24 +57,35 @@ public class UserinfoUpdateService extends Service {
     private final static String TAG_USERID = "USERID";
     private Calendar calendar = null;
     private static long time = 0;
+    private static long timeConnectedMsg = 0;
+    private static long timeAlarmMsg = 0;
     public  static volatile  boolean shouldContinue = true;
     private long systemTime = 0;
     private Date date;
     private WriteData wrData;
     private Handler mHandler = new Handler();
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
-    private  BroadcastReceiver br;
+    private boolean msgConnectedSent=false;
+    private boolean msgAlarmSent=false;
+    private SmsManager smsmanager;
+
 
 
     @Override
     public void onCreate() {
         super.onCreate();
         shouldContinue=true;
-        IsServiceWorking.isWorking=false;
+        Constants.IS_WORKING=false;
         Log.d(TAG, "onCreate");
         db = FirebaseFirestore.getInstance();
         wrData = new WriteData(getBaseContext(),null);
         calendar=new GregorianCalendar();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SMS_RECEIVED);
+        filter.setPriority(2147483647);
+        filter.addAction(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED);
+        this.registerReceiver(br, filter);
+        smsmanager = SmsManager.getDefault();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -102,8 +96,9 @@ public class UserinfoUpdateService extends Service {
         userid = intent.getStringExtra(TAG_USERID);
         inizializeWriteclass();
         time=  intent.getLongExtra("Time",1L);
+        timeConnectedMsg= time + 1800000;
+        timeAlarmMsg = time + 3600000;
         Intent intentAction = new Intent(getApplicationContext(),NotificationReceiver.class);
-
         //This is optional if you have more than one buttons and want to differentiate between two
         intentAction.putExtra("action","Dismiss");
 
@@ -119,25 +114,21 @@ public class UserinfoUpdateService extends Service {
 
         doWorkInBackground();
         startForeground(1, notification);
-        startBroadcast();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(SMS_RECEIVED);
-        filter.addAction(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED);
 
-        registerReceiver(br, filter);
+
 
 
         return START_NOT_STICKY;
     }
 
-    private void startBroadcast() {
-        br = new BroadcastReceiver() {
+    private
+        final BroadcastReceiver br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(SMS_RECEIVED)) {
                     String keyword ;
                     SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                    keyword = sharedPreferences.getString(TEXT_KEYWORD, "");
+                    keyword = sharedPreferences.getString(TEXT_KEYWORD, "").toLowerCase();
                     boolean isSmsEnabled = sharedPreferences.getBoolean(SWITCH_ENABLESMS,false);
 
                     if ((keyword.length() == 0) || (!isSmsEnabled)) {
@@ -157,15 +148,14 @@ public class UserinfoUpdateService extends Service {
 
                     //This is used to close the notification tray
                     Intent serviceIntent = new Intent(context, SmsSenderService.class);
-                    serviceIntent.putExtra("phoneNumber", list.get(0).getOriginatingAddress());
-
+                    serviceIntent.putExtra(PHONE_NUMBER, list.get(0).getOriginatingAddress());
+                    serviceIntent.putExtra(WHO_CALLING,LOCATION_MSG);
                     SmsSenderService.enqueueWork(context, serviceIntent);
-
 
                 }
             }
         };
-    }
+
 
     private ArrayList<SmsMessage> getMessagesWithKeyword(String keyword, Bundle bundle) {
         ArrayList<SmsMessage> list = new ArrayList<SmsMessage>();
@@ -180,7 +170,7 @@ public class UserinfoUpdateService extends Service {
                     sms = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 }
 
-                if (sms.getMessageBody().toString().equals(keyword)) {
+                if (sms.getMessageBody().toLowerCase().equals(keyword)) {
                     list.add(sms);
                 }
             }
@@ -198,25 +188,50 @@ public class UserinfoUpdateService extends Service {
     private Runnable mToastRunnable = new Runnable() {
         @Override
         public void run() {
-            IsServiceWorking.isWorking=true;
+            IS_WORKING=true;
             Log.d("time-",""+time);
             if(time!=0){
                     date= new Date();
                     systemTime =date.getTime();
                     Log.d("timesystem-",""+systemTime);
+                Log.d("timesyst-",""+timeConnectedMsg);
                     if(systemTime<time){
                         wrData.setUserLocation(LocationUpdater.getHash());
-                        Log.i("Sthgkghopped","serviceggggggStopped");
                     }else {
+                        if(systemTime>timeConnectedMsg){
+                            if(!msgConnectedSent){
+                                msgConnectedSent=true;
+                                sendEmergencyMsgs(CONNECTED_PHONE_NUMBER);
+                                Log.d("hereconn",""+systemTime);
+
+                            }
+                        }
+                        if(systemTime>timeAlarmMsg){
+                            if(!msgAlarmSent){
+                                msgAlarmSent=true;
+                                sendEmergencyMsgs(ALARM_PHONE_NUMBER);
+                                Log.d("herealarm",""+systemTime);
+
+                            }
+                        }
                         wrData.setUserLocation(LocationUpdater.getHash());
-                        Log.i("Stoppghked","serviceggggggStopped");
                     }
             }
-            mHandler.postDelayed(this, 5000);
+            mHandler.postDelayed(this, 11000);
         }
     };
 
 
+    private void sendEmergencyMsgs(String phone){
+        //This is used to close the notification tray
+        Intent serviceIntent = new Intent(this, SmsSenderService.class);
+        serviceIntent.putExtra(PHONE_NUMBER,phone);
+        serviceIntent.putExtra(WHO_CALLING,EMERGENCY_MSG);
+        serviceIntent.putExtra(BOOL_CONNECTED_MSG,msgConnectedSent);
+        serviceIntent.putExtra(BOOL_ALARM_MSG,msgAlarmSent);
+
+        SmsSenderService.enqueueWork(this, serviceIntent);
+    }
 
 
     @Override
@@ -225,7 +240,7 @@ public class UserinfoUpdateService extends Service {
         unregisterReceiver(br);
         mHandler.removeCallbacks(mToastRunnable);
         Log.d(TAG, "onDestroyKILLEDD");
-        IsServiceWorking.isWorking=false;
+        IS_WORKING=false;
     }
 
     @Nullable

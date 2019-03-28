@@ -76,8 +76,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="43dp"
                 android:text="@string/abilita_locationSms"
-                app:layout_constraintBottom_toTopOf="@+id/btnsalvaSharedprefe"
+                app:layout_constraintBottom_toTopOf="@+id/swSingleSms"
                 app:layout_constraintTop_toBottomOf="@+id/swgoogleMapsSms" />
+
+            <Switch
+                android:id="@+id/swSingleSms"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:text="@string/abilita_singleSms"
+                app:layout_constraintBottom_toTopOf="@+id/btnsalvaSharedprefe"
+                app:layout_constraintTop_toBottomOf="@+id/swlocationSms" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnsalvaSharedprefe"
@@ -92,7 +100,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/swlocationSms" />
+                app:layout_constraintTop_toBottomOf="@+id/swSingleSms" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

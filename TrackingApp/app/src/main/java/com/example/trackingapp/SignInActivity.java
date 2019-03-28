@@ -15,10 +15,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 import java.util.List;
-
+import static com.example.trackingapp.Constants.RC_SIGN_IN;
 public class SignInActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 1234;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

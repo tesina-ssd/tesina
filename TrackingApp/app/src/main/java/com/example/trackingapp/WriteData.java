@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,13 +54,14 @@ public class WriteData {
     }
 
     public void uploadImage(Uri imageuri) {
+        final Map< String, Object > usermap = new HashMap< >();
         Random rand = new Random();
         // Obtain a number between [0 - 49].
         int n = 1;
         pd.setCancelable(false);
         pd.setMessage("Uploading");
         pd.show();
-        timerDelayRemoveDialog(15000,pd);
+        UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
         if (imageuri != null) {
             final StorageReference fileReference = storageReference.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
             fileReference.putFile(imageuri).continueWithTask(new Continuation< UploadTask.TaskSnapshot, Task< Uri >>() {
@@ -71,16 +73,13 @@ public class WriteData {
                     }
                     return fileReference.getDownloadUrl();
                 }
-            }).addOnCompleteListener(new OnCompleteListener() {
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Uri downloadUri = (Uri) task.getResult();
                         String imageuri = downloadUri.toString();
-
-                        Map< String, Object > usermap = new HashMap< >();
-
-                        usermap.put("PathImg", imageuri);
+                            usermap.put("PathImg", imageuri);
 
                         db.collection("users").document(userid).set(usermap,SetOptions.merge());
                         pd.dismiss();
@@ -105,7 +104,7 @@ public class WriteData {
     public WriteData setEcursion(Map<String, Object> data){
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
-            timerDelayRemoveDialog(15000,pd);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Setting Excursion...");
             uploadGenericData("excursion",data);
         }
@@ -141,7 +140,7 @@ public class WriteData {
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
             key_userid.put("useid",userid);
-            timerDelayRemoveDialog(15000,pd);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Setting Excursion...");
             db.collection("excursionKeys").document(mkey).set(key_userid)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -166,7 +165,7 @@ public class WriteData {
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
             pd.show();
-            timerDelayRemoveDialog(15000,pd);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Updating data...");
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -186,7 +185,7 @@ public class WriteData {
         }
         if(!userid.equals("")){
             pd.show();
-            timerDelayRemoveDialog(15000,pd);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Updating data...");
             db.collection("users").document(userid)
                     .set(data, SetOptions.merge())
@@ -240,18 +239,6 @@ public class WriteData {
     private void toastMessage(String message) {
         Toast.makeText(this.contex, message, Toast.LENGTH_SHORT).show();
     }
-    public void timerDelayRemoveDialog(long time, final Dialog d){
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                if(d.isShowing()){
-                    NoConnectionDialog noConnectionDialog =  NoConnectionDialog.newInstance(2);
-                    noConnectionDialog.show(fragmentManager,"SlowConn");
-                    d.dismiss();
-                }
-
-            }
-        }, time);
-    }
 
 }

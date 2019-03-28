@@ -15,6 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.trackingapp.Constants.SHARED_PREFS;
+import static com.example.trackingapp.Constants.SWITCH_ENABLESMS;
+import static com.example.trackingapp.Constants.SWITCH_GOOGLEMAPS_SMS;
+import static com.example.trackingapp.Constants.SWITCH_LOCATION_SMS;
+import static com.example.trackingapp.Constants.SWITCH_SINGLE_SMS;
+import static com.example.trackingapp.Constants.TEXT_KEYWORD;
 
 public class SmsFragment extends Fragment {
 
@@ -23,17 +29,14 @@ public class SmsFragment extends Fragment {
     private Switch enableSettings;
     private Switch swgoogleMapsSMS;
     private Switch swlocationSms;
+    private Switch swSingleSms;
 
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TEXT_KEYWORD = "keyword";
-    public static final String SWITCH_ENABLESMS = "enableSms";
-    public static final String SWITCH_GOOGLEMAPS_SMS = "smsgooglemaps";
-    public static final String SWITCH_LOCATION_SMS = "smsLocation";
 
     private String keyoword;
     private boolean switchEnablesms;
     private boolean boolGoogleMapsSms;
     private boolean boolLocationSms;
+    private boolean boolSingleSms;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class SmsFragment extends Fragment {
         enableSettings = (Switch) v.findViewById(R.id.enableSms);
         swgoogleMapsSMS = (Switch) v.findViewById(R.id.swgoogleMapsSms);
         swlocationSms= (Switch) v.findViewById(R.id.swlocationSms);
+        swSingleSms= (Switch) v.findViewById(R.id.swSingleSms);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +75,7 @@ public class SmsFragment extends Fragment {
         editor.putBoolean(SWITCH_ENABLESMS, enableSettings.isChecked());
         editor.putBoolean(SWITCH_GOOGLEMAPS_SMS, swgoogleMapsSMS.isChecked());
         editor.putBoolean(SWITCH_LOCATION_SMS, swlocationSms.isChecked());
+        editor.putBoolean(SWITCH_SINGLE_SMS, swSingleSms.isChecked());
         editor.apply();
 
         Toast.makeText(getContext(), "Data saved", Toast.LENGTH_SHORT).show();
@@ -82,6 +87,7 @@ public class SmsFragment extends Fragment {
         switchEnablesms = sharedPreferences.getBoolean(SWITCH_ENABLESMS, false);
         boolGoogleMapsSms = sharedPreferences.getBoolean(SWITCH_GOOGLEMAPS_SMS, false);
         boolLocationSms = sharedPreferences.getBoolean(SWITCH_LOCATION_SMS, false);
+        boolSingleSms = sharedPreferences.getBoolean(SWITCH_SINGLE_SMS, false);
     }
 
     public void updateViews() {
@@ -89,6 +95,7 @@ public class SmsFragment extends Fragment {
         enableSettings.setChecked(switchEnablesms);
         swlocationSms.setChecked(boolGoogleMapsSms);
         swgoogleMapsSMS.setChecked(boolLocationSms);
+        swSingleSms.setChecked(boolSingleSms);
     }
     @Override
     public void onStart() {

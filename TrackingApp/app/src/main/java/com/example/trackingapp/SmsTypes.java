@@ -1,12 +1,16 @@
 package com.example.trackingapp;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import java.text.DecimalFormat;
 
 public class SmsTypes {
     private int speedType = 0;
-    public SmsTypes(){}
+
+    public SmsTypes(){
+
+    }
 
     public String getLocationMessage() {
         //Log.d(TAG, "sendLocationMessage()" + location.getAccuracy());
@@ -46,7 +50,16 @@ public class SmsTypes {
 
     public String getGoogleMapsSMS() {
         //Log.d(TAG, "sendGoogleMapsMessage() " + location.getAccuracy());
-        String text = "https://maps.google.com/maps?q=" + LocationUpdater.getLocation().getLatitude() + "," + LocationUpdater.getLocation().getLongitude();
-        return text;
+        return "https://maps.google.com/maps?q=" + LocationUpdater.getLocation().getLatitude() + "," + LocationUpdater.getLocation().getLongitude();
+    }
+
+    public String getSingleMessage(){
+        return "Sms Singolo:\n"+getLocationMessage()+"\n"+getGoogleMapsSMS();
+    }
+    public String getConnectedMessage(){
+        return "Il nostro servizio di rientro non e' stato disattivato sono passati 30 minuti dall'ora prevista di rientro , controllare";
+    }
+    public String getAlarmMessage(){
+        return "Il nostro servizio di rientro non e' stato disattivato sono passati 60 minuti dall'ora prevista di rientro , controllare";
     }
 }

@@ -1,24 +1,16 @@
 package com.example.trackingapp;
 
 import android.annotation.SuppressLint;
-import android.app.job.JobScheduler;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -26,17 +18,12 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
-import java.util.Random;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import static android.content.Context.JOB_SCHEDULER_SERVICE;
-import static com.firebase.ui.auth.AuthUI.TAG;
+import static com.example.trackingapp.Constants.IS_WORKING;
 
 /**
  * Fragment rappresentate la mappa per il tracciamento dell'utente.
@@ -72,7 +59,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
         fragmentManager = getFragmentManager();
         btnser = view.findViewById(R.id.btnStopService);
-        if(IsServiceWorking.isWorking){
+        if(IS_WORKING){
             btnser.setText("ExcusionWorking");
             btnser.setVisibility(View.VISIBLE);
         }else{
@@ -90,7 +77,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                                         @Override
                                         public void onStyleLoaded(@NonNull Style style) {
                                             // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                                           enableLocationComponent();
+                                            new LocationUpdater(getContext());
+                                          enableLocationComponent();
 
                                         }
                                     });
@@ -108,7 +96,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             public void onClick(View view) {
                 if(!btnser.isShown()){
                     // Apertura del dialog
-                    connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance(randomCode(8));
+                    connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance("aaaa");
                     connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
                     connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
                 }else{
@@ -122,13 +110,16 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             public void onClick(View view) {
                 Intent serviceIntent = new Intent(getContext(), UserinfoUpdateService.class);
                 getContext().stopService(serviceIntent);
-                IsServiceWorking.isWorking=false;
+                IS_WORKING=false;
                 Toast.makeText(getContext(),"STOPPED0",Toast.LENGTH_LONG).show();
                 btnser.setVisibility(View.GONE);
             }
 
         });
         return  view;
+    }
+    public static MapboxMap getMapbox(){
+        return mapbox;
     }
 
     @SuppressLint("MissingPermission")
@@ -140,19 +131,18 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
            // mapbox.setCameraPosition(position);
         // Get an instance of the component
             LocationComponent locationComponent = mapbox.getLocationComponent();
-
             // Activate with options
             locationComponent.activateLocationComponent(getContext(), mapbox.getStyle());
-
             // Enable to make component visible
             locationComponent.setLocationComponentEnabled(true);
+
 
             // Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING_GPS);
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.GPS);
-            new LocationUpdater(locationComponent);
+
 
     }
 
@@ -163,6 +153,35 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView.onDestroy();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 
     @Override
     public void onConnectionDialogOkClicked() {

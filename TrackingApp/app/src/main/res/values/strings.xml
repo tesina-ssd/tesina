@@ -133,5 +133,6 @@
     <string name="abilita_googleMapsSms">Invia google Maps SMS\nLink con la posizione</string>
     <string name="abilita_locationSms">Invia un SMS con :\nLatitudine,Longitudine,Precizione,Velocità</string>
     <string name="salvasharedpref">Salva impostazioni</string>
+    <string name="abilita_singleSms">Invia un SMS con :\nLocation e Google maps link\nAltri sms non verranno inviati</string>
 
 </resources>

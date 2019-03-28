@@ -38,15 +38,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
+import static com.example.trackingapp.Constants.AB;
+import static com.example.trackingapp.Constants.AUTH;
 import static com.firebase.ui.auth.AuthUI.TAG;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
         ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
-    private static final int JOB_ID = 122;
-    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    static final String TAG = "0123";
     static SecureRandom rnd = new SecureRandom();
     private String connection_Key ="";
 
@@ -126,10 +125,9 @@ public class ConnectionDialog extends DialogFragment implements
     @Override
     public void onConnectionCodeFragmentOkPressed() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseAuth auth = FirebaseAuth.getInstance();
             WriteData wrd = new WriteData(getContext(),getFragmentManager());
             wrd.setDb(db)
-                .setUserid(auth.getUid())
+                .setUserid(AUTH.getUid())
                 .setMkey(connection_Key)
                 .setEcursion(excursionSheet)
                 .keysCollection();
@@ -142,7 +140,7 @@ public class ConnectionDialog extends DialogFragment implements
 
         Log.d("time-",""+time);
         Intent serviceIntent = new Intent(getContext(), UserinfoUpdateService.class);
-        serviceIntent.putExtra("USERID", auth.getUid());
+        serviceIntent.putExtra("USERID", AUTH.getUid());
         serviceIntent.putExtra("Time", time);
 
         ContextCompat.startForegroundService(getContext(), serviceIntent);
