@@ -3,6 +3,7 @@ package com.example.trackingapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,26 +86,13 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                                 }
                             });
 
-        view.findViewById(R.id.menu_item_center).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //mapbox.setCameraPosition();
-            }
-        });
         view.findViewById(R.id.menu_item_start).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(!btnser.isShown()){
-                    // Apertura del dialog
-                    connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance("aaaa");
-                    connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
-                    connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
-                }else{
-                    Toast.makeText(getContext(),"ALREADY EXCURSION ACTIVE",Toast.LENGTH_LONG).show();
-                }
-
+            public void onClick(View v) {
+                showDialog();
             }
         });
+
         btnser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,10 +104,25 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             }
 
         });
+
+        showDialog();
+
         return  view;
     }
     public static MapboxMap getMapbox(){
         return mapbox;
+    }
+
+    private void showDialog() {
+        Log.d("WORK", String.valueOf(IS_WORKING));
+        if(!IS_WORKING){
+            // Apertura del dialog
+            connectionCodeGeneratorDialogFragment = ConnectionDialog.newInstance("aaaa");
+            connectionCodeGeneratorDialogFragment.setTargetFragment((Fragment) thisFragment, 123);
+            connectionCodeGeneratorDialogFragment.show(fragmentManager, "dialog");
+        }else{
+            Toast.makeText(getContext(),"ALREADY EXCURSION ACTIVE",Toast.LENGTH_LONG).show();
+        }
     }
 
     @SuppressLint("MissingPermission")

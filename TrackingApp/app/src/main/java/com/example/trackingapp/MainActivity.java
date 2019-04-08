@@ -27,11 +27,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 
 import android.util.Log;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,33 +60,6 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
     private MenuItem selectedMenuItem = null;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if (selectedMenuItem != item) {
-                selectedMenuItem = item;
-
-                switch (item.getItemId()) {
-                    case R.id.navigation_track:
-                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new TrackingMapFragment(), "mapTracking").commit();
-                        return true;
-                    case R.id.navigation_follow:
-                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new FollowMapFragment(), "mapFollow").commit();
-                        return true;
-                    case R.id.navigation_notification_center:
-                        return true;
-                    case R.id.navigation_settings:
-                        fragmentManager.beginTransaction().replace(R.id.frameLayout, new FragSettings(), "settings")
-                                .addToBackStack(null).commit();
-                        return true;
-                }
-            }
-
-            return false;
-        }
-    };
     public Context getContex (){
         return getApplicationContext();
     }
@@ -92,6 +68,24 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TODO: così funziona, vedere se si può togliere
+        final NavController nav = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        findViewById(R.id.IconProfileImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_global_accountSettings);
+            }
+        });
+
+        findViewById(R.id.IconSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_global_smsFragment);
+            }
+        });
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userid= FirebaseAuth.getInstance().getUid();
         db.collection("users").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -100,11 +94,11 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 if (task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     if(!doc.exists()){
-                        FragmentManager fm = getSupportFragmentManager();
+                        /*FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction transaction = fm.beginTransaction();
                         transaction.replace(R.id.frameLayout, AccountSettings.newInstance(true),"AccountSettings");
                         transaction.addToBackStack(null);
-                        transaction.commit();
+                        transaction.commit();*/
                     }else{
                         CONNECTED_PHONE_NUMBER= doc.get(KEY_PHONE_CONNECTED_TO_USER).toString();
                         ALARM_PHONE_NUMBER =( doc.get(KEY_ALARM_PHONE).toString());
@@ -141,12 +135,6 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         // Loading fragment manager
         fragmentManager = getSupportFragmentManager();
-
-        // Navigation bar
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        navigation.setSelectedItemId(R.id.navigation_track);
     }
 
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {

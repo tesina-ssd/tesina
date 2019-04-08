@@ -135,4 +135,7 @@
     <string name="salvasharedpref">Salva impostazioni</string>
     <string name="abilita_singleSms">Invia un SMS con :\nLocation e Google maps link\nAltri sms non verranno inviati</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

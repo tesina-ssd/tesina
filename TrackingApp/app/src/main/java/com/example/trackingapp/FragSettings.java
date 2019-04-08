@@ -34,7 +34,7 @@ public class FragSettings extends Fragment {
             public void onClick(View view) {
                 AccountSettings accFrag = new AccountSettings();
 
-                fm.beginTransaction().replace(R.id.frameLayout,accFrag,"accountsettings").commit();
+                //fm.beginTransaction().replace(R.id.frameLayout,accFrag,"accountsettings").commit();
             }
         });
 
@@ -42,7 +42,7 @@ public class FragSettings extends Fragment {
             @Override
             public void onClick(View view) {
                 SmsFragment smsFrag = new SmsFragment();
-                fm.beginTransaction().replace(R.id.frameLayout,smsFrag,"smsSetting").commit();
+                //fm.beginTransaction().replace(R.id.frameLayout,smsFrag,"smsSetting").commit();
             }
         });
 
