@@ -9,5 +9,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+	
+	<item name="testString">Test</item>
 
 </resources>
