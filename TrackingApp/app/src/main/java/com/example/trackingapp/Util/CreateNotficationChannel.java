@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
 
 import android.app.Application;
@@ -6,7 +6,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
-import static com.example.trackingapp.Constants.CHANNEL_ID;
+import com.example.trackingapp.R;
+
+import static com.example.trackingapp.Util.Constants.CHANNEL_ID;
 
 public class CreateNotficationChannel extends Application {
 

@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Activities;
 
 import android.Manifest;
 
@@ -13,9 +13,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.example.trackingapp.Fragments.AccountSettings;
+import com.example.trackingapp.Fragments.FragSettings;
+import com.example.trackingapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,44 +27,26 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-
 import android.util.Log;
-import android.view.MenuItem;
 
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static com.example.trackingapp.Util.Constants.*;
 
-import static com.example.trackingapp.Constants.KEY_ALARM_PHONE;
-import static com.example.trackingapp.Constants.KEY_PHONE_CONNECTED_TO_USER;
-import static com.example.trackingapp.Constants.CONNECTED_PHONE_NUMBER;
-import static com.example.trackingapp.Constants.ALARM_PHONE_NUMBER;
+public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener, FragSettings.OnFragmentInteractionListener {
 
-
-public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener,FragSettings.OnFragmentInteractionListener {
-
-    private TextView mTextMessage;
-    private FragmentManager fragmentManager = null;
     // lists for permissions
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
-    // integer for permissions results request
-    private static final int ALL_PERMISSIONS_RESULT = 1011;
 
-    private MenuItem selectedMenuItem = null;
-
-    public Context getContex (){
-        return getApplicationContext();
-    }
+    public Context getContex (){ return getApplicationContext(); }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +116,6 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                         new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
             }
         }
-
-        // Loading fragment manager
-        fragmentManager = getSupportFragmentManager();
     }
 
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {

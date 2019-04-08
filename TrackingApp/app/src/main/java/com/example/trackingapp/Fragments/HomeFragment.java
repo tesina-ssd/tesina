@@ -1,9 +1,11 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.trackingapp.R;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;

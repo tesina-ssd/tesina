@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.trackingapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,7 +31,7 @@ public class FollowInfoDialog extends DialogFragment {
     private String connectionCode = null;
     private FirebaseFirestore db = null;
 
-    static FollowInfoDialog newInstance(String connectionCode) {
+    static public FollowInfoDialog newInstance(String connectionCode) {
         FollowInfoDialog dialog = new FollowInfoDialog();
 
         Bundle args = new Bundle();

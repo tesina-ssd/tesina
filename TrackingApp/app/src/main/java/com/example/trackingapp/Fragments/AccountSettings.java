@@ -1,12 +1,9 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,6 +21,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.trackingapp.Activities.MainActivity;
+import com.example.trackingapp.R;
+import com.example.trackingapp.Activities.SignInActivity;
+import com.example.trackingapp.Util.UsefullMethods;
+import com.example.trackingapp.Util.Userinformation;
+import com.example.trackingapp.Util.WriteData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,14 +43,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
-import static com.example.trackingapp.Constants.ALARM_PHONE_NUMBER;
-import static com.example.trackingapp.Constants.AUTH;
-import static com.example.trackingapp.Constants.CONNECTED_PHONE_NUMBER;
-import static com.example.trackingapp.Constants.KEY_ALARM_PHONE;
-import static com.example.trackingapp.Constants.KEY_IMAGE_PATH;
-import static com.example.trackingapp.Constants.KEY_PHONE_CONNECTED_TO_USER;
-import static com.example.trackingapp.Constants.KEY_USER_PHONE;
-import static com.example.trackingapp.Constants.NO_CONN;
+import static com.example.trackingapp.Util.Constants.ALARM_PHONE_NUMBER;
+import static com.example.trackingapp.Util.Constants.AUTH;
+import static com.example.trackingapp.Util.Constants.CONNECTED_PHONE_NUMBER;
+import static com.example.trackingapp.Util.Constants.KEY_ALARM_PHONE;
+import static com.example.trackingapp.Util.Constants.KEY_IMAGE_PATH;
+import static com.example.trackingapp.Util.Constants.KEY_PHONE_CONNECTED_TO_USER;
+import static com.example.trackingapp.Util.Constants.KEY_USER_PHONE;
 
 
 /**
@@ -192,7 +194,7 @@ public class AccountSettings extends Fragment {
                 AUTH.signOut();
                 if(getActivity() != null){
                     getActivity().finish();
-                    startActivity(new Intent(getContext(),SignInActivity.class));
+                    startActivity(new Intent(getContext(), SignInActivity.class));
                 }else {
                     startActivity(new Intent(getContext(),SignInActivity.class));
                 }

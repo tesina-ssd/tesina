@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.trackingapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;

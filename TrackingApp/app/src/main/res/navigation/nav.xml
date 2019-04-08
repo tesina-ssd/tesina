@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.trackingapp.HomeFragment"
+        android:name="com.example.trackingapp.Fragments.HomeFragment"
         android:label="home_layout"
         tools:layout="@layout/home_layout" >
         <action
@@ -19,17 +19,17 @@
     </fragment>
     <fragment
         android:id="@+id/trackingMapFragment"
-        android:name="com.example.trackingapp.TrackingMapFragment"
+        android:name="com.example.trackingapp.Fragments.TrackingMapFragment"
         android:label="tracking_map_fragment"
         tools:layout="@layout/tracking_map_fragment" />
     <fragment
         android:id="@+id/followMapFragment"
-        android:name="com.example.trackingapp.FollowMapFragment"
+        android:name="com.example.trackingapp.Fragments.FollowMapFragment"
         android:label="follow_map_fragment"
         tools:layout="@layout/follow_map_fragment" />
     <fragment
         android:id="@+id/accountSettings"
-        android:name="com.example.trackingapp.AccountSettings"
+        android:name="com.example.trackingapp.Fragments.AccountSettings"
         android:label="account_settings"
         tools:layout="@layout/account_settings" />
     <action
@@ -37,7 +37,7 @@
         app:destination="@id/accountSettings" />
     <fragment
         android:id="@+id/smsFragment"
-        android:name="com.example.trackingapp.SmsFragment"
+        android:name="com.example.trackingapp.Fragments.SmsFragment"
         android:label="sms_settings"
         tools:layout="@layout/sms_settings" /><action android:id="@+id/action_global_smsFragment" app:destination="@id/smsFragment"/>
 </navigation>

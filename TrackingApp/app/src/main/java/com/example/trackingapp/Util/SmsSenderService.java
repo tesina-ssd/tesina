@@ -1,38 +1,26 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.location.Location;
-import android.location.LocationManager;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import androidx.core.app.JobIntentService;
 
-import static com.example.trackingapp.Constants.BOOL_ALARM_MSG;
-import static com.example.trackingapp.Constants.BOOL_CONNECTED_MSG;
-import static com.example.trackingapp.Constants.EMERGENCY_MSG;
-import static com.example.trackingapp.Constants.PHONE_NUMBER;
-import static com.example.trackingapp.Constants.SHARED_PREFS;
-import static com.example.trackingapp.Constants.SWITCH_GOOGLEMAPS_SMS;
-import static com.example.trackingapp.Constants.SWITCH_LOCATION_SMS;
-import static com.example.trackingapp.Constants.SWITCH_SINGLE_SMS;
-import static com.example.trackingapp.Constants.WHO_CALLING;
+import static com.example.trackingapp.Util.Constants.BOOL_ALARM_MSG;
+import static com.example.trackingapp.Util.Constants.BOOL_CONNECTED_MSG;
+import static com.example.trackingapp.Util.Constants.EMERGENCY_MSG;
+import static com.example.trackingapp.Util.Constants.PHONE_NUMBER;
+import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.Util.Constants.SWITCH_GOOGLEMAPS_SMS;
+import static com.example.trackingapp.Util.Constants.SWITCH_LOCATION_SMS;
+import static com.example.trackingapp.Util.Constants.SWITCH_SINGLE_SMS;
+import static com.example.trackingapp.Util.Constants.WHO_CALLING;
 
 public class SmsSenderService extends JobIntentService {
     private final static String TAG = SmsSenderService.class.getSimpleName();

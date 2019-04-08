@@ -1,16 +1,16 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+
+import com.example.trackingapp.R;
 
 public class NoConnectionDialog extends DialogFragment {
     int mNum;
-     static NoConnectionDialog newInstance(int num) {
+     static public NoConnectionDialog newInstance(int num) {
         NoConnectionDialog f = new NoConnectionDialog();
 
         // Supply num input as an argument.

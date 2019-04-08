@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
 import com.google.firebase.Timestamp;
 

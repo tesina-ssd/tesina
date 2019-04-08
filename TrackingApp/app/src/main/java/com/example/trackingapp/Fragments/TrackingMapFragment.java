@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.trackingapp.Util.LocationUpdater;
+import com.example.trackingapp.R;
+import com.example.trackingapp.Util.UserinfoUpdateService;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -24,7 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import static com.example.trackingapp.Constants.IS_WORKING;
+import static com.example.trackingapp.Util.Constants.IS_WORKING;
 
 /**
  * Fragment rappresentate la mappa per il tracciamento dell'utente.

@@ -1,10 +1,12 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.trackingapp.R;
 
 public class FollowInfoLoadingFragment extends androidx.fragment.app.Fragment  {
 

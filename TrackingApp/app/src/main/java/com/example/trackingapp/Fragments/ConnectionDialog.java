@@ -1,26 +1,19 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
+import com.example.trackingapp.R;
+import com.example.trackingapp.Util.UserinfoUpdateService;
+import com.example.trackingapp.Util.WriteData;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.SecureRandom;
@@ -28,20 +21,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import static android.content.Context.JOB_SCHEDULER_SERVICE;
-import static com.example.trackingapp.Constants.AB;
-import static com.example.trackingapp.Constants.AUTH;
-import static com.firebase.ui.auth.AuthUI.TAG;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+import static com.example.trackingapp.Util.Constants.AB;
+import static com.example.trackingapp.Util.Constants.AUTH;
 
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
@@ -59,7 +47,7 @@ public class ConnectionDialog extends DialogFragment implements
         void onConnectionDialogCancelClicked();
     }
 
-    static ConnectionDialog newInstance(String connectionCode) {
+    static public ConnectionDialog newInstance(String connectionCode) {
         ConnectionDialog dialog = new ConnectionDialog();
         // I parametri non vengono passati al costruttore, ma sotto forma di parametro di newInstance e poi
         // passati come bundle al metodo OnCreate()

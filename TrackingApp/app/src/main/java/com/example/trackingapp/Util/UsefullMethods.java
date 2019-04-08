@@ -1,10 +1,12 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+
+import com.example.trackingapp.Fragments.NoConnectionDialog;
 
 import androidx.fragment.app.FragmentManager;
 

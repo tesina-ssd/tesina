@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import com.example.trackingapp.Util.ExcursionSheetMapBuilder;
+import com.example.trackingapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.GregorianCalendar;
 import java.util.Map;

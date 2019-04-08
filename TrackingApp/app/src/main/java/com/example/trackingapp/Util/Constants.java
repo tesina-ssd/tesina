@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,4 +28,5 @@ public class Constants {
     public static final int RC_SIGN_IN = 1234;
     public static String CONNECTED_PHONE_NUMBER ="";
     public static String  ALARM_PHONE_NUMBER = "";
+    public static final int ALL_PERMISSIONS_RESULT = 1011;
 }

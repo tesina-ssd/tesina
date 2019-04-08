@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.trackingapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,7 +32,7 @@ public class FollowConnectionDialog extends DialogFragment {
 
     FollowConnectionDialogListener mListener = null;
 
-    static FollowConnectionDialog newInstance() {
+    static public FollowConnectionDialog newInstance() {
         FollowConnectionDialog dialog = new FollowConnectionDialog();
         return dialog;
     }

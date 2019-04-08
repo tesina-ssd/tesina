@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,7 +28,7 @@ public class LocationUpdater {
     private static Location lastLocation;
     private static final long UPDATE_INTERVAL = 60000, FASTEST_INTERVAL = 5000; // = 5 seconds
 
-    LocationUpdater(Context context) {
+    public LocationUpdater(Context context) {
         this.context = context;
         requestLocation();
     }

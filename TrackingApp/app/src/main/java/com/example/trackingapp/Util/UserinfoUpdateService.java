@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Util;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -18,6 +18,8 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import com.example.trackingapp.Activities.MainActivity;
+import com.example.trackingapp.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -29,19 +31,19 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
-import static com.example.trackingapp.Constants.ALARM_PHONE_NUMBER;
-import static com.example.trackingapp.Constants.BOOL_ALARM_MSG;
-import static com.example.trackingapp.Constants.BOOL_CONNECTED_MSG;
-import static com.example.trackingapp.Constants.CHANNEL_ID;
-import static com.example.trackingapp.Constants.CONNECTED_PHONE_NUMBER;
-import static com.example.trackingapp.Constants.EMERGENCY_MSG;
-import static com.example.trackingapp.Constants.IS_WORKING;
-import static com.example.trackingapp.Constants.LOCATION_MSG;
-import static com.example.trackingapp.Constants.PHONE_NUMBER;
-import static com.example.trackingapp.Constants.SHARED_PREFS;
-import static com.example.trackingapp.Constants.SWITCH_ENABLESMS;
-import static com.example.trackingapp.Constants.TEXT_KEYWORD;
-import static com.example.trackingapp.Constants.WHO_CALLING;
+import static com.example.trackingapp.Util.Constants.ALARM_PHONE_NUMBER;
+import static com.example.trackingapp.Util.Constants.BOOL_ALARM_MSG;
+import static com.example.trackingapp.Util.Constants.BOOL_CONNECTED_MSG;
+import static com.example.trackingapp.Util.Constants.CHANNEL_ID;
+import static com.example.trackingapp.Util.Constants.CONNECTED_PHONE_NUMBER;
+import static com.example.trackingapp.Util.Constants.EMERGENCY_MSG;
+import static com.example.trackingapp.Util.Constants.IS_WORKING;
+import static com.example.trackingapp.Util.Constants.LOCATION_MSG;
+import static com.example.trackingapp.Util.Constants.PHONE_NUMBER;
+import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.Util.Constants.SWITCH_ENABLESMS;
+import static com.example.trackingapp.Util.Constants.TEXT_KEYWORD;
+import static com.example.trackingapp.Util.Constants.WHO_CALLING;
 
 
 /**
@@ -161,7 +163,7 @@ public class UserinfoUpdateService extends Service {
         ArrayList<SmsMessage> list = new ArrayList<SmsMessage>();
         if (bundle != null) {
             Object[] pdus = (Object[]) bundle.get("pdus");
-            for (int i = 0; i < pdus.length; i++) {
+            for (int i = 0; i < pdus.length; i++) { //TODO: controllare
                 SmsMessage sms = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     String format = bundle.getString("format");

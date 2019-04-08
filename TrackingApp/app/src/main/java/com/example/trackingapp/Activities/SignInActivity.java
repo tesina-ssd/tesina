@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.trackingapp.R;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
@@ -15,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 import java.util.List;
-import static com.example.trackingapp.Constants.RC_SIGN_IN;
+import static com.example.trackingapp.Util.Constants.RC_SIGN_IN;
 public class SignInActivity extends AppCompatActivity {
 
 

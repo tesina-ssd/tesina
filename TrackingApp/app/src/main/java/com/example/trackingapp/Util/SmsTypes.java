@@ -1,7 +1,4 @@
-package com.example.trackingapp;
-
-import android.content.Context;
-import android.content.res.Resources;
+package com.example.trackingapp.Util;
 
 import java.text.DecimalFormat;
 

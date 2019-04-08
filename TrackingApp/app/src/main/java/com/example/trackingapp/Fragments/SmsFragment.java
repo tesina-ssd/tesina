@@ -1,4 +1,4 @@
-package com.example.trackingapp;
+package com.example.trackingapp.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,17 +10,19 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.trackingapp.R;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.trackingapp.Constants.SHARED_PREFS;
-import static com.example.trackingapp.Constants.SWITCH_ENABLESMS;
-import static com.example.trackingapp.Constants.SWITCH_GOOGLEMAPS_SMS;
-import static com.example.trackingapp.Constants.SWITCH_LOCATION_SMS;
-import static com.example.trackingapp.Constants.SWITCH_SINGLE_SMS;
-import static com.example.trackingapp.Constants.TEXT_KEYWORD;
+import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.Util.Constants.SWITCH_ENABLESMS;
+import static com.example.trackingapp.Util.Constants.SWITCH_GOOGLEMAPS_SMS;
+import static com.example.trackingapp.Util.Constants.SWITCH_LOCATION_SMS;
+import static com.example.trackingapp.Util.Constants.SWITCH_SINGLE_SMS;
+import static com.example.trackingapp.Util.Constants.TEXT_KEYWORD;
 
 public class SmsFragment extends Fragment {
 
