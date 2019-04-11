@@ -8,10 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.trackingapp.Fragments.ViewModels.FollowUserInfoModel;
 import com.example.trackingapp.R;
+import com.example.trackingapp.databinding.FollowUserDialogInfoBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
+
+import androidx.databinding.DataBindingUtil;
 
 public class FollowInfoUserInfoFragment extends androidx.fragment.app.Fragment {
 
@@ -20,7 +24,7 @@ public class FollowInfoUserInfoFragment extends androidx.fragment.app.Fragment {
     public static FollowInfoUserInfoFragment newInstance(Map<String, Object> data) {
         FollowInfoUserInfoFragment fragment = new FollowInfoUserInfoFragment();
 
-        Bundle args = new Bundle();
+       /* Bundle args = new Bundle();
         args.putString("activityType", data.get("activityType").toString());
         args.putString("peopleNumber", data.get("peopleNumber").toString());
         args.putString("startingTimeDate", data.get("startingTimeDate").toString());
@@ -29,7 +33,7 @@ public class FollowInfoUserInfoFragment extends androidx.fragment.app.Fragment {
         args.putString("finishingTimeTime", data.get("finishingTimeTime").toString());
         args.putString("picPath", data.get("picPath").toString());
 
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -42,8 +46,11 @@ public class FollowInfoUserInfoFragment extends androidx.fragment.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.follow_user_dialog_info, container, false);
-        TextView activityType = v.findViewById(R.id.FollowUserDialog_TableInfo_ActivityType);
+        FollowUserDialogInfoBinding binding = DataBindingUtil.inflate(inflater,R.layout.follow_user_dialog_info, container, false);
+        View v = binding.getRoot();
+        binding.setViewModel(new FollowUserInfoModel("ciao", "ciao", "ciao", "ciao", "ciao", "ciao", "ciao"));
+
+        /*TextView activityType = v.findViewById(R.id.FollowUserDialog_TableInfo_ActivityType);
         activityType.setText(getArguments().getString("activityType"));
 
         TextView startingTimeTime = v.findViewById(R.id.FollowUserDialog_TableInfo_StartingTime);
@@ -56,13 +63,13 @@ public class FollowInfoUserInfoFragment extends androidx.fragment.app.Fragment {
         finishingTimeTime.setText(getArguments().getString("finishingTimeTime"));
 
         TextView finishingTimeDate = v.findViewById(R.id.FollowUserDialog_TableInfo_FinishingDate);
-        finishingTimeDate.setText(getArguments().getString("finishingTimeDate"));
+        finishingTimeDate.setText(getArguments().getString("finishingTimeDate"));*/
 
-        //TODO: limitare tempi di attesa
+        /*//TODO: limitare tempi di attesa
         Picasso.get()
                 .load(getArguments().getString("picPath"))
                 .into((ImageView) v.findViewById(R.id.FollowUserDialog_ProfileImage));
-
+*/
         return v;
     }
 

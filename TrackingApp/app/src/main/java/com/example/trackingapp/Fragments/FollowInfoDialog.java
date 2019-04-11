@@ -97,7 +97,8 @@ public class FollowInfoDialog extends DialogFragment {
                                 data.put("picPath", document.getString("PathImg"));
 
                                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                    transaction.replace(R.id.FollowInfoDialog_CardView, FollowInfoUserInfoFragment.newInstance(data), "followUserInfoFragment").commit();
+                                /*Prima data*/
+                                transaction.replace(R.id.FollowInfoDialog_CardView, FollowInfoUserInfoFragment.newInstance(null), "followUserInfoFragment").commit();
                             }
                         }
                     });

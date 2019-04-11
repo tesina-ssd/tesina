@@ -1,163 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
-    android:layout_width="350dp"
-    android:layout_height="500dp"
-    android:background="@android:color/transparent"
-    android:orientation="vertical"
-    android:paddingTop="40dp"
-    android:paddingBottom="20dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/FollowUserDialog_ProfileImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:src="@color/browser_actions_bg_grey"
-        app:layout_constraintBottom_toTopOf="@+id/FollowUserDialog_Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars[0]" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.trackingapp.Fragments.ViewModels.FollowUserInfoModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/FollowUserDialog_Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Andrea Delmastro"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/FollowUserDialog_TableInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FollowUserDialog_ProfileImage" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/linearLayout"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:paddingTop="40dp"
+        android:paddingBottom="20dp"
+        >
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/FollowUserDialog_ProfileImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:src="@color/browser_actions_bg_grey"
+            app:layout_constraintBottom_toTopOf="@+id/FollowUserDialog_Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:src="@tools:sample/avatars[0]" />
 
-    <TableLayout
-        android:id="@+id/FollowUserDialog_TableInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FollowUserDialog_Name">
-
-        <TableRow
-            android:id="@+id/FollowUserDialog_TableInfo_Row1"
+        <TextView
+            android:id="@+id/FollowUserDialog_Name"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@{viewMode.name}"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/FollowUserDialog_TableInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FollowUserDialog_ProfileImage" />
 
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_TxtActivityType"
+
+        <TableLayout
+            android:id="@+id/FollowUserDialog_TableInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FollowUserDialog_Name">
+
+            <TableRow
+                android:id="@+id/FollowUserDialog_TableInfo_Row1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_TxtActivityType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Tipo di attività:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_ActivityType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@{viewModel.activityType}"
+                    android:textSize="18sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/FollowUserDialog_TableInfo_Row2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Tipo di attività:"
-                android:textSize="18sp" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_ActivityType"
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_TxtStartingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Ora di inizio:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_StartingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@{viewModel.startingTimeTime}"
+                    android:textSize="18sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/FollowUserDialog_TableInfo_Row3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:textSize="18sp" />
-        </TableRow>
+                android:layout_height="match_parent">
 
-        <TableRow
-            android:id="@+id/FollowUserDialog_TableInfo_Row2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_TxtFinishingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Ora di fine:"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_TxtStartingTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Ora di inizio:"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_FinishingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@{viewModel.finishTimeTime}"
+                    android:textSize="18sp" />
+            </TableRow>
 
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_StartingTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/FollowUserDialog_TableInfo_Row3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_TxtFinishingTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Ora di fine:"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_FinishingTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/FollowUserDialog_TableInfo_Row4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_TxtStartingDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Giorno di inizio:"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_StartingDate"
+            <TableRow
+                android:id="@+id/FollowUserDialog_TableInfo_Row4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:textSize="18sp" />
-        </TableRow>
+                android:layout_height="match_parent">
 
-        <TableRow
-            android:id="@+id/FollowUserDialog_TableInfo_Row5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_TxtStartingDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Giorno di inizio:"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_TxtFinshingDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Giorno di fine:"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_StartingDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@{viewModel.startingTimeDate}"
+                    android:textSize="18sp" />
+            </TableRow>
 
-            <TextView
-                android:id="@+id/FollowUserDialog_TableInfo_FinishingDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:textSize="18sp" />
-        </TableRow>
-    </TableLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TableRow
+                android:id="@+id/FollowUserDialog_TableInfo_Row5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_TxtFinshingDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Giorno di fine:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/FollowUserDialog_TableInfo_FinishingDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@{viewModel.finishTimeDate}"
+                    android:textSize="18sp" />
+            </TableRow>
+        </TableLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
