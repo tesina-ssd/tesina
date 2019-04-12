@@ -1,4 +1,4 @@
-package com.example.trackingapp.Activities;
+package com.example.trackingapp.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

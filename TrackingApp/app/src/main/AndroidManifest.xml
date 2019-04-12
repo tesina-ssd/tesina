@@ -32,7 +32,7 @@
         <service
             android:name=".Util.SmsSenderService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <activity android:name=".Activities.SignInActivity">
+        <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" />
 
         <meta-data

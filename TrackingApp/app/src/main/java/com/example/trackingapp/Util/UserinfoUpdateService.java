@@ -18,7 +18,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import com.example.trackingapp.Activities.MainActivity;
+import com.example.trackingapp.activities.MainActivity;
 import com.example.trackingapp.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 

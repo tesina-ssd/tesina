@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 
-import com.example.trackingapp.Fragments.NoConnectionDialog;
+import com.example.trackingapp.fragments.NoConnectionDialog;
 
 import androidx.fragment.app.FragmentManager;
 

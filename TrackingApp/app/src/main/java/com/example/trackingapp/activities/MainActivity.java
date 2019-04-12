@@ -1,4 +1,4 @@
-package com.example.trackingapp.Activities;
+package com.example.trackingapp.activities;
 
 import android.Manifest;
 
@@ -13,8 +13,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.example.trackingapp.Fragments.AccountSettings;
-import com.example.trackingapp.Fragments.FragSettings;
+import com.example.trackingapp.fragments.AccountSettings;
+import com.example.trackingapp.fragments.FragSettings;
 import com.example.trackingapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

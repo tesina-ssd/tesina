@@ -1,4 +1,4 @@
-package com.example.trackingapp.Fragments;
+package com.example.trackingapp.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.trackingapp.R;
+import com.example.trackingapp.fragments.viewmodels.FollowUserInfoModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -76,29 +77,31 @@ public class FollowInfoDialog extends DialogFragment {
                 //TODO: gestire errore non esiste documento
                 DocumentSnapshot document = task.getResult();
                 if(document.exists()) {
-                    //TODO: sta roba è scritta 'dimmerda
+
                     Calendar calendar = Calendar.getInstance();
-                    data.put("activityType", document.getString("activityType"));
-                    data.put("peopleNumber", document.get("peopleNumber").toString());
+
+                    final FollowUserInfoModel viewModel = new FollowUserInfoModel();
+                    viewModel.setName(document.getString("name"));
+                    viewModel.setActivityType(document.getString("activityType"));
                     calendar.setTime(document.getTimestamp("startingTimeDate").toDate());
-                    data.put("startingTimeDate", calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
-                    data.put("startingTimeTime", calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
+                    viewModel.setStartingTimeTime( calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
+                    viewModel.setStartingTimeDate(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
                     calendar.setTime(document.getTimestamp("finishingTimeDate").toDate());
-                    data.put("finishingTimeDate", calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
-                    data.put("finishingTimeTime", calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
+                    viewModel.setFinishTimeDate(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
+                    viewModel.setFinishTimeTime(calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
 
                     DocumentReference usersDoc = db.collection("users").document(connectionCode);
                     usersDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             //TODO: gestire errore non esiste documento
+                            //TODO: gestire nome utente
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()) {
-                                data.put("picPath", document.getString("PathImg"));
+                                viewModel.setPicPath(document.getString("PathImg"));
 
                                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                /*Prima data*/
-                                transaction.replace(R.id.FollowInfoDialog_CardView, FollowInfoUserInfoFragment.newInstance(null), "followUserInfoFragment").commit();
+                                transaction.replace(R.id.FollowInfoDialog_CardView, FollowInfoUserInfoFragment.newInstance(viewModel), "followUserInfoFragment").commit();
                             }
                         }
                     });
@@ -108,20 +111,4 @@ public class FollowInfoDialog extends DialogFragment {
 
         return v;
     }
-
-
-/*    @Override
-    public void onExcursionSheetFragmentCancelPressed() {
-        mListener.onConnectionDialogCancelClicked();
-    }
-
-    @Override
-    public void onExcursionSheetFragmentNextPressed(Map<String,Object> excursionSheet) {
-        this.excursionSheet = excursionSheet;
-        connection_Key = randomCode(10);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
-        transaction.replace(R.id.cardViewConnectionDialog, ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
-    }*/
-
 }

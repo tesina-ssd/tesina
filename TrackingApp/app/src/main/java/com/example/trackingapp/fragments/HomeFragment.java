@@ -1,4 +1,4 @@
-package com.example.trackingapp.Fragments;
+package com.example.trackingapp.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

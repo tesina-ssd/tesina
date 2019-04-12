@@ -1,4 +1,4 @@
-package com.example.trackingapp.Fragments;
+package com.example.trackingapp.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.example.trackingapp.Util.LocationUpdater;
 import com.example.trackingapp.R;
 import com.example.trackingapp.Util.UserinfoUpdateService;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -21,6 +25,9 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +43,9 @@ import static com.example.trackingapp.Util.Constants.IS_WORKING;
 public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
     private static final int JOB_ID = 122;
     static final String TAG = "0123";
+
+// ...
+
     FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
     private Button btnser;
     MapView mapView; //Mappa
@@ -56,17 +66,18 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Alla prima creazione viene richiesta l'istanza attraverso la chiave
-        if(savedInstanceState == null)
+        if (savedInstanceState == null)
             Mapbox.getInstance(getContext(), getString(R.string.access_token));
 
         // Settaggio del layout
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
+
         fragmentManager = getFragmentManager();
         btnser = view.findViewById(R.id.btnStopService);
-        if(IS_WORKING){
+        if (IS_WORKING) {
             btnser.setText("ExcusionWorking");
             btnser.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnser.setVisibility(View.GONE);
         }
 
@@ -74,25 +85,31 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
-                                @Override
-                                public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-                                    mapbox = mapboxMap;
-                                    mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-                                        @Override
-                                        public void onStyleLoaded(@NonNull Style style) {
-                                            // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                                            new LocationUpdater(getContext());
-                                          enableLocationComponent();
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+                mapbox = mapboxMap;
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+                        new LocationUpdater(getContext());
+                        enableLocationComponent();
 
-                                        }
-                                    });
-                                }
-                            });
+                    }
+                });
+            }
+        });
 
         view.findViewById(R.id.menu_item_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
+            }
+        });
+        view.findViewById(R.id.menu_item_Function).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             addMessage("Hello");
             }
         });
 
@@ -127,7 +144,27 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             Toast.makeText(getContext(),"ALREADY EXCURSION ACTIVE",Toast.LENGTH_LONG).show();
         }
     }
+    private Task<String> addMessage (String text){
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("text", text);
+        data.put("push", true);
 
+        return FirebaseFunctions.getInstance()
+                .getHttpsCallable("addMessage")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        Toast.makeText(getContext(),result,Toast.LENGTH_LONG).show();
+                        return result;
+                    }
+                });
+    }
     @SuppressLint("MissingPermission")
     private void enableLocationComponent() {
       /*  CameraPosition position = new CameraPosition.Builder()

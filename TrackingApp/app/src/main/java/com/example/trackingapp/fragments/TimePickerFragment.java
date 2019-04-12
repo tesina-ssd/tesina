@@ -1,4 +1,4 @@
-package com.example.trackingapp.Fragments;
+package com.example.trackingapp.fragments;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;

@@ -1,4 +1,4 @@
-package com.example.trackingapp.Fragments;
+package com.example.trackingapp.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,9 +21,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.example.trackingapp.Activities.MainActivity;
+import com.example.trackingapp.activities.MainActivity;
 import com.example.trackingapp.R;
-import com.example.trackingapp.Activities.SignInActivity;
+import com.example.trackingapp.activities.SignInActivity;
 import com.example.trackingapp.Util.UsefullMethods;
 import com.example.trackingapp.Util.Userinformation;
 import com.example.trackingapp.Util.WriteData;
@@ -216,8 +216,10 @@ public class AccountSettings extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!txtName.getText().toString().equals(userinfo.getNameSurname())){
+                String name =txtName.getText().toString();
+                if(!name.equals(userinfo.getNameSurname())){
                     userModifiedWrite=true;
+                    data.put("Username",name);
                 }else{
                     userModifiedWrite=false;
                 }
