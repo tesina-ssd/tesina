@@ -89,16 +89,18 @@ public class FollowInfoDialog extends DialogFragment {
                     calendar.setTime(document.getTimestamp("finishingTimeDate").toDate());
                     viewModel.setFinishTimeDate(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
                     viewModel.setFinishTimeTime(calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
+                    viewModel.setPeopleNumber(document.getLong("peopleNumber").toString());
 
                     DocumentReference usersDoc = db.collection("users").document(connectionCode);
                     usersDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             //TODO: gestire errore non esiste documento
-                            //TODO: gestire nome utente
+
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()) {
                                 viewModel.setPicPath(document.getString("PathImg"));
+                                viewModel.setName(document.getString("Username"));
 
                                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                                 transaction.replace(R.id.FollowInfoDialog_CardView, FollowInfoUserInfoFragment.newInstance(viewModel), "followUserInfoFragment").commit();

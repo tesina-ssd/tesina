@@ -16,6 +16,7 @@ public class FollowUserInfoModel extends BaseObservable implements Serializable 
     private String finishTimeTime;
     private String finishTimeDate;
     private String lastKnownPosition;
+    private String peopleNumber;
     private String picPath;
 
     public FollowUserInfoModel() {}
@@ -47,6 +48,10 @@ public class FollowUserInfoModel extends BaseObservable implements Serializable 
 
     public String getFinishTimeDate() {
         return finishTimeDate;
+    }
+
+    public String getPeopleNumber() {
+        return peopleNumber;
     }
 
     public void setLastKnownPosition(String lastKnownPosition) {
@@ -84,6 +89,10 @@ public class FollowUserInfoModel extends BaseObservable implements Serializable 
 
     public void setPicPath(String picPath) {
         this.picPath = picPath;
+    }
+
+    public void setPeopleNumber(String peopleNumber) {
+        this.peopleNumber = peopleNumber;
     }
 
 }

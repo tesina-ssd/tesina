@@ -147,11 +147,11 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     private Task<String> addMessage (String text){
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
-        data.put("text", text);
-        data.put("push", true);
-
+        data.put("firstNumber", 2);
+        data.put("secondNumber", 6);
+        Log.d("inFucnt","hello");
         return FirebaseFunctions.getInstance()
-                .getHttpsCallable("addMessage")
+                .getHttpsCallable("addNumbers")
                 .call(data)
                 .continueWith(new Continuation<HttpsCallableResult, String>() {
                     @Override
@@ -159,7 +159,9 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                         // This continuation runs on either success or failure, but if the task
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
+
                         String result = (String) task.getResult().getData();
+                        Log.d("inFucnt",result);
                         Toast.makeText(getContext(),result,Toast.LENGTH_LONG).show();
                         return result;
                     }
