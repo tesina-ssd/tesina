@@ -14,9 +14,13 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +86,7 @@ public class LocationUpdater {
         Log.d("Location"," " +lastLocation.getLatitude()+""+ lastLocation.getLongitude());
         Map<String,Object> userLocation = new HashMap<>();
         userLocation.put("userLocation",new GeoPoint(lastLocation.getLatitude(), lastLocation.getLongitude()));
+        userLocation.put("locationTime", new Timestamp(new Date()));
         return userLocation;
     }
 

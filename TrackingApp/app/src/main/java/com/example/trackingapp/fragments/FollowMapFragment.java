@@ -2,6 +2,7 @@ package com.example.trackingapp.fragments;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class FollowMapFragment extends Fragment implements FollowConnectionDialog.FollowConnectionDialogListener  {
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+
+public class FollowMapFragment extends Fragment implements FollowConnectionDialog.FollowConnectionDialogListener {
 
     private final String followConnectionDialogTAG = "fllwConnDialogTAG";
     private final int followConnectionDialogRequestCode = 1;
@@ -56,7 +59,7 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
     private GeoJsonSource userPositionGeoJson = null;
     private GeoJsonSource userPositionLineGeoJson = null;
     private ArrayList<Point> userPostionsArray = new ArrayList<Point>();
-    private MapboxMap map = null;
+    private MapboxMap mapboxMap = null;
 
     /**
      * Costruttore base vuoto, richiesto per l'implementazione (non chiedetemi il perchè)
@@ -79,11 +82,12 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
         mapView.getMapAsync(new OnMapReadyCallback() {
                                 @Override
                                 public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-                                    map = mapboxMap;
+                                    FollowMapFragment.this.mapboxMap = mapboxMap;
 
                                     mapboxMap.setStyle(Style.OUTDOORS, new Style.OnStyleLoaded() {
                                         @Override
                                         public void onStyleLoaded(@NonNull Style style) {
+
                                             style.addImage("marker-icon-default",
                                                     BitmapFactory.decodeResource(
                                                             FollowMapFragment.this.getResources(), R.drawable.mapbox_marker_icon_default));
@@ -95,22 +99,19 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                                             style.addSource(userPositionGeoJson);
 
                                             style.addLayer(new LineLayer("user-postion-line-layer", "user-postion-line").withProperties(
-                                                    PropertyFactory.lineDasharray(new Float[] {0.01f, 2f}),
                                                     PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
                                                     PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
                                                     PropertyFactory.lineWidth(4f),
-                                                    PropertyFactory.lineColor(Color.parseColor("#D81B60"))
+                                                    PropertyFactory.lineColor(Color.parseColor("#0197f6"))
                                             ));
 
                                             style.addLayer(new SymbolLayer("user-position-layer", "user-position").withProperties(
-                                                    PropertyFactory.iconImage("marker-icon-default")
+                                                    iconImage("marker-icon-default")
                                             ));
-
                                         }
                                     });
                                 }
                             });
-
 
         view.findViewById(R.id.FollowMapFragment_FabMenu_StartFollowing).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +163,7 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                     userPositionGeoJson.setGeoJson(Feature.fromGeometry(
                             Point.fromLngLat(geo.getLongitude(), geo.getLatitude())));
 
-                    map.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                             .target(new LatLng(geo.getLatitude(), geo.getLongitude()))
                             .build()));
 

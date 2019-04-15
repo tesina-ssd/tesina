@@ -14,10 +14,13 @@ import com.example.trackingapp.Util.LocationUpdater;
 import com.example.trackingapp.R;
 import com.example.trackingapp.Util.UserinfoUpdateService;
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
@@ -43,6 +46,7 @@ import static com.example.trackingapp.Util.Constants.IS_WORKING;
 public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
     private static final int JOB_ID = 122;
     static final String TAG = "0123";
+    private String functionValue;
 
 // ...
 
@@ -97,6 +101,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
                     }
                 });
+
             }
         });
 
@@ -149,23 +154,23 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         Map<String, Object> data = new HashMap<>();
         data.put("firstNumber", 2);
         data.put("secondNumber", 6);
-        Log.d("inFucnt","hello");
-        return FirebaseFunctions.getInstance()
+         FirebaseFunctions.getInstance()
                 .getHttpsCallable("addNumbers")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
+                .call(data).addOnSuccessListener(new OnSuccessListener<HttpsCallableResult>() {
+            @Override
+            public void onSuccess(HttpsCallableResult httpsCallableResult) {
+                Log.d("inFucnt","fjj");
+                String hello= (String) httpsCallableResult.getData().toString();
+                Toast.makeText(getContext(),hello,Toast.LENGTH_LONG).show();
 
-                        String result = (String) task.getResult().getData();
-                        Log.d("inFucnt",result);
-                        Toast.makeText(getContext(),result,Toast.LENGTH_LONG).show();
-                        return result;
-                    }
-                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("inFucnt","fjj");
+            }
+        });
+         return null;
     }
     @SuppressLint("MissingPermission")
     private void enableLocationComponent() {
