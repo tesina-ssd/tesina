@@ -37,10 +37,12 @@ import static com.example.trackingapp.Util.Constants.BOOL_CONNECTED_MSG;
 import static com.example.trackingapp.Util.Constants.CHANNEL_ID;
 import static com.example.trackingapp.Util.Constants.CONNECTED_PHONE_NUMBER;
 import static com.example.trackingapp.Util.Constants.EMERGENCY_MSG;
+import static com.example.trackingapp.Util.Constants.INTERNET_FALSE;
 import static com.example.trackingapp.Util.Constants.IS_WORKING;
 import static com.example.trackingapp.Util.Constants.LOCATION_MSG;
 import static com.example.trackingapp.Util.Constants.PHONE_NUMBER;
 import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.Util.Constants.SMS_ENABLE;
 import static com.example.trackingapp.Util.Constants.SWITCH_ENABLESMS;
 import static com.example.trackingapp.Util.Constants.TEXT_KEYWORD;
 import static com.example.trackingapp.Util.Constants.WHO_CALLING;
@@ -131,9 +133,8 @@ public class UserinfoUpdateService extends Service {
                     String keyword ;
                     SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                     keyword = sharedPreferences.getString(TEXT_KEYWORD, "").toLowerCase();
-                    boolean isSmsEnabled = sharedPreferences.getBoolean(SWITCH_ENABLESMS,false);
 
-                    if ((keyword.length() == 0) || (!isSmsEnabled)) {
+                    if ((keyword.length() == 0) || (!SMS_ENABLE)) {
                         //Log.d(TAG, "No keyword available. Exit");
                         return;
                     }
@@ -198,7 +199,10 @@ public class UserinfoUpdateService extends Service {
                     Log.d("timesystem-",""+systemTime);
                 Log.d("timesyst-",""+timeConnectedMsg);
                     if(systemTime<time){
-                        wrData.setUserLocation(LocationUpdater.getHash());
+                        if(INTERNET_FALSE){
+                            wrData.setUserLocation(LocationUpdater.getHash());
+                        }
+
                     }else {
                         if(systemTime>timeConnectedMsg){
                             if(!msgConnectedSent){
@@ -216,7 +220,9 @@ public class UserinfoUpdateService extends Service {
 
                             }
                         }
-                        wrData.setUserLocation(LocationUpdater.getHash());
+                        if(INTERNET_FALSE){
+                            wrData.setUserLocation(LocationUpdater.getHash());
+                        }
                     }
             }
             mHandler.postDelayed(this, 11000);

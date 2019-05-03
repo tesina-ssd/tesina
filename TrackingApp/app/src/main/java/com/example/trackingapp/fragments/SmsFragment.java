@@ -28,14 +28,14 @@ public class SmsFragment extends Fragment {
 
     private EditText txtkeyword;
     private Button saveButton;
-    private Switch enableSettings;
+    //private Switch enableSettings;
     private Switch swgoogleMapsSMS;
     private Switch swlocationSms;
     private Switch swSingleSms;
 
 
     private String keyoword;
-    private boolean switchEnablesms;
+    //private boolean switchEnablesms;
     private boolean boolGoogleMapsSms;
     private boolean boolLocationSms;
     private boolean boolSingleSms;
@@ -50,7 +50,7 @@ public class SmsFragment extends Fragment {
         View v = inflater.inflate(R.layout.sms_settings,container,false);
         txtkeyword = (EditText) v.findViewById(R.id.txtkeyword);
         saveButton = (Button) v.findViewById(R.id.btnsalvaSharedprefe);
-        enableSettings = (Switch) v.findViewById(R.id.enableSms);
+        //enableSettings = (Switch) v.findViewById(R.id.enableSms);
         swgoogleMapsSMS = (Switch) v.findViewById(R.id.swgoogleMapsSms);
         swlocationSms= (Switch) v.findViewById(R.id.swlocationSms);
         swSingleSms= (Switch) v.findViewById(R.id.swSingleSms);
@@ -74,7 +74,7 @@ public class SmsFragment extends Fragment {
 
 
         editor.putString(TEXT_KEYWORD, txtkeyword.getText().toString());
-        editor.putBoolean(SWITCH_ENABLESMS, enableSettings.isChecked());
+        //editor.putBoolean(SWITCH_ENABLESMS, enableSettings.isChecked());
         editor.putBoolean(SWITCH_GOOGLEMAPS_SMS, swgoogleMapsSMS.isChecked());
         editor.putBoolean(SWITCH_LOCATION_SMS, swlocationSms.isChecked());
         editor.putBoolean(SWITCH_SINGLE_SMS, swSingleSms.isChecked());
@@ -86,7 +86,7 @@ public class SmsFragment extends Fragment {
     public void loadData() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         keyoword = sharedPreferences.getString(TEXT_KEYWORD, "");
-        switchEnablesms = sharedPreferences.getBoolean(SWITCH_ENABLESMS, false);
+        //switchEnablesms = sharedPreferences.getBoolean(SWITCH_ENABLESMS, false);
         boolGoogleMapsSms = sharedPreferences.getBoolean(SWITCH_GOOGLEMAPS_SMS, false);
         boolLocationSms = sharedPreferences.getBoolean(SWITCH_LOCATION_SMS, false);
         boolSingleSms = sharedPreferences.getBoolean(SWITCH_SINGLE_SMS, false);
@@ -94,7 +94,7 @@ public class SmsFragment extends Fragment {
 
     public void updateViews() {
         txtkeyword.setText(keyoword);
-        enableSettings.setChecked(switchEnablesms);
+        //enableSettings.setChecked(switchEnablesms);
         swlocationSms.setChecked(boolGoogleMapsSms);
         swgoogleMapsSMS.setChecked(boolLocationSms);
         swSingleSms.setChecked(boolSingleSms);

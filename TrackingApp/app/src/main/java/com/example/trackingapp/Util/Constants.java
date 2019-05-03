@@ -29,4 +29,6 @@ public class Constants {
     public static String CONNECTED_PHONE_NUMBER ="";
     public static String  ALARM_PHONE_NUMBER = "";
     public static final int ALL_PERMISSIONS_RESULT = 1011;
+    public static boolean SMS_ENABLE = false;
+    public static boolean INTERNET_FALSE = false;
 }

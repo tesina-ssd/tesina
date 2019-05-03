@@ -51,16 +51,8 @@
                 android:gravity="center"
                 android:text="@string/title_settings"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/enableSms"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Switch
-                android:id="@+id/enableSms"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:text="@string/ablita_sms"
                 app:layout_constraintBottom_toTopOf="@+id/swgoogleMapsSms"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Switch
                 android:id="@+id/swgoogleMapsSms"
@@ -68,7 +60,7 @@
                 android:layout_height="43dp"
                 android:text="@string/abilita_googleMapsSms"
                 app:layout_constraintBottom_toTopOf="@+id/swlocationSms"
-                app:layout_constraintTop_toBottomOf="@+id/enableSms" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
             <Switch
@@ -82,7 +74,7 @@
             <Switch
                 android:id="@+id/swSingleSms"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="66dp"
                 android:text="@string/abilita_singleSms"
                 app:layout_constraintBottom_toTopOf="@+id/btnsalvaSharedprefe"
                 app:layout_constraintTop_toBottomOf="@+id/swlocationSms" />
@@ -97,7 +89,7 @@
                 android:text="@string/salvasharedpref"
                 app:backgroundTint="@color/colorPrimary"
                 app:cornerRadius="50dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/swSingleSms" />

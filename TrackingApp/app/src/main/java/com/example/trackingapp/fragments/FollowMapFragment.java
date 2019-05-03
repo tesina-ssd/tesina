@@ -172,7 +172,7 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                             LineString.fromLngLats(userPostionsArray)
                     )}));
                 } else {
-                    Snackbar.make(getView().findViewById(R.id.FollowMapFragment_Map),"Errore di connessione, riprovare", Snackbar.LENGTH_LONG).show();
+                       Snackbar.make(getView().findViewById(R.id.FollowMapFragment_Map),"Errore di connessione, riprovare", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

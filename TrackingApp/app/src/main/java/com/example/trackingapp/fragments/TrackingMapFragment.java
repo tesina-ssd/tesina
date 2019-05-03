@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.trackingapp.Util.Constants;
 import com.example.trackingapp.Util.LocationUpdater;
 import com.example.trackingapp.R;
 import com.example.trackingapp.Util.UserinfoUpdateService;
@@ -75,6 +76,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
         // Settaggio del layout
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
+
+        Toast.makeText(getContext(), "SMS: " + Constants.SMS_ENABLE + "INTERNET: " + Constants.INTERNET_FALSE, Toast.LENGTH_LONG).show();
 
         fragmentManager = getFragmentManager();
         btnser = view.findViewById(R.id.btnStopService);
