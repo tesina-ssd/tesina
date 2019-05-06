@@ -1,4 +1,4 @@
-package com.example.trackingapp.Util;
+package com.example.trackingapp.util;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,15 +12,15 @@ import java.util.ArrayList;
 
 import androidx.core.app.JobIntentService;
 
-import static com.example.trackingapp.Util.Constants.BOOL_ALARM_MSG;
-import static com.example.trackingapp.Util.Constants.BOOL_CONNECTED_MSG;
-import static com.example.trackingapp.Util.Constants.EMERGENCY_MSG;
-import static com.example.trackingapp.Util.Constants.PHONE_NUMBER;
-import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
-import static com.example.trackingapp.Util.Constants.SWITCH_GOOGLEMAPS_SMS;
-import static com.example.trackingapp.Util.Constants.SWITCH_LOCATION_SMS;
-import static com.example.trackingapp.Util.Constants.SWITCH_SINGLE_SMS;
-import static com.example.trackingapp.Util.Constants.WHO_CALLING;
+import static com.example.trackingapp.util.Constants.BOOL_ALARM_MSG;
+import static com.example.trackingapp.util.Constants.BOOL_CONNECTED_MSG;
+import static com.example.trackingapp.util.Constants.EMERGENCY_MSG;
+import static com.example.trackingapp.util.Constants.PHONE_NUMBER;
+import static com.example.trackingapp.util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.util.Constants.SWITCH_GOOGLEMAPS_SMS;
+import static com.example.trackingapp.util.Constants.SWITCH_LOCATION_SMS;
+import static com.example.trackingapp.util.Constants.SWITCH_SINGLE_SMS;
+import static com.example.trackingapp.util.Constants.WHO_CALLING;
 
 public class SmsSenderService extends JobIntentService {
     private final static String TAG = SmsSenderService.class.getSimpleName();

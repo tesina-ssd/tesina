@@ -1,4 +1,4 @@
-package com.example.trackingapp.Util;
+package com.example.trackingapp.util;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -31,21 +31,20 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
-import static com.example.trackingapp.Util.Constants.ALARM_PHONE_NUMBER;
-import static com.example.trackingapp.Util.Constants.BOOL_ALARM_MSG;
-import static com.example.trackingapp.Util.Constants.BOOL_CONNECTED_MSG;
-import static com.example.trackingapp.Util.Constants.CHANNEL_ID;
-import static com.example.trackingapp.Util.Constants.CONNECTED_PHONE_NUMBER;
-import static com.example.trackingapp.Util.Constants.EMERGENCY_MSG;
-import static com.example.trackingapp.Util.Constants.INTERNET_FALSE;
-import static com.example.trackingapp.Util.Constants.IS_WORKING;
-import static com.example.trackingapp.Util.Constants.LOCATION_MSG;
-import static com.example.trackingapp.Util.Constants.PHONE_NUMBER;
-import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
-import static com.example.trackingapp.Util.Constants.SMS_ENABLE;
-import static com.example.trackingapp.Util.Constants.SWITCH_ENABLESMS;
-import static com.example.trackingapp.Util.Constants.TEXT_KEYWORD;
-import static com.example.trackingapp.Util.Constants.WHO_CALLING;
+import static com.example.trackingapp.util.Constants.ALARM_PHONE_NUMBER;
+import static com.example.trackingapp.util.Constants.BOOL_ALARM_MSG;
+import static com.example.trackingapp.util.Constants.BOOL_CONNECTED_MSG;
+import static com.example.trackingapp.util.Constants.CHANNEL_ID;
+import static com.example.trackingapp.util.Constants.CONNECTED_PHONE_NUMBER;
+import static com.example.trackingapp.util.Constants.EMERGENCY_MSG;
+import static com.example.trackingapp.util.Constants.INTERNET_FALSE;
+import static com.example.trackingapp.util.Constants.IS_WORKING;
+import static com.example.trackingapp.util.Constants.LOCATION_MSG;
+import static com.example.trackingapp.util.Constants.PHONE_NUMBER;
+import static com.example.trackingapp.util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.util.Constants.SMS_ENABLE;
+import static com.example.trackingapp.util.Constants.TEXT_KEYWORD;
+import static com.example.trackingapp.util.Constants.WHO_CALLING;
 
 
 /**

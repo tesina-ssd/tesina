@@ -25,10 +25,10 @@
             android:id="@+id/IconNotification"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dp"
             android:clickable="true"
             android:contentDescription="Notification"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/IconSettings"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,29 +39,29 @@
             android:id="@+id/IconSettings"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:clickable="true"
             android:contentDescription="Settings"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/IconProfileImage"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/IconNotification"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_settings" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/IconProfileImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="20dp"
-            android:clickable="true"
-            android:contentDescription="Profile Image"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/outline_face_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/IconSettings"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/outline_face_24" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

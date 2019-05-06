@@ -38,14 +38,14 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/ConnectionDialog_Code"
+        app:layout_constraintBottom_toTopOf="@+id/ConnectionCodeKeyDialog_Code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Title" />
 
     <TextView
-        android:id="@+id/ConnectionDialog_Code"
+        android:id="@+id/ConnectionCodeKeyDialog_Code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"

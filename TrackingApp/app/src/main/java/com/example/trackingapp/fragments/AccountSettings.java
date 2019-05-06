@@ -24,9 +24,9 @@ import android.widget.Toast;
 import com.example.trackingapp.activities.MainActivity;
 import com.example.trackingapp.R;
 import com.example.trackingapp.activities.SignInActivity;
-import com.example.trackingapp.Util.UsefullMethods;
-import com.example.trackingapp.Util.Userinformation;
-import com.example.trackingapp.Util.WriteData;
+import com.example.trackingapp.util.UsefullMethods;
+import com.example.trackingapp.util.Userinformation;
+import com.example.trackingapp.util.WriteData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,13 +43,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
-import static com.example.trackingapp.Util.Constants.ALARM_PHONE_NUMBER;
-import static com.example.trackingapp.Util.Constants.AUTH;
-import static com.example.trackingapp.Util.Constants.CONNECTED_PHONE_NUMBER;
-import static com.example.trackingapp.Util.Constants.KEY_ALARM_PHONE;
-import static com.example.trackingapp.Util.Constants.KEY_IMAGE_PATH;
-import static com.example.trackingapp.Util.Constants.KEY_PHONE_CONNECTED_TO_USER;
-import static com.example.trackingapp.Util.Constants.KEY_USER_PHONE;
+import static com.example.trackingapp.util.Constants.ALARM_PHONE_NUMBER;
+import static com.example.trackingapp.util.Constants.AUTH;
+import static com.example.trackingapp.util.Constants.CONNECTED_PHONE_NUMBER;
+import static com.example.trackingapp.util.Constants.KEY_ALARM_PHONE;
+import static com.example.trackingapp.util.Constants.KEY_IMAGE_PATH;
+import static com.example.trackingapp.util.Constants.KEY_PHONE_CONNECTED_TO_USER;
+import static com.example.trackingapp.util.Constants.KEY_USER_PHONE;
 
 
 /**

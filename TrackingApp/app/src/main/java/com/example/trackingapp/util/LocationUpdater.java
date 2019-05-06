@@ -1,4 +1,4 @@
-package com.example.trackingapp.Util;
+package com.example.trackingapp.util;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -18,9 +18,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

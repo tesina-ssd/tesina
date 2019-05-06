@@ -16,12 +16,14 @@ import androidx.annotation.NonNull;
 import com.example.trackingapp.fragments.AccountSettings;
 import com.example.trackingapp.fragments.FragSettings;
 import com.example.trackingapp.R;
+import com.example.trackingapp.fragments.viewmodels.FollowUserInfoModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 
 import androidx.appcompat.app.AlertDialog;
@@ -33,11 +35,12 @@ import androidx.navigation.Navigation;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static com.example.trackingapp.Util.Constants.*;
+import static com.example.trackingapp.util.Constants.*;
 
 public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener, FragSettings.OnFragmentInteractionListener {
 
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         //TODO: così funziona, vedere se si può togliere
         final NavController nav = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+
 
         findViewById(R.id.IconProfileImage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                     }else{
                         CONNECTED_PHONE_NUMBER= doc.get(KEY_PHONE_CONNECTED_TO_USER).toString();
                         ALARM_PHONE_NUMBER =( doc.get(KEY_ALARM_PHONE).toString());
+                        // Caricamento dell'immagine di profilo nella barra superiore
+                        Picasso.get()
+                                .load(doc.get(KEY_IMAGE_PATH).toString())
+                                .into((ImageView) findViewById(R.id.IconProfileImage));
                         Log.d("conn",CONNECTED_PHONE_NUMBER);
                         Log.d("alarm",CONNECTED_PHONE_NUMBER);
                     }

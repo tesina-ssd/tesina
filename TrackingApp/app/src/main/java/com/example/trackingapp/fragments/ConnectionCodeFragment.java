@@ -57,7 +57,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
             }
         });
 
-        TextView code = v.findViewById(R.id.ConnectionDialog_Code);
+        TextView code = v.findViewById(R.id.ConnectionCodeKeyDialog_Code);
         code.setText(connectionCode);
 
         return v;

@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.trackingapp.R;
-import com.example.trackingapp.Util.UserinfoUpdateService;
-import com.example.trackingapp.Util.WriteData;
+import com.example.trackingapp.util.UserinfoUpdateService;
+import com.example.trackingapp.util.WriteData;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,8 +28,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import static com.example.trackingapp.Util.Constants.AB;
-import static com.example.trackingapp.Util.Constants.AUTH;
+import static com.example.trackingapp.util.Constants.AB;
+import static com.example.trackingapp.util.Constants.AUTH;
 
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,

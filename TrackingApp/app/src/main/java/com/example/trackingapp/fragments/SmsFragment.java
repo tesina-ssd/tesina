@@ -17,12 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.trackingapp.Util.Constants.SHARED_PREFS;
-import static com.example.trackingapp.Util.Constants.SWITCH_ENABLESMS;
-import static com.example.trackingapp.Util.Constants.SWITCH_GOOGLEMAPS_SMS;
-import static com.example.trackingapp.Util.Constants.SWITCH_LOCATION_SMS;
-import static com.example.trackingapp.Util.Constants.SWITCH_SINGLE_SMS;
-import static com.example.trackingapp.Util.Constants.TEXT_KEYWORD;
+import static com.example.trackingapp.util.Constants.SHARED_PREFS;
+import static com.example.trackingapp.util.Constants.SWITCH_GOOGLEMAPS_SMS;
+import static com.example.trackingapp.util.Constants.SWITCH_LOCATION_SMS;
+import static com.example.trackingapp.util.Constants.SWITCH_SINGLE_SMS;
+import static com.example.trackingapp.util.Constants.TEXT_KEYWORD;
 
 public class SmsFragment extends Fragment {
 

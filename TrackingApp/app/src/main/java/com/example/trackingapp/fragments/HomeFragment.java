@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.trackingapp.R;
-import com.example.trackingapp.Util.Constants;
+import com.example.trackingapp.util.Constants;
 import com.google.android.material.chip.Chip;
 
 import androidx.fragment.app.Fragment;
@@ -33,7 +33,12 @@ public class HomeFragment extends Fragment {
                 if(((Chip)getView().findViewById(R.id.CardTrackingInternetChip)).isChecked()) Constants.INTERNET_FALSE = true;
                 else Constants.INTERNET_FALSE = false;
 
-                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_trackingMapFragment);
+                if(!Constants.SMS_ENABLE && !Constants.INTERNET_FALSE) {
+                    ((Chip)getView().findViewById(R.id.CardTrackingInternetChip)).setError("Selezionare almeno una opzione");
+                    ((Chip)getView().findViewById(R.id.CardTrackingSmsChip)).setError("Selezionare almeno una opzione");
+                } else {
+                    Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_trackingMapFragment);
+                }
             }
         });
 

@@ -12,11 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:elevation="21dp"
         android:visibility="visible"
-        app:fab_addButtonColorNormal="@color/colorPrimary"
-        app:fab_addButtonColorPressed="@color/colorPrimary"
+        app:fab_addButtonColorNormal="#0197f6"
+        app:fab_addButtonColorPressed="#0197f6"
         app:fab_addButtonSize="normal"
         app:fab_addButtonStrokeVisible="false"
         app:fab_expandDirection="up"
@@ -40,12 +40,12 @@
             tools:layout_editor_absoluteY="163dp" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/menu_item_Function"
+            android:id="@+id/menu_item_key"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/fui_bgGoogle"
             app:fab_colorPressed="@color/fui_bgGoogle"
-            app:fab_icon="@drawable/icon_outline_directions_walk_24"
+            app:fab_icon="@drawable/outline_key_24"
             app:fab_size="mini"
             app:fab_title="prova"
             tools:layout_conversion_absoluteHeight="58dp"
@@ -68,13 +68,21 @@
 
     <Button
         android:id="@+id/btnStopService"
-        android:layout_width="221dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
 
+        android:backgroundTint="#02182b"
+        android:fontFamily="@font/poppins_bold"
+        android:paddingTop="0dp"
+        android:text="TERMINA ESCURSIONE"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mapView" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

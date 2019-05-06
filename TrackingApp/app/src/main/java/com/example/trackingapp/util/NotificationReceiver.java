@@ -1,11 +1,11 @@
-package com.example.trackingapp.Util;
+package com.example.trackingapp.util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import static com.example.trackingapp.Util.Constants.IS_WORKING;
+import static com.example.trackingapp.util.Constants.IS_WORKING;
 
 public class NotificationReceiver extends BroadcastReceiver {
 

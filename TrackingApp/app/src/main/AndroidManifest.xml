@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".Util.CreateNotficationChannel"
+        android:name=".util.CreateNotficationChannel"
 
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,11 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".Util.UserinfoUpdateService"
+            android:name=".util.UserinfoUpdateService"
             android:exported="false"
             ></service>
         <service
-            android:name=".Util.SmsSenderService"
+            android:name=".util.SmsSenderService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <activity android:name=".activities.SignInActivity">
             <intent-filter>
@@ -46,7 +46,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <receiver android:name=".Util.NotificationReceiver">
+        <receiver android:name=".util.NotificationReceiver">
         </receiver>
 
     </application>

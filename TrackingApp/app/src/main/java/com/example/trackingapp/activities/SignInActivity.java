@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 import java.util.List;
-import static com.example.trackingapp.Util.Constants.RC_SIGN_IN;
+import static com.example.trackingapp.util.Constants.RC_SIGN_IN;
 public class SignInActivity extends AppCompatActivity {
 
 

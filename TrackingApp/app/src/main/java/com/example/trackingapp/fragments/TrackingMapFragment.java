@@ -10,18 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.trackingapp.Util.Constants;
-import com.example.trackingapp.Util.LocationUpdater;
+import com.example.trackingapp.util.Constants;
+import com.example.trackingapp.util.LocationUpdater;
 import com.example.trackingapp.R;
-import com.example.trackingapp.Util.UserinfoUpdateService;
-import com.google.android.gms.tasks.Continuation;
+import com.example.trackingapp.util.UserinfoUpdateService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
@@ -38,7 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import static com.example.trackingapp.Util.Constants.IS_WORKING;
+import static com.example.trackingapp.util.Constants.IS_WORKING;
 
 /**
  * Fragment rappresentate la mappa per il tracciamento dell'utente.
@@ -114,10 +112,11 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                 showDialog();
             }
         });
-        view.findViewById(R.id.menu_item_Function).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.menu_item_key).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             addMessage("Hello");
+             ConnectionCodeKeyDialog dialog = ConnectionCodeKeyDialog.newInstance();
+             dialog.show(fragmentManager, "KEY_DIALOG");
             }
         });
 
@@ -239,7 +238,6 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     @Override
     public void onConnectionDialogOkClicked() {
         onConnectionDialogCancelClicked();
-        btnser.setText("ExcusionWorking");
         btnser.setVisibility(View.VISIBLE);
     }
 

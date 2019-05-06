@@ -1,6 +1,4 @@
-package com.example.trackingapp.Util;
-
-import java.util.Map;
+package com.example.trackingapp.util;
 
 public class Userinformation {
     private String nameSurname;
