@@ -24,6 +24,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 
 import static com.example.trackingapp.util.Constants.IS_TRACKING_SERVICE_WORKING;
 
@@ -117,6 +118,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             }
 
         });
+
+        btnAlert.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_trackingMapFragment_to_alertFragment));
 
         // Viene visualizzato il dialog di inizio escursione
         showConnectionDialog();

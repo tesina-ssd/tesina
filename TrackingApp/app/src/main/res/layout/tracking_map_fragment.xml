@@ -12,13 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginStart="30dp"
+        android:layout_marginTop="48dp"
         android:tint="@android:color/white"
         app:backgroundTint="#d7263d"
-        app:layout_constraintBottom_toBottomOf="@+id/btnStopService"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnStopService"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintEnd_toStartOf="@+id/mapView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mapView"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/outline_warning_24" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="30dp"
         android:elevation="21dp"
         android:visibility="visible"
         app:fab_addButtonColorNormal="#0197f6"
@@ -87,7 +87,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="30dp"
         android:backgroundTint="#02182b"
         android:fontFamily="@font/poppins_bold"
         android:paddingTop="0dp"
@@ -96,10 +95,10 @@
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:cornerRadius="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

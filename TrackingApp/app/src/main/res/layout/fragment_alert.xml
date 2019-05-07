@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="100dp"
-        android:enabled="false"
+        android:enabled="true"
         android:text="Annulla"
         android:textColor="@android:color/white"
         app:cornerRadius="50dp"
@@ -57,4 +57,5 @@
         app:layout_constraintTop_toBottomOf="@+id/FragmentAlert_Text"
         app:rippleColor="@android:color/white"
         app:strokeColor="@android:color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

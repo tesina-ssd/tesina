@@ -42,7 +42,7 @@ import java.util.ArrayList;
 
 import static com.example.trackingapp.util.Constants.*;
 
-public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener, FragSettings.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener {
 
     // lists for permissions
     private ArrayList<String> permissionsToRequest;
@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         permissions.add(Manifest.permission.RECEIVE_SMS);
         permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
         permissions.add(Manifest.permission.INTERNET);
+        permissions.add(Manifest.permission.CALL_PHONE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             permissions.add(Manifest.permission.FOREGROUND_SERVICE);
         }
