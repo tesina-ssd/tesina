@@ -46,12 +46,6 @@ public class FragSettings extends Fragment {
             }
         });
 
-
-
        return view;
-    }
-
-
-    public interface OnFragmentInteractionListener {
     }
 }

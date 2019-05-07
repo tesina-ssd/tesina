@@ -7,12 +7,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginStart="30dp"
+        android:tint="@android:color/white"
+        app:backgroundTint="#d7263d"
+        app:layout_constraintBottom_toBottomOf="@+id/btnStopService"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnStopService"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/outline_warning_24" />
+
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="80dp"
         android:elevation="21dp"
         android:visibility="visible"
         app:fab_addButtonColorNormal="#0197f6"
@@ -61,8 +75,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
@@ -71,6 +87,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
+        android:layout_marginBottom="30dp"
         android:backgroundTint="#02182b"
         android:fontFamily="@font/poppins_bold"
         android:paddingTop="0dp"

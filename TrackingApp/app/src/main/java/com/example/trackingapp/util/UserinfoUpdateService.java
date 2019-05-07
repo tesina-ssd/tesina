@@ -38,7 +38,7 @@ import static com.example.trackingapp.util.Constants.CHANNEL_ID;
 import static com.example.trackingapp.util.Constants.CONNECTED_PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.EMERGENCY_MSG;
 import static com.example.trackingapp.util.Constants.INTERNET_FALSE;
-import static com.example.trackingapp.util.Constants.IS_WORKING;
+import static com.example.trackingapp.util.Constants.IS_TRACKING_SERVICE_WORKING;
 import static com.example.trackingapp.util.Constants.LOCATION_MSG;
 import static com.example.trackingapp.util.Constants.PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.SHARED_PREFS;
@@ -78,7 +78,7 @@ public class UserinfoUpdateService extends Service {
     public void onCreate() {
         super.onCreate();
         shouldContinue=true;
-        Constants.IS_WORKING=false;
+        Constants.IS_TRACKING_SERVICE_WORKING =false;
         Log.d(TAG, "onCreate");
         db = FirebaseFirestore.getInstance();
         wrData = new WriteData(getBaseContext(),null);
@@ -190,7 +190,7 @@ public class UserinfoUpdateService extends Service {
     private Runnable mToastRunnable = new Runnable() {
         @Override
         public void run() {
-            IS_WORKING=true;
+            IS_TRACKING_SERVICE_WORKING =true;
             Log.d("time-",""+time);
             if(time!=0){
                     date= new Date();
@@ -247,7 +247,7 @@ public class UserinfoUpdateService extends Service {
         unregisterReceiver(br);
         mHandler.removeCallbacks(mToastRunnable);
         Log.d(TAG, "onDestroyKILLEDD");
-        IS_WORKING=false;
+        IS_TRACKING_SERVICE_WORKING =false;
     }
 
     @Nullable

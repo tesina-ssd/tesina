@@ -3,7 +3,7 @@ package com.example.trackingapp.util;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Constants {
-    public static boolean IS_WORKING=false;
+    public static boolean IS_TRACKING_SERVICE_WORKING =false;
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String WHO_CALLING = "imcalling";
     public static final String BOOL_CONNECTED_MSG = "connectedmsg";

@@ -21,7 +21,11 @@
         android:id="@+id/trackingMapFragment"
         android:name="com.example.trackingapp.fragments.TrackingMapFragment"
         android:label="tracking_map_fragment"
-        tools:layout="@layout/tracking_map_fragment" />
+        tools:layout="@layout/tracking_map_fragment" >
+        <action
+            android:id="@+id/action_trackingMapFragment_to_alertFragment"
+            app:destination="@id/alertFragment" />
+    </fragment>
     <fragment
         android:id="@+id/followMapFragment"
         android:name="com.example.trackingapp.fragments.FollowMapFragment"
@@ -43,4 +47,9 @@
     <action
         android:id="@+id/action_global_smsFragment"
         app:destination="@id/smsFragment" />
+    <fragment
+        android:id="@+id/alertFragment"
+        android:name="com.example.trackingapp.fragments.AlertFragment"
+        android:label="fragment_alert"
+        tools:layout="@layout/fragment_alert" />
 </navigation>

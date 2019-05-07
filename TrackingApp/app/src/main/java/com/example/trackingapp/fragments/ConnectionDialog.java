@@ -47,14 +47,8 @@ public class ConnectionDialog extends DialogFragment implements
         void onConnectionDialogCancelClicked();
     }
 
-    static public ConnectionDialog newInstance(String connectionCode) {
+    static public ConnectionDialog newInstance() {
         ConnectionDialog dialog = new ConnectionDialog();
-        // I parametri non vengono passati al costruttore, ma sotto forma di parametro di newInstance e poi
-        // passati come bundle al metodo OnCreate()
-        Bundle args = new Bundle();
-        args.putString("connectionCode", connectionCode); // Viene passato come parametro alla creazione del dialog il codice da visualizzare
-        dialog.setArguments(args);
-
         return dialog;
     }
 
