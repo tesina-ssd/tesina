@@ -28,7 +28,7 @@
 
     <string-array name="activities">
         <item name="Trekking">Escursionismo</item>
-        <item name="mtb">Roba da figette (mtb)</item>
+        <item name="mtb">MTB</item>
         <item name="Ski">Sci alpinismo</item>
     </string-array>
 
@@ -46,8 +46,9 @@
 
     <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
+    <!--  General settings -->
     <string name="pref_header_general">General</string>
+    <string name="account_settings">Account Settings</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
@@ -115,5 +116,26 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="channel_name">UserNotificationChannel</string>
+    <string name="channel_description">Questo canale è usato per notificare
+        all utente che il servizio in background è in funzione</string>
+    <string name="titoloEscursione">Escursione in funzione</string>
+    <string name="testoEscursione">Stiamo inviando la tua posizione ai nostri server in Background</string>
+    <string name="keyword">Parola Chiave</string>
+    <string name="ablita_sms">Abilità SMS</string>
+    <string name="title_settings">Settings</string>
+    <string name="sms_settings">Sms Settings</string>
+    <string name="accuracy">Accuracy:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="altitude">Altitude:</string>
+    <string name="speed">Speed:</string>
+    <string name="abilita_googleMapsSms">Invia google Maps SMS\nLink con la posizione</string>
+    <string name="abilita_locationSms">Invia un SMS con :\nLatitudine,Longitudine,Precizione,Velocità</string>
+    <string name="salvasharedpref">Salva impostazioni</string>
+    <string name="abilita_singleSms">Invia un SMS con :\nLocation e Google maps link\nAltri sms non verranno inviati</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

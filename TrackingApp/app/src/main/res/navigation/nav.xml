@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.trackingapp.fragments.HomeFragment"
+        android:label="home_layout"
+        tools:layout="@layout/home_layout" >
+        <action
+            android:id="@+id/action_homeFragment_to_trackingMapFragment"
+            app:destination="@id/trackingMapFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_followMapFragment"
+            app:destination="@id/followMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trackingMapFragment"
+        android:name="com.example.trackingapp.fragments.TrackingMapFragment"
+        android:label="tracking_map_fragment"
+        tools:layout="@layout/tracking_map_fragment" >
+        <action
+            android:id="@+id/action_trackingMapFragment_to_alertFragment"
+            app:destination="@id/alertFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followMapFragment"
+        android:name="com.example.trackingapp.fragments.FollowMapFragment"
+        android:label="follow_map_fragment"
+        tools:layout="@layout/follow_map_fragment" />
+    <fragment
+        android:id="@+id/accountSettings"
+        android:name="com.example.trackingapp.fragments.AccountSettings"
+        android:label="account_settings"
+        tools:layout="@layout/account_settings" />
+    <action
+        android:id="@+id/action_global_accountSettings"
+        app:destination="@id/accountSettings" />
+    <fragment
+        android:id="@+id/smsFragment"
+        android:name="com.example.trackingapp.fragments.SmsFragment"
+        android:label="sms_settings"
+        tools:layout="@layout/sms_settings" />
+    <action
+        android:id="@+id/action_global_smsFragment"
+        app:destination="@id/smsFragment" />
+    <fragment
+        android:id="@+id/alertFragment"
+        android:name="com.example.trackingapp.fragments.AlertFragment"
+        android:label="fragment_alert"
+        tools:layout="@layout/fragment_alert" >
+        <action
+            android:id="@+id/action_alertFragment_to_trackingMapFragment"
+            app:destination="@id/trackingMapFragment"
+            app:popUpTo="@+id/trackingMapFragment" />
+    </fragment>
+</navigation>

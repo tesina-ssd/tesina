@@ -5,7 +5,7 @@
     android:id="@+id/containerSettings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragSettings">
+    tools:context=".fragments.FragSettings">
 
     <TextView
         android:id="@+id/lblAccountSettings"
@@ -13,11 +13,26 @@
         android:layout_height="58dp"
         android:background="@drawable/bottomborder"
         android:fontFamily="@font/poppins_light"
-        android:text="Account Settings"
-        android:textAlignment="center"
+        android:gravity="center"
+        android:text="@string/account_settings"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblSmsSettings"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@drawable/bottomborder"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center"
+        android:text="@string/sms_settings"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblAccountSettings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
