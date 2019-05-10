@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.example.trackingapp.activities.MainActivity;
 import com.example.trackingapp.R;
 import com.example.trackingapp.activities.SignInActivity;
-import com.example.trackingapp.util.UsefulMethods;
+import com.example.trackingapp.util.UsefullMethods;
 import com.example.trackingapp.util.Userinformation;
 import com.example.trackingapp.util.WriteData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -125,7 +125,7 @@ public class AccountSettings extends Fragment {
         db = FirebaseFirestore.getInstance();
         writeData = new WriteData(this.getContext(),getFragmentManager());
         inizializeClassWriteData();
-        connected = UsefulMethods.checkConnection(getContext());
+        connected = UsefullMethods.checkConnection(getContext());
 
     }
 
@@ -153,9 +153,7 @@ public class AccountSettings extends Fragment {
 
 
         cm = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
-
-
-        cm.setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.modifyPic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -164,6 +162,16 @@ public class AccountSettings extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
             }
         });
+
+        /*cm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                ntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
+            }
+        });*/
 
         btnSalva.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -326,7 +334,7 @@ public class AccountSettings extends Fragment {
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setCancelable(false);
             pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000, pd,getFragmentManager());
+            UsefullMethods.timerDelayRemoveDialog(15000, pd,getFragmentManager());
             pd.setMessage("Getting information...");
             String username;
             if (user != null) {
@@ -468,7 +476,7 @@ public class AccountSettings extends Fragment {
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setCancelable(false);
             pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,getFragmentManager());
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,getFragmentManager());
             pd.setMessage("Getting information...");
             String username;
             if (user != null) {

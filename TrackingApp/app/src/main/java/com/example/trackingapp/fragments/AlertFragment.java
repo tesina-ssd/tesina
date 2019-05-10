@@ -1,9 +1,11 @@
 package com.example.trackingapp.fragments;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import static com.example.trackingapp.util.Constants.ALARM_PHONE_NUMBER;
-import static com.example.trackingapp.util.Constants.KEY_ALARM_PHONE;
-
 public class AlertFragment extends Fragment {
 
     private CountDownTimer timer;
@@ -27,7 +26,12 @@ public class AlertFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_alert,container,false);
-        (view.findViewById(R.id.FragmentAlert_BtnAnnulla)).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_alertFragment_to_trackingMapFragment));
+        (view.findViewById(R.id.FragmentAlert_BtnAnnulla)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getView()).popBackStack();
+            }
+        });
 
         timer = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -38,7 +42,7 @@ public class AlertFragment extends Fragment {
             public void onFinish() {
                 Toast.makeText(getContext(), "Finito!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + ALARM_PHONE_NUMBER));
+                intent.setData(Uri.parse("tel:" + "3663186599"));
                 startActivityForResult(intent, 1);
             }
         }.start();
@@ -48,7 +52,7 @@ public class AlertFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 1) Navigation.findNavController(getView()).navigate(R.id.action_alertFragment_to_trackingMapFragment);
+        if(requestCode == 1) Navigation.findNavController(getView()).popBackStack(); //Navigation.findNavController(getView()).navigate(R.id.action_alertFragment_to_trackingMapFragment);
     }
 
     @Override

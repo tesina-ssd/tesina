@@ -10,8 +10,8 @@ import com.example.trackingapp.fragments.NoConnectionDialog;
 
 import androidx.fragment.app.FragmentManager;
 
-public class UsefulMethods {
-    public UsefulMethods(){
+public class UsefullMethods {
+    public UsefullMethods(){
 
     }
 
@@ -38,5 +38,4 @@ public class UsefulMethods {
         else
             return false;
     }
-
 }

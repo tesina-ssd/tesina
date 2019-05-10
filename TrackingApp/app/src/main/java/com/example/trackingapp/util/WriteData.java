@@ -26,8 +26,6 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import static com.example.trackingapp.util.Constants.COLLECTION_ESCURSIONE;
-
 public class WriteData {
     private  ProgressDialog pd =null;
     private FirebaseUser user = null;
@@ -59,7 +57,7 @@ public class WriteData {
         pd.setCancelable(false);
         pd.setMessage("Uploading");
         pd.show();
-        UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+        UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
         if (imageuri != null) {
             final StorageReference fileReference = storageReference.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
             fileReference.putFile(imageuri).continueWithTask(new Continuation< UploadTask.TaskSnapshot, Task< Uri >>() {
@@ -102,7 +100,7 @@ public class WriteData {
     public WriteData setEcursion(Map<String, Object> data){
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Setting Excursion...");
             uploadGenericData("excursion",data);
         }
@@ -138,9 +136,9 @@ public class WriteData {
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
             key_userid.put("useid",userid);
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Setting Excursion...");
-            db.collection(COLLECTION_ESCURSIONE).document(mkey).set(key_userid)
+            db.collection("excursionKeys").document(mkey).set(key_userid)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -163,7 +161,7 @@ public class WriteData {
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
             pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Updating data...");
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -183,7 +181,7 @@ public class WriteData {
         }
         if(!userid.equals("")){
             pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Updating data...");
             db.collection("users").document(userid)
                     .set(data, SetOptions.merge())

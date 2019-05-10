@@ -9,20 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.trackingapp.R;
 import com.example.trackingapp.util.UserinfoUpdateService;
 import com.example.trackingapp.util.WriteData;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.security.SecureRandom;
 import java.util.Calendar;
@@ -45,6 +39,7 @@ import static com.example.trackingapp.util.Constants.COLLECTION_ESCURSIONE;
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
         ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
+
     static SecureRandom rnd = new SecureRandom();
     private String connection_Key ="";
     private WriteData wrd = null;

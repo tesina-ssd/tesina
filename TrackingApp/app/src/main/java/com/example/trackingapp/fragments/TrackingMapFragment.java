@@ -48,6 +48,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     private TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
     private ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
     private FirebaseFirestore db=null;
+
     private final int CONNECTION_DIALOG_REQ_CODE = 1;
     private final String CONNECTION_DIALOG_TAG = "CONN_DIALOG";
 
@@ -65,6 +66,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         // Settaggio del layout
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
         db= FirebaseFirestore.getInstance();
+
         // Log delle impostazioni di trasmissione dei dati scelte dall'utente
         // Log.i("CONNECTION SETTINGS", "SMS: " + Constants.SMS_ENABLE + "INTERNET: " + Constants.INTERNET_FALSE);
 
@@ -72,16 +74,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView = view.findViewById(R.id.mapView);
         btnser = view.findViewById(R.id.btnStopService);
         btnAlert = view.findViewById(R.id.fab_alert);
-
-        // Controllo della variabile condivisa IS_TRACKING_SERVICE_WORKING: controlla se un servizio di tracciamento è già attualmente attivo
-        if (IS_TRACKING_SERVICE_WORKING) {
-            btnser.setVisibility(View.VISIBLE); // Il pulsante per chiudere il servizio viene visualizzato
-            btnAlert.setVisibility(View.VISIBLE);
-        } else {
-            btnser.setVisibility(View.GONE); // Il pulsante per chiudere il servizio non viene visualizzato
-            btnAlert.setVisibility(View.GONE);
-        }
-
+        checkService();
         // Inizializzazione della mappa di mapBox
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -120,7 +113,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
                 // Log.i("TRACKING SERVICE", "Tracking service closed correctly");
                 btnser.setVisibility(View.GONE);
-                btnAlert.setVisibility(View.GONE);
+                btnAlert.hide();
                 //Cancello la chiave creata
                 db.collection(COLLECTION_ESCURSIONE).document(CHIAVE_ESCURSIONE)
                         .delete()
@@ -160,7 +153,17 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             connectionCodeGeneratorDialogFragment.show(fragmentManager, CONNECTION_DIALOG_TAG);
         }
     }
-
+    private void checkService(){
+        // Controllo della variabile condivisa IS_TRACKING_SERVICE_WORKING: controlla se un servizio di tracciamento è già attualmente attivo
+        if (IS_TRACKING_SERVICE_WORKING) {
+            btnser.setVisibility(View.VISIBLE); // Il pulsante per chiudere il servizio viene visualizzato
+            btnAlert.show();
+        } else {
+            btnser.setVisibility(View.GONE); // Il pulsante per chiudere il servizio non viene visualizzato
+            //btnAlert.setVisibility(View.GONE);
+            btnAlert.hide();
+        }
+    }
 /*    private Task<String> addMessage (String text){
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
@@ -218,12 +221,14 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     public void onStart() {
         super.onStart();
         mapView.onStart();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        checkService();
     }
 
     @Override
@@ -244,11 +249,12 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView.onLowMemory();
     }
 
+
     @Override
     public void onConnectionDialogOkClicked() {
         onConnectionDialogCancelClicked();
         btnser.setVisibility(View.VISIBLE);
-        btnAlert.setVisibility(View.VISIBLE);
+        btnAlert.show();
     }
 
     @Override

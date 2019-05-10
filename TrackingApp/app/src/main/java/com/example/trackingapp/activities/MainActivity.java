@@ -104,21 +104,14 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         checkifGpsAvaible();
         // we add permissions we need to request location of the users
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.READ_SMS);
-        permissions.add(Manifest.permission.BROADCAST_SMS);
         permissions.add(Manifest.permission.SEND_SMS);
-        permissions.add(Manifest.permission.RECEIVE_SMS);
-        permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
-        permissions.add(Manifest.permission.INTERNET);
         permissions.add(Manifest.permission.CALL_PHONE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            permissions.add(Manifest.permission.FOREGROUND_SERVICE);
-        }
         permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
 
-
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            permissions.add(Manifest.permission.FOREGROUND_SERVICE);
+        }
+*/
         permissionsToRequest = permissionsToRequest(permissions);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -149,35 +142,43 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
-            case ALL_PERMISSIONS_RESULT:
-                for (String perm : permissionsToRequest) {
-                    if (!hasPermission(perm)) {
-                        permissionsRejected.add(perm);
+        if (requestCode == ALL_PERMISSIONS_RESULT) {
+            permissionsRejected.clear();
+            for (String perm : permissionsToRequest) {
+                if (!hasPermission(perm)) {
+                    permissionsRejected.add(perm);
+                }
+            }
+
+            if (permissionsRejected.size() > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                        new AlertDialog.Builder(MainActivity.this).
+                                setMessage("I permessi sono necessari per il funzionamento dell'applicazione.\n\nCliccando su \"cancel\" l'app verrà chiusa!").
+                                setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        requestPermissions(permissionsRejected.
+                                                toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                    }
+                                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Esce dall'applicazione
+                                /*Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                                homeIntent.addCategory(Intent.CATEGORY_HOME);
+                                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(homeIntent);*/
+                                int pid = android.os.Process.myPid();
+                                android.os.Process.killProcess(pid);
+
+                            }
+                        }).create().show();
+
+                        return;
                     }
                 }
-
-                if (permissionsRejected.size() > 0) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                            new AlertDialog.Builder(MainActivity.this).
-                                    setMessage("These permissions are mandatory to get your location. You need to allow them.").
-                                    setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions(permissionsRejected.
-                                                        toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
-                                        }
-                                    }).setNegativeButton("Cancel", null).create().show();
-
-                            return;
-                        }
-                    }
-                }
-
-                break;
+            }
         }
 
     }
@@ -186,18 +187,15 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-        }else{
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             showGPSDisabledAlertToUser();
         }
-
     }
     private void showGPSDisabledAlertToUser(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
+        alertDialogBuilder.setMessage("GPS è disabilitato sul tuo dispotivo. Vorresti abilitarlo? è neccessario per l'utilizzo dell'app\n\nCliccando su \"no grazie\" l'app verrà chiusa!")
                 .setCancelable(false)
-                .setPositiveButton("Goto Settings Page To Enable GPS",
+                .setPositiveButton("Abilità GPS",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
                                 Intent callGPSSettingIntent = new Intent(
@@ -205,10 +203,12 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                                 startActivity(callGPSSettingIntent);
                             }
                         });
-        alertDialogBuilder.setNegativeButton("Cancel",
+        alertDialogBuilder.setNegativeButton("No grazie",
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         dialog.cancel();
+                        int pid = android.os.Process.myPid();
+                        android.os.Process.killProcess(pid);
                     }
                 });
         AlertDialog alert = alertDialogBuilder.create();
@@ -218,5 +218,17 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkifGpsAvaible();
     }
 }
