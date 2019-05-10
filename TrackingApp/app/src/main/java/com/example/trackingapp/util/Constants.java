@@ -12,6 +12,7 @@ public class Constants {
     public static final String KEY_USER_PHONE = "NumeroDiTelefono";
     public static final String KEY_PHONE_CONNECTED_TO_USER = "NumeroPersonaConnessa";
     public static final String KEY_ALARM_PHONE = "NumeroDiAllarme";
+    public static final String COLLECTION_ESCURSIONE = "excursionKeys";
     public static final int SLOWCONN = 2;
     public static final int NO_CONN = 1;
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -31,4 +32,5 @@ public class Constants {
     public static final int ALL_PERMISSIONS_RESULT = 1011;
     public static boolean SMS_ENABLE = false;
     public static boolean INTERNET_FALSE = false;
+    public static String CHIAVE_ESCURSIONE = "";
 }

@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
                             new AlertDialog.Builder(MainActivity.this).
-                                    setMessage("These permissions are mandatory to get your location. You need to allow them.").
+                                    setMessage("I permessi sono necessari per il funzionamento dell'applicazione").
                                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -170,7 +170,16 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                                                         toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
                                             }
                                         }
-                                    }).setNegativeButton("Cancel", null).create().show();
+                                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Esce dall'applicazione
+                                    Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                                    homeIntent.addCategory(Intent.CATEGORY_HOME );
+                                    homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(homeIntent);
+                                }
+                            }).create().show();
 
                             return;
                         }

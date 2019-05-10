@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.example.trackingapp.R;
 import com.example.trackingapp.util.UserinfoUpdateService;
 import com.example.trackingapp.util.WriteData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,6 +24,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -30,13 +33,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import static com.example.trackingapp.util.Constants.AB;
 import static com.example.trackingapp.util.Constants.AUTH;
+import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
+import static com.example.trackingapp.util.Constants.COLLECTION_ESCURSIONE;
 
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
         ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
+
     static SecureRandom rnd = new SecureRandom();
     private String connection_Key ="";
-
+    private WriteData wrd = null;
+    private FirebaseFirestore db = null;
     private FragmentManager fragmentManager = null;
     ConnectionDialogListener mListener = null;
 
@@ -74,7 +81,8 @@ public class ConnectionDialog extends DialogFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Costruzione del layout
         fragmentManager = getChildFragmentManager();
-
+        db = FirebaseFirestore.getInstance();
+        wrd = new WriteData(getContext(),getFragmentManager());
         View v = inflater.inflate(R.layout.connection_dialog, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -97,34 +105,46 @@ public class ConnectionDialog extends DialogFragment implements
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
         transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
+        wrd.setDb(db)
+                .setUserid(AUTH.getUid())
+                .setMkey(connection_Key)
+                .setEcursion(excursionSheet)
+                .keysCollection();
     }
 
     @Override
     public void onConnectionCodeFragmentCancelPressed() {
         mListener.onConnectionDialogCancelClicked();
+        db.collection(COLLECTION_ESCURSIONE).document(connection_Key)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Deleteting", "Document successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Deleteting", "Error deleting document", e);
+                    }
+                });
     }
 
     @Override
     public void onConnectionCodeFragmentOkPressed() {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            WriteData wrd = new WriteData(getContext(),getFragmentManager());
-            wrd.setDb(db)
-                .setUserid(AUTH.getUid())
-                .setMkey(connection_Key)
-                .setEcursion(excursionSheet)
-                .keysCollection();
-            Date date = new Date();
-            Calendar c = new GregorianCalendar();
-                    Timestamp timestamp =  (Timestamp) excursionSheet.get(("finishingTimeDate"));
-                    date=timestamp.toDate();
-            c.setTime(date);
-             long time = c.getTimeInMillis();
 
+        Date date = new Date();
+        Calendar c = new GregorianCalendar();
+        Timestamp timestamp =  (Timestamp) excursionSheet.get(("finishingTimeDate"));
+        date=timestamp.toDate();
+        c.setTime(date);
+        long time = c.getTimeInMillis();
         Log.d("time-",""+time);
         Intent serviceIntent = new Intent(getContext(), UserinfoUpdateService.class);
         serviceIntent.putExtra("USERID", AUTH.getUid());
         serviceIntent.putExtra("Time", time);
-
+        CHIAVE_ESCURSIONE = connection_Key;
         ContextCompat.startForegroundService(getContext(), serviceIntent);
         mListener.onConnectionDialogOkClicked();
     }

@@ -3,6 +3,7 @@ package com.example.trackingapp.fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.Button;
 import com.example.trackingapp.util.LocationUpdater;
 import com.example.trackingapp.R;
 import com.example.trackingapp.util.UserinfoUpdateService;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -26,6 +30,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
+import static com.example.trackingapp.util.Constants.COLLECTION_ESCURSIONE;
 import static com.example.trackingapp.util.Constants.IS_TRACKING_SERVICE_WORKING;
 
 /**
@@ -41,6 +47,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     private static MapboxMap mapbox;
     private TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
     private ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
+    private FirebaseFirestore db=null;
 
     private final int CONNECTION_DIALOG_REQ_CODE = 1;
     private final String CONNECTION_DIALOG_TAG = "CONN_DIALOG";
@@ -58,6 +65,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
         // Settaggio del layout
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
+        db= FirebaseFirestore.getInstance();
 
         // Log delle impostazioni di trasmissione dei dati scelte dall'utente
         // Log.i("CONNECTION SETTINGS", "SMS: " + Constants.SMS_ENABLE + "INTERNET: " + Constants.INTERNET_FALSE);
@@ -70,10 +78,11 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         // Controllo della variabile condivisa IS_TRACKING_SERVICE_WORKING: controlla se un servizio di tracciamento è già attualmente attivo
         if (IS_TRACKING_SERVICE_WORKING) {
             btnser.setVisibility(View.VISIBLE); // Il pulsante per chiudere il servizio viene visualizzato
-            btnAlert.setVisibility(View.VISIBLE);
+            btnAlert.show();
         } else {
             btnser.setVisibility(View.GONE); // Il pulsante per chiudere il servizio non viene visualizzato
-            btnAlert.setVisibility(View.GONE);
+            //btnAlert.setVisibility(View.GONE);
+            btnAlert.hide();
         }
 
         // Inizializzazione della mappa di mapBox
@@ -111,10 +120,27 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             public void onClick(View view) {
                 getContext().stopService(new Intent(getContext(), UserinfoUpdateService.class));
                 IS_TRACKING_SERVICE_WORKING =false;
-                // Log di chiusura del servizio
+
                 // Log.i("TRACKING SERVICE", "Tracking service closed correctly");
                 btnser.setVisibility(View.GONE);
-                btnAlert.setVisibility(View.GONE);
+                btnAlert.hide();
+                //Cancello la chiave creata
+                db.collection(COLLECTION_ESCURSIONE).document(CHIAVE_ESCURSIONE)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("Deleteting", "Document successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("Deleteting", "Error deleting document", e);
+                            }
+                        });
+                //setto anche la stringa a null
+                CHIAVE_ESCURSIONE = "";
             }
 
         });
