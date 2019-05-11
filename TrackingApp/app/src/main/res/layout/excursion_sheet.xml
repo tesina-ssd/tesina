@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ExcursionSheet_BaseLayout"
+    android:layout_width="350dp"
+    android:layout_height="500dp"
+    android:background="@android:color/transparent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingLeft="30dp"
+    android:paddingTop="40dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/ExcursionSheet_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:text="Scheda escursione"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/ExcursionSheet_ActivityType"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:entries="@array/activities"
+        android:fontFamily="@font/poppins"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/ExcursionSheet_RowStartingTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ExcursionSheet_Title" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ExcursionSheet_PeopleNumber"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numero di persone"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/ExcursionSheet_BtnCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ExcursionSheet_RowFinishingTime">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ExcursionSheet_PeopleNumber_Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ExcursionSheet_RowFinishingTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/ExcursionSheet_PeopleNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ExcursionSheet_RowStartingTime">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ExcursionSheet_FinishingTimeTime"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:hint="Ora fine"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ExcursionSheet_FinishingTimeDate"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ExcursionSheet_FinishingTimeTime_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:inputType="date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ExcursionSheet_FinishingTimeDate"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:hint="Data fine"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ExcursionSheet_FinishingTimeTime"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ExcursionSheet_FinishingTimeDate_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:inputType="date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ExcursionSheet_RowStartingTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/ExcursionSheet_RowFinishingTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ExcursionSheet_ActivityType">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ExcursionSheet_StartingTimeTime"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:hint="Ora inizio"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ExcursionSheet_StartingTimeDate"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ExcursionSheet_StartingTimeTime_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:inputType="textFilter|number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ExcursionSheet_StartingTimeDate"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:hint="Data inizio"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ExcursionSheet_StartingTimeTime"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ExcursionSheet_StartingTimeDate_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ExcursionSheet_BtnNext"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="right"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="AVANTI >"
+        android:textColor="@color/colorPrimary"
+        app:backgroundTint="@color/fui_transparent"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ExcursionSheet_BtnCancel"
+        app:rippleColor="@color/colorPrimary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ExcursionSheet_BtnCancel"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_gravity="right"
+        android:layout_marginEnd="48dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="ANNULLA"
+        android:textColor="@color/fui_bgAnonymous"
+        app:backgroundTint="@color/fui_transparent"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ExcursionSheet_BtnNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@color/fui_bgAnonymous" />
+</androidx.constraintlayout.widget.ConstraintLayout>

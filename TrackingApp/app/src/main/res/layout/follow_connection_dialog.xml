@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FollowConnectionDialog_Base"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/FollowConnectionDialog_CardView"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:minHeight="200dp"
+        android:theme="@style/Widget.MaterialComponents.CardView"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FollowConnectionDialog_SecondBase"
+            android:layout_width="350dp"
+            android:layout_height="500dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="20dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/FollowConnectionDialod_Code"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Codice di connessione"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/FollowConnectionDialog_BtnOk"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/FollowConnectionDialog_Info">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/FollowConnectionDialod_CodeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/FollowConnectionDialog_Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/str_ConnectionDialog_Title"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/FollowConnectionDialog_Info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
+
+            <TextView
+                android:id="@+id/FollowConnectionDialog_Info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/poppins"
+                android:text="Inserisci il codice di connessione fornito dall'utente che desideri tracciare: ti permetterà di avere accesso alle informazioni in tempo reale sulla sua posizione, per permettere un tempestivo soccorso"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/FollowConnectionDialod_Code"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/FollowConnectionDialog_Title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/FollowConnectionDialog_BtnOk"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/str_ConnectionDialog_BtnOk"
+                android:textColor="@color/colorPrimary"
+                app:backgroundTint="@color/fui_transparent"
+                app:cornerRadius="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/FollowConnectionDialog_BtnCancel"
+                app:layout_constraintTop_toBottomOf="@+id/FollowConnectionDialod_Code"
+                app:rippleColor="@color/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/FollowConnectionDialog_BtnCancel"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/str_ConnectionDialog_BtnAvanti"
+                android:textColor="@color/fui_bgAnonymous"
+                app:backgroundTint="@color/fui_transparent"
+                app:cornerRadius="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/FollowConnectionDialog_BtnOk"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:rippleColor="@color/fui_bgAnonymous" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
