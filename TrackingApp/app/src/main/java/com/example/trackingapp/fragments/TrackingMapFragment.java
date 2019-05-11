@@ -68,7 +68,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         db= FirebaseFirestore.getInstance();
 
         // Log delle impostazioni di trasmissione dei dati scelte dall'utente
-        // Log.i("CONNECTION SETTINGS", "SMS: " + Constants.SMS_ENABLE + "INTERNET: " + Constants.INTERNET_FALSE);
+        // Log.i("CONNECTION SETTINGS", "SMS: " + Constants.SMS_ENABLE + "INTERNET: " + Constants.INTERNET_ENABLE);
 
         fragmentManager = getFragmentManager();
         mapView = view.findViewById(R.id.mapView);

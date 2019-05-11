@@ -37,7 +37,7 @@ import static com.example.trackingapp.util.Constants.BOOL_CONNECTED_MSG;
 import static com.example.trackingapp.util.Constants.CHANNEL_ID;
 import static com.example.trackingapp.util.Constants.CONNECTED_PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.EMERGENCY_MSG;
-import static com.example.trackingapp.util.Constants.INTERNET_FALSE;
+import static com.example.trackingapp.util.Constants.INTERNET_ENABLE;
 import static com.example.trackingapp.util.Constants.IS_TRACKING_SERVICE_WORKING;
 import static com.example.trackingapp.util.Constants.LOCATION_MSG;
 import static com.example.trackingapp.util.Constants.PHONE_NUMBER;
@@ -198,7 +198,7 @@ public class UserinfoUpdateService extends Service {
                     Log.d("timesystem-",""+systemTime);
                 Log.d("timesyst-",""+timeConnectedMsg);
                     if(systemTime<time){
-                        if(INTERNET_FALSE){
+                        if(INTERNET_ENABLE){
                             wrData.setUserLocation(LocationUpdater.getHash());
                         }
 
@@ -219,7 +219,7 @@ public class UserinfoUpdateService extends Service {
 
                             }
                         }
-                        if(INTERNET_FALSE){
+                        if(INTERNET_ENABLE){
                             wrData.setUserLocation(LocationUpdater.getHash());
                         }
                     }

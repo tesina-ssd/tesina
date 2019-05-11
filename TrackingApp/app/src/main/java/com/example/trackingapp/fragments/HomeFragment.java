@@ -9,6 +9,7 @@ import com.example.trackingapp.R;
 import com.example.trackingapp.util.Constants;
 import com.google.android.material.chip.Chip;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -21,21 +22,37 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.home_layout, container, false);
+
+        final Chip smsChip = v.findViewById(R.id.CardTrackingSmsChip);
+        final Chip internetChip = v.findViewById(R.id.CardTrackingInternetChip);
+
+        smsChip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((Chip)v).getError() != null) ((Chip)v).setError(null);
+            }
+        });
+
+        internetChip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((Chip)v).getError() != null) ((Chip)v).setError(null);
+            }
+        });
+
         v.findViewById(R.id.CardTrackingBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(((Chip)getView().findViewById(R.id.CardTrackingSmsChip)).isChecked()) Constants.SMS_ENABLE = true;
-                else Constants.SMS_ENABLE = false;
+                Constants.SMS_ENABLE = smsChip.isChecked();
+                Constants.INTERNET_ENABLE = internetChip.isChecked();
 
-                if(((Chip)getView().findViewById(R.id.CardTrackingInternetChip)).isChecked()) Constants.INTERNET_FALSE = true;
-                else Constants.INTERNET_FALSE = false;
-
-                if(!Constants.SMS_ENABLE && !Constants.INTERNET_FALSE) {
-                    ((Chip)getView().findViewById(R.id.CardTrackingInternetChip)).setError("Selezionare almeno una opzione");
-                    ((Chip)getView().findViewById(R.id.CardTrackingSmsChip)).setError("Selezionare almeno una opzione");
+                if(!Constants.SMS_ENABLE && !Constants.INTERNET_ENABLE) {
+                    (internetChip).setError("Selezionare almeno una opzione");
+                    (smsChip).setError("Selezionare almeno una opzione");
                 } else {
                     Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_trackingMapFragment);
                 }
@@ -43,6 +60,7 @@ public class HomeFragment extends Fragment {
         });
 
         v.findViewById(R.id.CardFollowBtn).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_followMapFragment));
+
         return v;
     }
 }
