@@ -1,16 +1,20 @@
 package com.example.trackingapp.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.trackingapp.util.LocationUpdater;
 import com.example.trackingapp.R;
+import com.example.trackingapp.util.UsefulMethods;
 import com.example.trackingapp.util.UserinfoUpdateService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +51,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     private static MapboxMap mapbox;
     private TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
     private ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
-    private FirebaseFirestore db=null;
+
 
     private final int CONNECTION_DIALOG_REQ_CODE = 1;
     private final String CONNECTION_DIALOG_TAG = "CONN_DIALOG";
@@ -65,7 +69,6 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
         // Settaggio del layout
         View view = inflater.inflate(R.layout.tracking_map_fragment, container, false);
-        db= FirebaseFirestore.getInstance();
 
         // Log delle impostazioni di trasmissione dei dati scelte dall'utente
         // Log.i("CONNECTION SETTINGS", "SMS: " + Constants.SMS_ENABLE + "INTERNET: " + Constants.INTERNET_ENABLE);
@@ -96,14 +99,27 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
 
         view.findViewById(R.id.menu_item_start).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { showConnectionDialog(); }
+            public void onClick(View v) {
+                int mode = getLocationMode(getContext());
+                if(mode == 3){
+                    showConnectionDialog();
+                }else{
+                    Toast.makeText(getContext(),"Gps Mode è selezionato su \"Dispositivo solo  o su BATTERY SAVING\".\n" +
+                                                        "Cambia GPS mode su :\"HIGH ACCURACY \"",Toast.LENGTH_LONG).show();
+                }
+            }
         });
 
         view.findViewById(R.id.menu_item_key).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             ConnectionCodeKeyDialog dialog = ConnectionCodeKeyDialog.newInstance();
-             dialog.show(fragmentManager, "KEY_DIALOG");
+             if(!CHIAVE_ESCURSIONE.equals("")){
+                 ConnectionCodeKeyDialog dialog = ConnectionCodeKeyDialog.newInstance();
+                 dialog.show(fragmentManager, "KEY_DIALOG");
+             }else{
+                 Toast.makeText(getContext(),"Nessuna Escursione Attiva",Toast.LENGTH_LONG).show();
+             }
+
             }
         });
 
@@ -116,23 +132,8 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                 // Log.i("TRACKING SERVICE", "Tracking service closed correctly");
                 btnser.setVisibility(View.GONE);
                 btnAlert.hide();
-                //Cancello la chiave creata
-                db.collection(COLLECTION_ESCURSIONE).document(CHIAVE_ESCURSIONE)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("Deleteting", "Document successfully deleted!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("Deleteting", "Error deleting document", e);
-                            }
-                        });
-                //setto anche la stringa a null
-                CHIAVE_ESCURSIONE = "";
+                UsefulMethods.deleteKeyFromDB();
+
             }
 
         });
@@ -140,7 +141,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         btnAlert.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_trackingMapFragment_to_alertFragment));
 
         // Viene visualizzato il dialog di inizio escursione
-        showConnectionDialog();
+        //showConnectionDialog();
 
         return  view;
     }
@@ -213,7 +214,15 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         // Set the component's render mode
         locationComponent.setRenderMode(RenderMode.GPS);
     }
-
+    public int getLocationMode(Context context)
+    {
+        try {
+            return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     @Override
     public void onDestroyView() {
         // Evita che la mappa chrashi quando ricaricata

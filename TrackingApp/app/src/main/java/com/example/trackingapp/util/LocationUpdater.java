@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -33,6 +34,7 @@ public class LocationUpdater {
     public LocationUpdater(Context context) {
         this.context = context;
         requestLocation();
+
     }
 
     private void requestLocation() {
@@ -87,6 +89,4 @@ public class LocationUpdater {
         userLocation.put("locationTime", new Timestamp(new Date()));
         return userLocation;
     }
-
-
 }

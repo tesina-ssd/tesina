@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.trackingapp.R;
+import com.example.trackingapp.util.UsefulMethods;
 import com.example.trackingapp.util.UserinfoUpdateService;
 import com.example.trackingapp.util.WriteData;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,8 +41,7 @@ public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
         ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
 
-    static SecureRandom rnd = new SecureRandom();
-    private String connection_Key ="";
+    private static SecureRandom rnd = new SecureRandom();
     private WriteData wrd = null;
     private FirebaseFirestore db = null;
     private FragmentManager fragmentManager = null;
@@ -101,10 +101,11 @@ public class ConnectionDialog extends DialogFragment implements
     @Override
     public void onExcursionSheetFragmentNextPressed(Map<String,Object> excursionSheet) {
         this.excursionSheet = excursionSheet;
-        connection_Key = randomCode(10);
+        String connection_Key = randomCode(10);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
         transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
+        CHIAVE_ESCURSIONE = connection_Key;
         wrd.setDb(db)
                 .setUserid(AUTH.getUid())
                 .setMkey(connection_Key)
@@ -115,20 +116,7 @@ public class ConnectionDialog extends DialogFragment implements
     @Override
     public void onConnectionCodeFragmentCancelPressed() {
         mListener.onConnectionDialogCancelClicked();
-        db.collection(COLLECTION_ESCURSIONE).document(connection_Key)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Deleteting", "Document successfully deleted!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Deleteting", "Error deleting document", e);
-                    }
-                });
+        UsefulMethods.deleteKeyFromDB();
     }
 
     @Override
@@ -144,7 +132,6 @@ public class ConnectionDialog extends DialogFragment implements
         Intent serviceIntent = new Intent(getContext(), UserinfoUpdateService.class);
         serviceIntent.putExtra("USERID", AUTH.getUid());
         serviceIntent.putExtra("Time", time);
-        CHIAVE_ESCURSIONE = connection_Key;
         ContextCompat.startForegroundService(getContext(), serviceIntent);
         mListener.onConnectionDialogOkClicked();
     }

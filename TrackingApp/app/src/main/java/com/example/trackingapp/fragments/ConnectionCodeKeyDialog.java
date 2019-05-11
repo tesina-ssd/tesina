@@ -32,6 +32,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
+
 public class ConnectionCodeKeyDialog extends DialogFragment {
 
     private FragmentManager fragmentManager = null;
@@ -44,7 +46,7 @@ public class ConnectionCodeKeyDialog extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
@@ -55,22 +57,14 @@ public class ConnectionCodeKeyDialog extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Costruzione del layout
         fragmentManager = getChildFragmentManager();
 
         final View v = inflater.inflate(R.layout.connection_code_dialog_key, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ((TextView)v.findViewById(R.id.ConnectionCodeKeyDialog_Code)).setText(CHIAVE_ESCURSIONE);
 
-        Query query = db.collection("excursionKeys").whereEqualTo("useid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful() && !task.getResult().isEmpty())
-                    ((TextView)v.findViewById(R.id.ConnectionCodeKeyDialog_Code)).setText(task.getResult().getDocuments().get(0).getId());
-                    //Log.d("RES", task.getResult().getDocuments().get(0).getId());
-            }
-        });
         return v;
     }
 }

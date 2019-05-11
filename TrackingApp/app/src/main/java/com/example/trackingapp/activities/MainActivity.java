@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.provider.Settings;
 import android.util.Log;
 
 import android.view.View;
@@ -190,9 +191,12 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
             showGPSDisabledAlertToUser();
         }
     }
+
     private void showGPSDisabledAlertToUser(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("GPS è disabilitato sul tuo dispotivo. Vorresti abilitarlo? è neccessario per l'utilizzo dell'app\n\nCliccando su \"no grazie\" l'app verrà chiusa!")
+        alertDialogBuilder.setMessage("GPS è disabilitato sul tuo dispotivo. Vorresti abilitarlo? è neccessario per l'utilizzo dell'app\n\n" +
+                                        "Se il gps è attivo cambia il gps mode su \"HIGH ACCURACY\"\n\n" +
+                "Cliccando su \"no grazie\" l'app verrà chiusa!")
                 .setCancelable(false)
                 .setPositiveButton("Abilità GPS",
                         new DialogInterface.OnClickListener(){

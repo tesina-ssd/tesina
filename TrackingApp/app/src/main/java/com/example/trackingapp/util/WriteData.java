@@ -57,7 +57,7 @@ public class WriteData {
         pd.setCancelable(false);
         pd.setMessage("Uploading");
         pd.show();
-        UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+        UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
         if (imageuri != null) {
             final StorageReference fileReference = storageReference.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
             fileReference.putFile(imageuri).continueWithTask(new Continuation< UploadTask.TaskSnapshot, Task< Uri >>() {
@@ -100,13 +100,13 @@ public class WriteData {
     public WriteData setEcursion(Map<String, Object> data){
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
-            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Setting Excursion...");
             uploadGenericData("excursion",data);
         }
         return this;
     }
-    public void setUserLocation (Map<String, Object> data){
+    void setUserLocation(Map<String, Object> data){
         if(db!=null && !userid.equals("")){
             uploadGenericData("excursion",data);
         }else{
@@ -136,7 +136,7 @@ public class WriteData {
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
             key_userid.put("useid",userid);
-            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Setting Excursion...");
             db.collection("excursionKeys").document(mkey).set(key_userid)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -161,7 +161,7 @@ public class WriteData {
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
             pd.show();
-            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Updating data...");
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -181,7 +181,7 @@ public class WriteData {
         }
         if(!userid.equals("")){
             pd.show();
-            UsefullMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
             pd.setMessage("Updating data...");
             db.collection("users").document(userid)
                     .set(data, SetOptions.merge())

@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.example.trackingapp.activities.MainActivity;
 import com.example.trackingapp.R;
 import com.example.trackingapp.activities.SignInActivity;
-import com.example.trackingapp.util.UsefullMethods;
+import com.example.trackingapp.util.UsefulMethods;
 import com.example.trackingapp.util.Userinformation;
 import com.example.trackingapp.util.WriteData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -125,7 +125,7 @@ public class AccountSettings extends Fragment {
         db = FirebaseFirestore.getInstance();
         writeData = new WriteData(this.getContext(),getFragmentManager());
         inizializeClassWriteData();
-        connected = UsefullMethods.checkConnection(getContext());
+        connected = UsefulMethods.checkConnection(getContext());
 
     }
 
@@ -324,7 +324,7 @@ public class AccountSettings extends Fragment {
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setCancelable(false);
             pd.show();
-            UsefullMethods.timerDelayRemoveDialog(15000, pd,getFragmentManager());
+            UsefulMethods.timerDelayRemoveDialog(15000, pd,getFragmentManager());
             pd.setMessage("Getting information...");
             String username;
             if (user != null) {
@@ -466,7 +466,7 @@ public class AccountSettings extends Fragment {
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setCancelable(false);
             pd.show();
-            UsefullMethods.timerDelayRemoveDialog(15000,pd,getFragmentManager());
+            UsefulMethods.timerDelayRemoveDialog(15000,pd,getFragmentManager());
             pd.setMessage("Getting information...");
             String username;
             if (user != null) {
