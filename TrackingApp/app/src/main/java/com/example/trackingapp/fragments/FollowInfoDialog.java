@@ -69,7 +69,6 @@ public class FollowInfoDialog extends DialogFragment {
         // Viene ritornata la View corrente
 
         final Map<String, Object> data = new HashMap<>();
-
         DocumentReference excursionDoc = db.collection("excursion").document(connectionCode);
         excursionDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

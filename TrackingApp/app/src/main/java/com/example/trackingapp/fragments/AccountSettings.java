@@ -153,9 +153,7 @@ public class AccountSettings extends Fragment {
 
 
         cm = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
-
-
-        cm.setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.modifyPic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -164,7 +162,7 @@ public class AccountSettings extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
             }
         });
-
+      
         btnSalva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

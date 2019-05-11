@@ -74,17 +74,9 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView = view.findViewById(R.id.mapView);
         btnser = view.findViewById(R.id.btnStopService);
         btnAlert = view.findViewById(R.id.fab_alert);
-
-        // Controllo della variabile condivisa IS_TRACKING_SERVICE_WORKING: controlla se un servizio di tracciamento è già attualmente attivo
-        if (IS_TRACKING_SERVICE_WORKING) {
-            btnser.setVisibility(View.VISIBLE); // Il pulsante per chiudere il servizio viene visualizzato
-            btnAlert.show();
-        } else {
-            btnser.setVisibility(View.GONE); // Il pulsante per chiudere il servizio non viene visualizzato
-            //btnAlert.setVisibility(View.GONE);
-            btnAlert.hide();
-        }
-
+      
+        checkService();
+      
         // Inizializzazione della mappa di mapBox
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -163,7 +155,19 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             connectionCodeGeneratorDialogFragment.show(fragmentManager, CONNECTION_DIALOG_TAG);
         }
     }
-
+  
+    private void checkService(){
+        // Controllo della variabile condivisa IS_TRACKING_SERVICE_WORKING: controlla se un servizio di tracciamento è già attualmente attivo
+        if (IS_TRACKING_SERVICE_WORKING) {
+            btnser.setVisibility(View.VISIBLE); // Il pulsante per chiudere il servizio viene visualizzato
+            btnAlert.show();
+        } else {
+            btnser.setVisibility(View.GONE); // Il pulsante per chiudere il servizio non viene visualizzato
+            //btnAlert.setVisibility(View.GONE);
+            btnAlert.hide();
+        }
+    }
+  
 /*    private Task<String> addMessage (String text){
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
@@ -227,6 +231,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        checkService();
     }
 
     @Override
@@ -246,12 +251,12 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
+  
     @Override
     public void onConnectionDialogOkClicked() {
         onConnectionDialogCancelClicked();
         btnser.setVisibility(View.VISIBLE);
-        btnAlert.setVisibility(View.VISIBLE);
+        btnAlert.show();
     }
 
     @Override

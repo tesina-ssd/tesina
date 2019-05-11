@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.trackingapp.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -125,9 +126,13 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
         view.findViewById(R.id.FollowMapFragment_FabMenu_ShowInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                followInfoDialog = FollowInfoDialog.newInstance(connectionCode);
-                followInfoDialog.setTargetFragment( thisFragment, followInfoDialogRequestCode);
-                followInfoDialog.show(fragmentManager, followInfoDialogTAG);
+                if(connectionCode!=null){
+                    followInfoDialog = FollowInfoDialog.newInstance(connectionCode);
+                    followInfoDialog.setTargetFragment( thisFragment, followInfoDialogRequestCode);
+                    followInfoDialog.show(fragmentManager, followInfoDialogTAG);
+                }else{
+                    Toast.makeText(getContext(),"Nessuna chiave inserita!",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
