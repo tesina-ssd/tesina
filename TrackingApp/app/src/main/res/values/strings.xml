@@ -28,7 +28,7 @@
 
     <string-array name="activities">
         <item name="Trekking">Escursionismo</item>
-        <item name="mtb">Roba da figette (mtb)</item>
+        <item name="mtb">MTB</item>
         <item name="Ski">Sci alpinismo</item>
     </string-array>
 
@@ -40,6 +40,102 @@
     <string name="cambiaInfo">Cambia Informazioni</string>
     <string name="salvaInfo">Salva</string>
     <string name="btnLogout">Logout</string>
+    <string name="noInternetConnection">Nessuna connessione internet disponibile \n</string>
+    <string name="connesioneLenta">Connessione lenta!\ni dati veranno caricati a breve</string>
+    <string name="title_activity_settings">Settings</string>
 
+    <!-- Strings related to Settings -->
+
+    <!--  General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="account_settings">Account Settings</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="channel_name">UserNotificationChannel</string>
+    <string name="channel_description">Questo canale è usato per notificare
+        all utente che il servizio in background è in funzione</string>
+    <string name="titoloEscursione">Escursione in funzione</string>
+    <string name="testoEscursione">Stiamo inviando la tua posizione ai nostri server in Background</string>
+    <string name="keyword">Parola Chiave</string>
+    <string name="ablita_sms">Abilità SMS</string>
+    <string name="title_settings">Settings</string>
+    <string name="sms_settings">Sms Settings</string>
+    <string name="accuracy">Accuracy:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="altitude">Altitude:</string>
+    <string name="speed">Speed:</string>
+    <string name="abilita_googleMapsSms">Invia google Maps SMS\nLink con la posizione</string>
+    <string name="abilita_locationSms">Invia un SMS con :\nLatitudine,Longitudine,Precizione,Velocità</string>
+    <string name="salvasharedpref">Salva impostazioni</string>
+    <string name="abilita_singleSms">Invia un SMS con :\nLocation e Google maps link\nAltri sms non verranno inviati</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
