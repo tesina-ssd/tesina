@@ -74,7 +74,9 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         mapView = view.findViewById(R.id.mapView);
         btnser = view.findViewById(R.id.btnStopService);
         btnAlert = view.findViewById(R.id.fab_alert);
+      
         checkService();
+      
         // Inizializzazione della mappa di mapBox
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -153,6 +155,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             connectionCodeGeneratorDialogFragment.show(fragmentManager, CONNECTION_DIALOG_TAG);
         }
     }
+  
     private void checkService(){
         // Controllo della variabile condivisa IS_TRACKING_SERVICE_WORKING: controlla se un servizio di tracciamento è già attualmente attivo
         if (IS_TRACKING_SERVICE_WORKING) {
@@ -164,6 +167,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             btnAlert.hide();
         }
     }
+  
 /*    private Task<String> addMessage (String text){
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
@@ -221,7 +225,6 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     public void onStart() {
         super.onStart();
         mapView.onStart();
-
     }
 
     @Override
@@ -248,8 +251,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
-
+  
     @Override
     public void onConnectionDialogOkClicked() {
         onConnectionDialogCancelClicked();

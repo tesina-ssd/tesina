@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 }
             }
         }
-
     }
 
     private void checkifGpsAvaible() {

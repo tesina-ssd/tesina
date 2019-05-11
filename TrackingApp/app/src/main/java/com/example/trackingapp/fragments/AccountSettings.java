@@ -162,17 +162,7 @@ public class AccountSettings extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
             }
         });
-
-        /*cm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                ntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Seleziona un immagine"), REQUEST_CODE);
-            }
-        });*/
-
+      
         btnSalva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
