@@ -87,7 +87,7 @@ public class UserinfoUpdateService extends Service {
         filter.addAction(SMS_RECEIVED);
         filter.setPriority(2147483647);
         filter.addAction(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED);
-        this.registerReceiver(br, filter);
+        registerReceiver(br, filter);
         smsmanager = SmsManager.getDefault();
     }
     @Override

@@ -2,8 +2,8 @@ package com.example.trackingapp.fragments;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,6 +185,7 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
 
     @Override
     public void onDestroyView() {
+        Log.d("ONX", "onDestroy");
         // Evita che la mappa chrashi quando ricaricata
         super.onDestroyView();
         //TODO: la chiusura va intercettata qua
@@ -193,31 +194,41 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
 
     @Override
     public void onResume() {
+        Log.d("ONX", "onResume");
         super.onResume();
         mapView.onResume();
     }
 
     @Override
     public void onStart() {
+        Log.d("ONX", "onStart");
         super.onStart();
         mapView.onStart();
     }
 
     @Override
     public void onStop() {
+        Log.d("ONX", "onStop");
         super.onStop();
         mapView.onStop();
     }
 
     @Override
     public void onPause() {
+        Log.d("ONX", "onPause");
         super.onPause();
         mapView.onPause();
     }
 
     @Override
     public void onLowMemory() {
+        Log.d("ONX", "onLowMemory");
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }
