@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
                         new AlertDialog.Builder(MainActivity.this).
-                                setMessage("I permessi sono necessari per il funzionamento dell'applicazione.\n\nCliccando su \"cancel\" l'app verrà chiusa!").
+                                setMessage(R.string.permissionsMessage).
                                 setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
