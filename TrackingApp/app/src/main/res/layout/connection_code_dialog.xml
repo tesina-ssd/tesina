@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
-        android:background="@color/colorAccent"
+        android:background="#d7263d"
         android:fontFamily="@font/poppins_semibold"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
@@ -71,14 +71,14 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/str_ConnectionDialog_BtnOk"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#0197f6"
         app:backgroundTint="@color/fui_transparent"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ConnectionCode_BtnCanel"
-        app:rippleColor="@color/colorPrimary" />
+        app:rippleColor="#0197f6" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/ConnectionCode_BtnCanel"
@@ -87,13 +87,13 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/str_ConnectionDialog_BtnAvanti"
-        android:textColor="@color/fui_bgAnonymous"
+        android:textColor="#FBD1A9"
         app:backgroundTint="@color/fui_transparent"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ConnectionCode_BtnOk"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@color/fui_bgAnonymous" />
+        app:rippleColor="#FBD1A9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

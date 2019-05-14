@@ -17,7 +17,7 @@ import java.util.Map;
 
 import androidx.fragment.app.DialogFragment;
 
-public class ExcursionSheetFragment extends androidx.fragment.app.Fragment implements TimePickerFragment.TimePickerFragmentListener, DatePickerFragment.DatePickerFragmentListener {
+public class ExcursionSheetFragmentPt1 extends androidx.fragment.app.Fragment implements TimePickerFragment.TimePickerFragmentListener, DatePickerFragment.DatePickerFragmentListener {
 
     private String startingTimeTimePicker = "strTmTmePckr";
     private String finishingTimeTimePicker = "fnshTmTmePckr";
@@ -42,17 +42,17 @@ public class ExcursionSheetFragment extends androidx.fragment.app.Fragment imple
     private int finishingTimeTimeHour;
     private int finishingTimeTimeMinute;
 
-    private OnExcursionSheetFragmentInteractionListener mListener;
+    private OnExcursionSheetFragmentPt1InteractionListener mListener;
 
-    public interface OnExcursionSheetFragmentInteractionListener {
-        void onExcursionSheetFragmentCancelPressed();
-        void onExcursionSheetFragmentNextPressed(Map<String,Object> excursionSheet);
+    public interface OnExcursionSheetFragmentPt1InteractionListener {
+        void onExcursionSheetFragmentPt1CancelPressed();
+        void onExcursionSheetFragmentPt1NextPressed(ExcursionSheetMapBuilder excursionSheet);
     }
 
-    public ExcursionSheetFragment() {}
+    public ExcursionSheetFragmentPt1() {}
 
-    public static ExcursionSheetFragment newInstance() {
-        return new ExcursionSheetFragment();
+    public static ExcursionSheetFragmentPt1 newInstance() {
+        return new ExcursionSheetFragmentPt1();
     }
 
     @Override
@@ -64,10 +64,10 @@ public class ExcursionSheetFragment extends androidx.fragment.app.Fragment imple
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.excursion_sheet, container, false);
+        View v = inflater.inflate(R.layout.excursion_sheet_pt1, container, false);
 
         // Acquisizione degli elementi del layout
-        Button btnNext = v.findViewById(R.id.ExcursionSheet_BtnNext);
+        Button btnNext = v.findViewById(R.id.ExcursionSheet_BtnNext_Pt1);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,7 @@ public class ExcursionSheetFragment extends androidx.fragment.app.Fragment imple
             }
         });
 
-        Button btnCancel = v.findViewById(R.id.ExcursionSheet_BtnCancel);
+        Button btnCancel = v.findViewById(R.id.ExcursionSheet_BtnCancel_Pt1);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,19 +154,18 @@ public class ExcursionSheetFragment extends androidx.fragment.app.Fragment imple
 
     private void onCancelPressed() {
         if (mListener != null) {
-            mListener.onExcursionSheetFragmentCancelPressed();
+            mListener.onExcursionSheetFragmentPt1CancelPressed();
         }
     }
 
     private void onNextPressed() {
         if(mListener != null) {
-            mListener.onExcursionSheetFragmentNextPressed(
+            mListener.onExcursionSheetFragmentPt1NextPressed(
                     new ExcursionSheetMapBuilder()
                             .setActivityType((String) spnActivityType.getSelectedItem())
                             .setStartingTimeDate(new GregorianCalendar(startingTimeDateYear, startingTimeDateMonth, startingTimeDateDay, startingTimeTimeHour, startingTimeTimeMinute).getTime())
                             .setFinishingTimeDate(new GregorianCalendar(finishingTimeDateYear, finishingTimeDateMonth, finishingTimeDateDay, finishingTimeTimeHour, finishingTimeTimeMinute).getTime())
                             .setPeopleNumber(Integer.parseInt(txtPeopleNumberText.getText().toString()))
-                            .build()
             );
         }
     }
@@ -175,10 +174,10 @@ public class ExcursionSheetFragment extends androidx.fragment.app.Fragment imple
     public void onAttach(Context context) {
         super.onAttach(context);
         if (getParentFragment() != null) {
-            mListener = (OnExcursionSheetFragmentInteractionListener) getParentFragment();
+            mListener = (OnExcursionSheetFragmentPt1InteractionListener) getParentFragment();
         } else {
             throw new RuntimeException(context.toString()
-                    + "must implement OnExcursionSheetFragmentInteractionListener");
+                    + "must implement OnExcursionSheetFragmentPt1InteractionListener");
         }
     }
 
