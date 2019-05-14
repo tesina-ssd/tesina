@@ -29,12 +29,14 @@ import java.util.GregorianCalendar;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.trackingapp.util.Constants.ALARM_PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.BOOL_ALARM_MSG;
 import static com.example.trackingapp.util.Constants.BOOL_CONNECTED_MSG;
-import static com.example.trackingapp.util.Constants.CHANNEL_ID;
+import static com.example.trackingapp.util.Constants.CHANNEL_ID_SERVICE;
+import static com.example.trackingapp.util.Constants.CHANNEL_ID_STOP;
 import static com.example.trackingapp.util.Constants.CONNECTED_PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.EMERGENCY_MSG;
 import static com.example.trackingapp.util.Constants.INTERNET_ENABLE;
@@ -71,7 +73,8 @@ public class UserinfoUpdateService extends Service {
     private boolean msgConnectedSent=false;
     private boolean msgAlarmSent=false;
     private SmsManager smsmanager;
-
+    private NotificationSender sendNotification;
+    private PendingIntent pendingIntent;
 
 
     @Override
@@ -94,7 +97,7 @@ public class UserinfoUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+        pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         userid = intent.getStringExtra(TAG_USERID);
         inizializeWriteclass();
@@ -104,16 +107,17 @@ public class UserinfoUpdateService extends Service {
         Intent intentAction = new Intent(getApplicationContext(),NotificationReceiver.class);
         //This is optional if you have more than one buttons and want to differentiate between two
         intentAction.putExtra("action","Dismiss");
-
+        sendNotification = new NotificationSender(getApplicationContext());
         PendingIntent pIntentlogin = PendingIntent.getBroadcast(getApplicationContext(),1,intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(getResources().getString(R.string.titoloEscursione))
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID_SERVICE)
+                .setContentTitle(getApplicationContext().getResources().getString(R.string.titoloEscursione))
                 .setContentText(getResources().getString(R.string.testoEscursione))
                 .setSmallIcon(R.drawable.logo_facebook)
                 .setContentIntent(pendingIntent)
                 .setColor(Color.BLUE)
                 .addAction(R.drawable.logo_google, "Chiudi la escursione",pIntentlogin)
                 .build();
+
 
         doWorkInBackground();
         startForeground(1, notification);
@@ -222,6 +226,7 @@ public class UserinfoUpdateService extends Service {
                         if(INTERNET_ENABLE){
                             wrData.setUserLocation(LocationUpdater.getHash());
                         }
+                        sendNotification.sendStopServiceNotification(pendingIntent);
                     }
             }
             mHandler.postDelayed(this, 11000);
@@ -239,7 +244,6 @@ public class UserinfoUpdateService extends Service {
 
         SmsSenderService.enqueueWork(this, serviceIntent);
     }
-
 
     @Override
     public void onDestroy() {
