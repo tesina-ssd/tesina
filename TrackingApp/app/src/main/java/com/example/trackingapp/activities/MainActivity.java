@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
             if (permissionsRejected.size() > 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (shouldShowRequestPermissionRationale(permissioonsRejected.get(0))) {
+                    if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
                         new AlertDialog.Builder(MainActivity.this).
                                 setMessage(R.string.permissionsMessage).
                                 setPositiveButton("OK", new DialogInterface.OnClickListener() {
