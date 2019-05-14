@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 }
             }
         });
-        checkifGpsAvaible();
         // we add permissions we need to request location of the users
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.SEND_SMS);
@@ -186,40 +185,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         }
     }
 
-    private void checkifGpsAvaible() {
 
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            showGPSDisabledAlertToUser();
-        }
-    }
-
-    private void showGPSDisabledAlertToUser(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("GPS è disabilitato sul tuo dispotivo. Vorresti abilitarlo? è neccessario per l'utilizzo dell'app\n\n" +
-                                        "Se il gps è attivo cambia il gps mode su \"HIGH ACCURACY\"\n\n" +
-                "Cliccando su \"no grazie\" l'app verrà chiusa!")
-                .setCancelable(false)
-                .setPositiveButton("Abilità GPS",
-                        new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface dialog, int id){
-                                Intent callGPSSettingIntent = new Intent(
-                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(callGPSSettingIntent);
-                            }
-                        });
-        alertDialogBuilder.setNegativeButton("No grazie",
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        dialog.cancel();
-                        int pid = android.os.Process.myPid();
-                        android.os.Process.killProcess(pid);
-                    }
-                });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -235,6 +201,5 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
     @Override
     protected void onRestart() {
         super.onRestart();
-        checkifGpsAvaible();
     }
 }

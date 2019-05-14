@@ -2,7 +2,9 @@ package com.example.trackingapp.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -30,10 +32,14 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import java.util.Objects;
+
+import static android.content.Context.LOCATION_SERVICE;
 import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
 import static com.example.trackingapp.util.Constants.COLLECTION_ESCURSIONE;
 import static com.example.trackingapp.util.Constants.IS_TRACKING_SERVICE_WORKING;
@@ -214,7 +220,13 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         // Set the component's render mode
         locationComponent.setRenderMode(RenderMode.GPS);
     }
-    public int getLocationMode(Context context)
+
+    /**
+     * Questo metodo controlla gps mode
+     * @param context
+     * @return 0 se il gps è disattivato , 1 se è device only , 2 se battery saving mode , 3 high accuracy
+     */
+    private int getLocationMode(Context context)
     {
         try {
             return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
@@ -222,6 +234,49 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
             e.printStackTrace();
         }
         return 0;
+    }
+
+    /**
+     * Questo metodo non ha nessun parametro.
+     * Viene chiamato per controllar ese il gps è attivo
+     */
+    private void checkifGpsAvaible() {
+        LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(LOCATION_SERVICE);
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            showGPSDisabledAlertToUser();
+        }
+    }
+
+    /**
+     * Questo metodo non ha nessun parametro
+     * viene chiamato da @checkifGpsAvaible()
+     * Crea un alert dialog se l'utente non ha il gps attivo
+     */
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        alertDialogBuilder.setMessage("GPS è disabilitato sul tuo dispotivo. Vorresti abilitarlo? è neccessario per l'utilizzo dell'app\n\n" +
+                "Se il gps è attivo cambia il gps mode su \"HIGH ACCURACY\"\n\n" +
+                "Cliccando su \"no grazie\" l'app verrà chiusa!")
+                .setCancelable(false)
+                .setPositiveButton("Abilità GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("No grazie",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                        int pid = android.os.Process.myPid();
+                        android.os.Process.killProcess(pid);
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
     @Override
     public void onDestroyView() {
@@ -241,6 +296,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
         super.onResume();
         mapView.onResume();
         checkService();
+        checkifGpsAvaible();
     }
 
     @Override
