@@ -110,8 +110,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                 if(mode == 3){
                     showConnectionDialog();
                 }else{
-                    Toast.makeText(getContext(),"Gps Mode è selezionato su \"Dispositivo solo  o su BATTERY SAVING\".\n" +
-                                                        "Cambia GPS mode su :\"HIGH ACCURACY \"",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),R.string.changeGpsmode,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -255,9 +254,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
      */
     private void showGPSDisabledAlertToUser(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        alertDialogBuilder.setMessage("GPS è disabilitato sul tuo dispotivo. Vorresti abilitarlo? è neccessario per l'utilizzo dell'app\n\n" +
-                "Se il gps è attivo cambia il gps mode su \"HIGH ACCURACY\"\n\n" +
-                "Cliccando su \"no grazie\" l'app verrà chiusa!")
+        alertDialogBuilder.setMessage(R.string.gpsMessage)
                 .setCancelable(false)
                 .setPositiveButton("Abilità GPS",
                         new DialogInterface.OnClickListener(){

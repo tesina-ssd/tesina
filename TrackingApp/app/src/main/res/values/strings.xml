@@ -137,5 +137,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gpsMessage">GPS è disabilitato sul tuo dispotivo.
+        Vorresti abilitarlo? è neccessario per l \'utilizzo dell\'app\n\n\Se il gps è attivo cambia il gps mode su "HIGH ACCURACY"\n\nCliccando su \"no grazie\" l\'app verrà chiusa!</string>
+    <string name="changeGpsmode">Gps Mode è selezionato su \"Dispositivo solo  o su BATTERY SAVING\".\nCambia GPS mode su :\"HIGH ACCURACY\"</string>
 
 </resources>
