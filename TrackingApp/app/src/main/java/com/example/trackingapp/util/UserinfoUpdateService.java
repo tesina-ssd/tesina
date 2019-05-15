@@ -36,7 +36,6 @@ import static com.example.trackingapp.util.Constants.ALARM_PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.BOOL_ALARM_MSG;
 import static com.example.trackingapp.util.Constants.BOOL_CONNECTED_MSG;
 import static com.example.trackingapp.util.Constants.CHANNEL_ID_SERVICE;
-import static com.example.trackingapp.util.Constants.CHANNEL_ID_STOP;
 import static com.example.trackingapp.util.Constants.CONNECTED_PHONE_NUMBER;
 import static com.example.trackingapp.util.Constants.EMERGENCY_MSG;
 import static com.example.trackingapp.util.Constants.INTERNET_ENABLE;
@@ -75,7 +74,7 @@ public class UserinfoUpdateService extends Service {
     private SmsManager smsmanager;
     private NotificationSender sendNotification;
     private PendingIntent pendingIntent;
-
+    private boolean alreadyMsgSent=false;
 
     @Override
     public void onCreate() {
@@ -211,7 +210,8 @@ public class UserinfoUpdateService extends Service {
                             if(!msgConnectedSent){
                                 msgConnectedSent=true;
                                 sendEmergencyMsgs(CONNECTED_PHONE_NUMBER);
-                                Log.d("hereconn",""+systemTime);
+                                //Log.d("hereconn",""+systemTime);
+                                sendNotification.sendMessageConnectedNotification(pendingIntent);
 
                             }
                         }
@@ -219,7 +219,8 @@ public class UserinfoUpdateService extends Service {
                             if(!msgAlarmSent){
                                 msgAlarmSent=true;
                                 sendEmergencyMsgs(ALARM_PHONE_NUMBER);
-                                Log.d("herealarm",""+systemTime);
+                                //Log.d("herealarm",""+systemTime);
+                                sendNotification.sendMessageAlarmNotification(pendingIntent);
 
                             }
                         }
@@ -235,11 +236,17 @@ public class UserinfoUpdateService extends Service {
 
 
     private void sendEmergencyMsgs(String phone){
-        //This is used to close the notification tray
+
+
         Intent serviceIntent = new Intent(this, SmsSenderService.class);
         serviceIntent.putExtra(PHONE_NUMBER,phone);
         serviceIntent.putExtra(WHO_CALLING,EMERGENCY_MSG);
-        serviceIntent.putExtra(BOOL_CONNECTED_MSG,msgConnectedSent);
+        if(alreadyMsgSent){
+            serviceIntent.putExtra(BOOL_CONNECTED_MSG,false);
+            alreadyMsgSent=true;
+        }else{
+            serviceIntent.putExtra(BOOL_CONNECTED_MSG,true);
+        }
         serviceIntent.putExtra(BOOL_ALARM_MSG,msgAlarmSent);
 
         SmsSenderService.enqueueWork(this, serviceIntent);

@@ -125,8 +125,12 @@
 
     <string name="titoloEscursione">Escursione in funzione</string>
     <string name="testoEscursione">Stiamo inviando la tua posizione ai nostri server in Background</string>
+    <string name="escursioneNonDisattivata">Escursione non disattivata</string>
     <string name="stopEscursione">La escursione è ancora attiva il tempo di rientro è passato ,\nchiudi
     l\'escursione altrimenti verrà in viato un messaggio\nalla persona connessa e uno ai soccorsi.</string>
+    <string name="smsSentTitle">Invio SMS</string>
+    <string name="smsConnectedSent">E\' stato inviato un sms al numero della persona connessa , per la mancata chiusura del servizio</string>
+    <string name="smsAlarmSent">E\' stato inviato un sms al numero dell\'allarme inserito , per la mancata chiusura del servizio</string>
     <string name="keyword">Parola Chiave</string>
     <string name="ablita_sms">Abilità SMS</string>
     <string name="title_settings">Settings</string>

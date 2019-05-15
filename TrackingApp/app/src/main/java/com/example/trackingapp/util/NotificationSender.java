@@ -22,7 +22,7 @@ public class NotificationSender {
     }
     public void sendStopServiceNotification(PendingIntent pendingIntent){
         Notification stopNotification = new NotificationCompat.Builder(context, CHANNEL_ID_STOP)
-                .setContentTitle(context.getResources().getString(R.string.titoloEscursione))
+                .setContentTitle(context.getResources().getString(R.string.escursioneNonDisattivata))
                 .setContentText(context.getResources().getString(R.string.stopEscursione))
                 .setSmallIcon(R.drawable.logo_facebook)
                 .setContentIntent(pendingIntent)
@@ -31,5 +31,29 @@ public class NotificationSender {
                 .setStyle(new NotificationCompat.BigTextStyle())
                 .build();
         notificationManager.notify(2,stopNotification);
+    }
+    public void sendMessageConnectedNotification(PendingIntent pendingIntent){
+        Notification messageToConnectedNotification = new NotificationCompat.Builder(context, CHANNEL_ID_STOP)
+                .setContentTitle(context.getResources().getString(R.string.smsSentTitle))
+                .setContentText(context.getResources().getString(R.string.smsConnectedSent))
+                .setSmallIcon(R.drawable.logo_facebook)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setColor(Color.RED)
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .build();
+        notificationManager.notify(3,messageToConnectedNotification);
+    }
+    public void sendMessageAlarmNotification(PendingIntent pendingIntent){
+        Notification messageToAlarmstopNotification = new NotificationCompat.Builder(context, CHANNEL_ID_STOP)
+                .setContentTitle(context.getResources().getString(R.string.smsSentTitle))
+                .setContentText(context.getResources().getString(R.string.smsAlarmSent))
+                .setSmallIcon(R.drawable.logo_facebook)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setColor(Color.RED)
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .build();
+        notificationManager.notify(4,messageToAlarmstopNotification);
     }
 }
