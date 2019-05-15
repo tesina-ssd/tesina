@@ -2,6 +2,7 @@ package com.example.trackingapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +100,7 @@ public class ExcursionSheetFragmentPt3 extends androidx.fragment.app.Fragment {
         imgPhotoCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent().setType("*/images").setAction(Intent.ACTION_GET_CONTENT);
+                Intent intent = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "photoChooser"), 1);
             }
         });
@@ -111,7 +112,7 @@ public class ExcursionSheetFragmentPt3 extends androidx.fragment.app.Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK) {
-            txtPhotoPath.setText(data.getData().getPath());
+            txtPhotoPath.setText(data.getData().toString());
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.trackingapp.util;
 
+import android.net.Uri;
+
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
@@ -18,6 +20,7 @@ public class ExcursionSheetMapBuilder implements Serializable {
     private String otherComponentsNames;
     private String otherComponentsNumbers;
     private String photoPath;
+
 
     public ExcursionSheetMapBuilder setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
@@ -80,6 +83,7 @@ public class ExcursionSheetMapBuilder implements Serializable {
         ret.put("trackPath", trackPath);
         ret.put("otherComponentsNames", otherComponentsNames);
         ret.put("otherComponentsNumbers", otherComponentsNumbers);
+        ret.put("photoPath", photoPath);
         return ret;
     }
 }

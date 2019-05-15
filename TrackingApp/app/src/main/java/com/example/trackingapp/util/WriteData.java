@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -12,15 +13,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
@@ -40,6 +44,8 @@ public class WriteData {
         this.contex=context;
         this.pd = new ProgressDialog(this.contex);
         this.fragmentManager = fm;
+        this.userid = FirebaseAuth.getInstance().getUid();
+        this.storageReference = FirebaseStorage.getInstance().getReference();
         pd.setCancelable(false);
     }
 
@@ -49,54 +55,51 @@ public class WriteData {
         return this;
     }
 
-    public void uploadImage(Uri imageuri) {
-        final Map< String, Object > usermap = new HashMap< >();
-        Random rand = new Random();
-        // Obtain a number between [0 - 49].
-        int n = 1;
-        pd.setCancelable(false);
-        pd.setMessage("Uploading");
-        pd.show();
-        UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
-        if (imageuri != null) {
-            final StorageReference fileReference = storageReference.child("images/users/" + userid + "/" + n + "." + getFileExtension(imageuri));
-            fileReference.putFile(imageuri).continueWithTask(new Continuation< UploadTask.TaskSnapshot, Task< Uri >>() {
+    /**
+     * Metodo che memorizza all'interno dello storage di Firebase un file generico.
+     * @param fileUri : l'Uri del file da memorizzare
+     * @param folder : il percorso della cartella dove memorizzare il file
+     * @param showLoadingDialog : possibilità di visualizzare un dialog bloccante durante il caricamento
+     * @param savePathInDatabase : possibilità di memorizzare l'url del file nello storage all'interno del database
+     *                             nella sezione corrispondente (es: per un path di storage users/ProfilePhoto/userID)
+     *                             l'url viene memorizzato in users/userID {ProfilePhoto} seguendo la logica dei nomi
+     *                             assegnati al database e allo storage
+     */
+    public void uploadFile(Uri fileUri, final String folder, final boolean showLoadingDialog, final boolean savePathInDatabase) {
+
+        if(showLoadingDialog) showStandardLoadingDialog();
+
+        if (fileUri != null) {
+            Log.d("STORAGE_REF", folder + "/" + userid + "." + getFileExtension(fileUri));
+
+            final StorageReference fileReference = storageReference.child(folder + "/" + userid + "." + getFileExtension(fileUri));
+            fileReference.putFile(fileUri).continueWithTask(new Continuation< UploadTask.TaskSnapshot, Task< Uri >>() {
                 @Override
                 public Task < Uri > then(@NonNull Task < UploadTask.TaskSnapshot > task) throws Exception {
-
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
+                    if (!task.isSuccessful()) throw Objects.requireNonNull(task.getException());
                     return fileReference.getDownloadUrl();
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()) {
-                        Uri downloadUri = (Uri) task.getResult();
-                        String imageuri = downloadUri.toString();
-                            usermap.put("PathImg", imageuri);
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(savePathInDatabase && task.isSuccessful() && task.getResult() != null) {
+                        Map< String, Object > dataToUpload = new HashMap< >();
+                        dataToUpload.put(folder.substring(folder.lastIndexOf("/") + 1), task.getResult().toString());
+                        db.collection(folder.substring(0, folder.indexOf("/"))).document(userid).set(dataToUpload, SetOptions.merge());
 
-                        db.collection("users").document(userid).set(usermap,SetOptions.merge());
-                        pd.dismiss();
-                    } else {
-                        toastMessage("Failed uploading");
+                        if(showLoadingDialog) dismissStandardLoadingDialog();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    toastMessage("Failed");
-                    pd.dismiss();
+                    toastMessage("Errore nel caricamento dei dati");
+                    if(showLoadingDialog) dismissStandardLoadingDialog();
                 }
             });
-
-        } else {
-            toastMessage("No image selected");
         }
-
-
     }
+
     public WriteData setEcursion(Map<String, Object> data){
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             pd.show();
@@ -234,6 +237,17 @@ public class WriteData {
 
     private void toastMessage(String message) {
         Toast.makeText(this.contex, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showStandardLoadingDialog() {
+        pd.setCancelable(false);
+        pd.setMessage("Caricamento in corso...");
+        pd.show();
+        UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
+    }
+
+    private void dismissStandardLoadingDialog() {
+        pd.dismiss();
     }
 
 

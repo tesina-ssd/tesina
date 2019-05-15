@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,13 +27,14 @@ import java.util.Map;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static com.example.trackingapp.util.Constants.AB;
 import static com.example.trackingapp.util.Constants.AUTH;
 import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
+import static com.example.trackingapp.util.Constants.GROUP_PHOTO_FOLDER;
+import static com.example.trackingapp.util.Constants.TRACK_FOLDER;
 
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragmentPt1.OnExcursionSheetFragmentPt1InteractionListener,
@@ -129,6 +131,13 @@ public class ConnectionDialog extends DialogFragment implements
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
         transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
         CHIAVE_ESCURSIONE = connection_Key;
+
+        wrd.uploadFile(Uri.parse((String) excursionSheet.get("photoPath")), GROUP_PHOTO_FOLDER, false, true);
+        wrd.uploadFile(Uri.parse((String) excursionSheet.get("trackPath")), TRACK_FOLDER, false, true);
+
+        excursionSheet.remove("photoPath");
+        excursionSheet.remove("trackPath");
+
         wrd.setDb(db)
                 .setUserid(AUTH.getUid())
                 .setMkey(connection_Key)

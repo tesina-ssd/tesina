@@ -50,6 +50,7 @@ import static com.example.trackingapp.util.Constants.KEY_ALARM_PHONE;
 import static com.example.trackingapp.util.Constants.KEY_IMAGE_PATH;
 import static com.example.trackingapp.util.Constants.KEY_PHONE_CONNECTED_TO_USER;
 import static com.example.trackingapp.util.Constants.KEY_USER_PHONE;
+import static com.example.trackingapp.util.Constants.PROFILE_PICTURE_FOLDER;
 
 
 /**
@@ -152,7 +153,7 @@ public class AccountSettings extends Fragment {
         data = new HashMap<>();
 
 
-        cm = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
+        cm = v.findViewById(R.id.profile_image);
         v.findViewById(R.id.modifyPic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,7 +171,7 @@ public class AccountSettings extends Fragment {
                 if(checkData() && isImageExist){
                     String name=txtName.getText().toString();
                     writeData.updateProfile(data,name,userModifiedWrite);
-                    if(imageuri !=null ){writeData.uploadImage(imageuri);}
+                    if(imageuri !=null ){writeData.uploadFile(imageuri, PROFILE_PICTURE_FOLDER, true, true);}
                     CONNECTED_PHONE_NUMBER= txtConnectedPhone.getText().toString();
                     ALARM_PHONE_NUMBER=txtAlarmPhome.getText().toString();
                     userinfo.setNameSurname(txtName.getText().toString());

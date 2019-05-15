@@ -113,7 +113,7 @@ public class ExcursionSheetFragmentPt2 extends androidx.fragment.app.Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK) {
-            txtTrackPath.setText(data.getData().getPath());
+            txtTrackPath.setText(data.getData().toString());
         }
     }
 
