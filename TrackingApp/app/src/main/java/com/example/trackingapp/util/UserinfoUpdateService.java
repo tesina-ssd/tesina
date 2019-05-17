@@ -49,11 +49,22 @@ import static com.example.trackingapp.util.Constants.WHO_CALLING;
 
 
 /**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
  * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
+ * Questa classe forse è il componente principale dell'applicazione in quanto il funzionamento 
+ * dell'escursione è compreso qua dentro.
+ * E' un servizio che lavora in background è carica i dati sul database fino a una condizione per uscire
+ * che sarebbe la chiusura del servizio da parte dell'utente.
+ * I dati vengono caricati tramite un thread che lavora in backgroud.
+ * Viene controllata anche l'ora. Se l'ora di rientro è passata all'utente viene inviata una notifica che avvisa 
+ * l'utente di disattivare il servizio,altrimenti verranno inviati SMS alla persona connessa e al numero di allarme.
+ * In questa classe avviene anche degli SMS tramite un broadcast receiver. Evento viene scatenato quando viene ricevuto un sms 
+ * il messaggio viene controllato e se contiene la parola chiave vengono inviati i sms riguardanti l'infomazioni sulla 
+ * posizione attuale dell'utente.
+ * Tutto ciò funziona solamente se viene attivato il servizio dall'utente e in base alle impostazioni dei sms.
+ * <p>
+ * @author      Singh Harpreet
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class UserinfoUpdateService extends Service {
     private FirebaseFirestore db = null;
@@ -120,9 +131,6 @@ public class UserinfoUpdateService extends Service {
 
         doWorkInBackground();
         startForeground(1, notification);
-
-
-
 
         return START_NOT_STICKY;
     }
