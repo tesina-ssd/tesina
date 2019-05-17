@@ -226,7 +226,10 @@ public class WriteData {
     }
    /**
      * Serve per aggiornare il profilo dell'utente.
-     * @param data : Hash table che contiene dati inerenti all'utente tr
+     * @param data : Hash table che contiene dati inerenti all'utente tranne l'username , perchè essendo gestito da 
+     *               Firebase devo modficarlo separamente.
+     * @param name : sarebbe username modficato dall'modficato.
+     * @param userModifiedWrite : Parametro di tipo boleano ,che mi indica se devo modicare l'username of no.
      * @return void-> non ritorno nessun dato, si presume che vada a buon fine altrimenti viene visuallizato un toast :(
      */
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
@@ -272,43 +275,82 @@ public class WriteData {
         }
 
     }
-
+   /**
+     * Serve prendere l'estensione del file dato URI.
+     * @param uri : Percorso del file nel storage locale.
+     * @return String : Ritorna l'estensione del file.
+     */
     private String getFileExtension(Uri uri) {
         ContentResolver cr = this.contex.getContentResolver();
         MimeTypeMap mtm = MimeTypeMap.getSingleton();
         return mtm.getExtensionFromMimeType(cr.getType(uri));
     }
-
+   /**
+     * Un metodo setter per inizializzare l'user 
+     * @param user : sarebbe user corrente.
+     * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
+     *         chiamare un'altro metodo.
+     */
     public WriteData setUser(FirebaseUser user) {
         this.user = user;
         return this;
     }
-
+   /**
+     * Un metodo setter per inizializzare l'id , questo metodo puo' essere anche tolto in quanto 
+     * dall'user posso prendere l'id.
+     * @param userId : sarebbe id dell'utente.
+     * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
+     *         chiamare un'altro metodo.
+     */
     public WriteData setUserid(String userid) {
         this.userid = userid;
         return this;
     }
+   /**
+     * Un metodo setter per inizializzare la chiave dell'escursione. Questo metodo può essere tolto tolto
+     * in quanto potrei passare la chiave al posto di settarla
+     * @param mkey : sarebbe la chiave.
+     * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
+     *         chiamare un'altro metodo.
+     */
     public WriteData setMkey(String mkey) {
         this.mkey = mkey;
-
         return this;
     }
-
+   /**
+     * Server per iniziallizare storageReference.
+     * StorageReferencea rappresenta un riferimento a un oggetto Google Cloud Storage. Gli sviluppatori possono caricare e scaricare 
+     * oggetti, ottenere / impostare i metadati dell'oggetto ed eliminare un oggetto in un percorso specificato.
+     * @param storageReference : sarebbe il riferimento al cloud da assegnare storageReference locale.
+     * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
+     *         chiamare un'altro metodo.
+     */
+ 
     public WriteData setStorageReference(StorageReference storageReference) {
         this.storageReference = storageReference;
         return this;
     }
-
+   /**
+     * Server Visualizzare un toast.
+     * @param message : messaggio da visualizzare dal toast.
+     * @return void.
+     */
     private void toastMessage(String message) {
         Toast.makeText(this.contex, message, Toast.LENGTH_SHORT).show();
     }
-
+   /**
+     * Server Visualizzare il dialog.
+     * @return void.
+     */
     private void showStandardLoadingDialog() {
         pd.setMessage("Caricamento in corso...");
         pd.show();
         UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
     }
-
+   /**
+     * Serverchiudere il dialog.
+     * @return void.
+     */
     private void dismissStandardLoadingDialog() {
         pd.dismiss();
     }
