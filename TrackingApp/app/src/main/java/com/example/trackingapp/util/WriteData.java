@@ -87,9 +87,9 @@ public class WriteData {
 
    /**
      * Un metodo setter per inizializzare il FirebaseFirestore Database della classe
-     * @param db : Sarebbe 
-     * @param fm : FragmentManager, non sempre viene utilizzato , passarlo se si vogliono utilizzare dei che l'utlizzano.
-     *             La funzione di fm sarebbe quella di poter creare un dialog grafico.
+     * @param db : databse su cui lavorare.
+     * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
+     *         chiamare un'altro metodo.
      */
     public WriteData setDb(FirebaseFirestore db) {
         this.db = db;
@@ -140,7 +140,14 @@ public class WriteData {
             });
         }
     }
-
+   /**
+     * Metodo per fare upload dei dati dell'escursione sul Database.
+     * Questo metodo in realta chiama upload generic passandoli la collezione e i dati da caricare.
+     * @param data : Map<String, Object> data , è un hash chiave-valore, sarebbero i dati dell'escursione
+     *               da caricare sul database. FirebaseFirestore database accetta solamente Hash.
+     * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
+     *         chiamare un'altro metodo.
+     */
     public WriteData setEcursion(Map<String, Object> data){
         if(!mkey.equals("") && !userid.equals("") && db!=null){
             showStandardLoadingDialog();
@@ -148,13 +155,13 @@ public class WriteData {
         }
         return this;
     }
+    
     void setUserLocation(Map<String, Object> data){
         if(db!=null && !userid.equals("")){
             uploadGenericData("excursion",data);
         }else{
             toastMessage("setkey,db");
         }
-
     }
     private void uploadGenericData(String collection,Map<String,Object> data){
         db.collection(collection).document(userid)
