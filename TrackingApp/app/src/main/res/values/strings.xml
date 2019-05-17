@@ -116,11 +116,21 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="channel_name">UserNotificationChannel</string>
-    <string name="channel_description">Questo canale è usato per notificare
-        all utente che il servizio in background è in funzione</string>
+    <string name="channel1_name">ServiceNotificationChannel</string>
+    <string name="channel1_description">Questo canale è usato per notificare
+        all\'utente che il servizio in background è in funzione</string>
+    <string name="channel2_name">StopNotificationChannel</string>
+    <string name="channel2_description">Questo canale è usato per notificare
+        all\'utente che il servizio in background è attivo e dovrebbe chiuderlo!</string>
+
     <string name="titoloEscursione">Escursione in funzione</string>
     <string name="testoEscursione">Stiamo inviando la tua posizione ai nostri server in Background</string>
+    <string name="escursioneNonDisattivata">Escursione non disattivata</string>
+    <string name="stopEscursione">La escursione è ancora attiva il tempo di rientro è passato ,\nchiudi
+    l\'escursione altrimenti verrà in viato un messaggio\nalla persona connessa e uno ai soccorsi.</string>
+    <string name="smsSentTitle">Invio SMS</string>
+    <string name="smsConnectedSent">E\' stato inviato un sms al numero della persona connessa , per la mancata chiusura del servizio</string>
+    <string name="smsAlarmSent">E\' stato inviato un sms al numero dell\'allarme inserito , per la mancata chiusura del servizio</string>
     <string name="keyword">Parola Chiave</string>
     <string name="ablita_sms">Abilità SMS</string>
     <string name="title_settings">Settings</string>
@@ -135,8 +145,6 @@
     <string name="salvasharedpref">Salva impostazioni</string>
     <string name="abilita_singleSms">Invia un SMS con :\nLocation e Google maps link\nAltri sms non verranno inviati</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gpsMessage">GPS è disabilitato sul tuo dispotivo.
         Vorresti abilitarlo? è neccessario per l \'utilizzo dell\'app\n\n\Se il gps è attivo cambia il gps mode su "HIGH ACCURACY"\n\nCliccando su \"no grazie\" l\'app verrà chiusa!</string>
     <string name="changeGpsmode">Gps Mode è selezionato su \"Dispositivo solo  o su BATTERY SAVING\".\nCambia GPS mode su :\"HIGH ACCURACY\"</string>

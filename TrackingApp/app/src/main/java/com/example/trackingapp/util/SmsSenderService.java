@@ -9,6 +9,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.core.app.JobIntentService;
 
@@ -54,8 +55,9 @@ public class SmsSenderService extends JobIntentService {
     protected void onHandleWork(Intent intent) {
        // Log.d(TAG, "onHandleIntent");
         //Toast.makeText(getApplicationContext(),"WOW",Toast.LENGTH_LONG).show();
-        this.phoneNumber = intent.getExtras().getString(PHONE_NUMBER);
+        this.phoneNumber = Objects.requireNonNull(intent.getExtras()).getString(PHONE_NUMBER);
         this.caller = intent.getExtras().getString(WHO_CALLING);
+        assert caller != null;
         if(caller.equals(EMERGENCY_MSG)){
             this.connectedSms=  intent.getExtras().getBoolean(BOOL_CONNECTED_MSG);
             this.alarmSms = intent.getExtras().getBoolean(BOOL_ALARM_MSG);

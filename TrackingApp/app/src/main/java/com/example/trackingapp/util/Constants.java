@@ -15,6 +15,8 @@ public class Constants {
     public static final String COLLECTION_ESCURSIONE = "excursionKeys";
     public static final int SLOWCONN = 2;
     public static final int NO_CONN = 1;
+    public static final String CHANNEL_ID_SERVICE = "serviceChannel";
+    public static final String CHANNEL_ID_STOP = "stopChannel";
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String LOCATION_MSG = "thislocationmsg";
     public static final String EMERGENCY_MSG = "thisemergencymsg";
@@ -24,7 +26,6 @@ public class Constants {
     public static final String SWITCH_LOCATION_SMS = "smsLocation";
     public static final String SWITCH_SINGLE_SMS = "smsSingle";
     public static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    public static final String CHANNEL_ID = "serviceChannel";
     public static final FirebaseAuth AUTH = FirebaseAuth.getInstance();
     public static final int RC_SIGN_IN = 1234;
     public static String CONNECTED_PHONE_NUMBER ="";
