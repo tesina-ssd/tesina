@@ -144,7 +144,7 @@ public class WriteData {
      * Metodo per fare upload dei dati dell'escursione sul Database.
      * Questo metodo in realta chiama upload generic passandoli la collezione e i dati da caricare.
      * @param data : Map<String, Object> data , è un hash chiave-valore, sarebbero i dati dell'escursione
-     *               da caricare sul database. FirebaseFirestore database accetta solamente Hash.
+     *               da caricare sul database. FirebaseFirestore database accetta solamente Hash tables.
      * @return this-> ritorno l'istanza corrente della classe , in questo caso posso usare 
      *         chiamare un'altro metodo.
      */
@@ -155,14 +155,29 @@ public class WriteData {
         }
         return this;
     }
-    
+   /**
+     * Metodo per fare upload della posizione e dell'ora corrente.
+     * Questo metodo in realta chiama upload generic passandoli la collezione e i dati da caricare.
+     * @param data : Map<String, Object> data , è un hash chiave-valore, sarebbero i dati due dati da caricare
+     *               sul database (posizione e l'ora ) 
+     *               FirebaseFirestore database accetta solamente Hash tables.
+     * @return void-> questo perchè carico i dati e basta.
+     */
     void setUserLocation(Map<String, Object> data){
         if(db!=null && !userid.equals("")){
             uploadGenericData("excursion",data);
         }else{
-            toastMessage("setkey,db");
+            toastMessage("Errore in upload della posizione prova");
         }
     }
+   /**
+     * Questo metodo serve per caricare i dati sul database , e' uno dei metodi principali.
+     * Lavora su più collezioni.
+     * @param collection : è un parametro di tipo stringa , in quanto sarebbe il nome della collezione 
+                           su cui caricare i dati, ciò permette a questo metodo di essere flessibile 
+                           e lavorare su qualsiasi collezione.
+     * @return void-> non ritorno nessun dato, si presume che vada a buon fine altrimenti viene visuallizato un toast :(
+     */
     private void uploadGenericData(String collection,Map<String,Object> data){
         db.collection(collection).document(userid)
                 .set(data,SetOptions.merge())
@@ -179,7 +194,12 @@ public class WriteData {
             }
         });
     }
-
+   /**
+     * Questo metodo serve per creare un documento con la chiave generata dall'utente e settare come valore 
+     * id dell'utente.Viene fatto un controllo che la chiave e userid non siano null e soprattutto il db sia iniziallizzato.
+     * E' un metodo separato perche' lavora anche con la chiave dell'utente.
+     * @return void-> non ritorno nessun dato, si presume che vada a buon fine altrimenti viene visuallizato un toast :(
+     */
     public void keysCollection(){
         Map<Object,String> key_userid= new HashMap<>();
         if(!mkey.equals("") && !userid.equals("") && db!=null){
@@ -204,7 +224,11 @@ public class WriteData {
             toastMessage("Please try to set Key");
         }
     }
-
+   /**
+     * Serve per aggiornare il profilo dell'utente.
+     * @param data : Hash table che contiene dati inerenti all'utente tr
+     * @return void-> non ritorno nessun dato, si presume che vada a buon fine altrimenti viene visuallizato un toast :(
+     */
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
             showStandardLoadingDialog();
