@@ -29,7 +29,38 @@ import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-
+/**
+ * <p>
+ * Questa classe serve per fare le operazioni sul database / storage 
+ * di firestore. Al costruttore vengono passati conterx e fragmentmanager
+ * per lavorare con la grafica di android.
+ * <p>
+ * <p>
+ * La classe contiene anche dei metodi set per iniziallizare lo stato della classe e
+ * altri metodi utili per il caricamento dei dati sul db e storage
+ * <p>
+ * <ul>
+ * <li>WriteData(Context context , FragmentManager fm)
+ * <li>WriteData setDb(FirebaseFirestore db)
+ * <li>uploadFile(Uri fileUri, final String folder, final boolean showLoadingDialog, final boolean savePathInDatabase)
+ * <li>WriteData setEcursion(Map<String, Object> data)
+ * <li>setUserLocation(Map<String, Object> data)
+ * <li>uploadGenericData(String collection,Map<String,Object> data)
+ * <li>keysCollection()
+ * <li>updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite)
+ * <li>getFileExtension(Uri uri)
+ * <li>WriteData setUser(FirebaseUser user) 
+ * <li>WriteData setUserid(String userid)
+ * <li>WriteData setMkey(String mkey)
+ * <li>WriteData setStorageReference
+ * <li>toastMessage(String message)
+ * </ul>
+ * <p>
+ * @author      Singh Harpreet
+ * @author      Delmastro Andrea
+ * @version     %I%, %G%
+ * @since       1.0
+ */
 public class WriteData {
     private  ProgressDialog pd =null;
     private FirebaseUser user = null;
@@ -39,7 +70,12 @@ public class WriteData {
     private StorageReference storageReference= null;
     private Context contex;
     private FragmentManager fragmentManager;
-
+   /**
+     * Costruttore della classe WriteData();
+     * @param context : Sarebbe il context in cui si trova Activity o il fragment che crea l'instanza di questa classe
+     * @param fm : FragmentManager, non sempre viene utilizzato , passarlo se si vogliono utilizzare dei che l'utlizzano.
+     *             La funzione di fm sarebbe quella di poter creare un dialog grafico.
+     */
     public WriteData(Context context , FragmentManager fm){
         this.contex=context;
         this.pd = new ProgressDialog(this.contex);
@@ -49,7 +85,12 @@ public class WriteData {
         pd.setCancelable(false);
     }
 
-
+   /**
+     * Un metodo setter per inizializzare il FirebaseFirestore Database della classe
+     * @param db : Sarebbe 
+     * @param fm : FragmentManager, non sempre viene utilizzato , passarlo se si vogliono utilizzare dei che l'utlizzano.
+     *             La funzione di fm sarebbe quella di poter creare un dialog grafico.
+     */
     public WriteData setDb(FirebaseFirestore db) {
         this.db = db;
         return this;
@@ -102,9 +143,7 @@ public class WriteData {
 
     public WriteData setEcursion(Map<String, Object> data){
         if(!mkey.equals("") && !userid.equals("") && db!=null){
-            pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
-            pd.setMessage("Setting Excursion...");
+            showStandardLoadingDialog();
             uploadGenericData("excursion",data);
         }
         return this;
@@ -123,13 +162,13 @@ public class WriteData {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        pd.dismiss();
+                        dismissStandardLoadingDialog();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 toastMessage("Failed");
-                pd.dismiss();
+                dismissStandardLoadingDialog();
             }
         });
     }
@@ -137,22 +176,20 @@ public class WriteData {
     public void keysCollection(){
         Map<Object,String> key_userid= new HashMap<>();
         if(!mkey.equals("") && !userid.equals("") && db!=null){
-            pd.show();
+            showStandardLoadingDialog();
             key_userid.put("useid",userid);
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
-            pd.setMessage("Setting Excursion...");
             db.collection("excursionKeys").document(mkey).set(key_userid)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             toastMessage("Key Set");
-                            pd.dismiss();
+                            dismissStandardLoadingDialog();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     toastMessage("Failed Setting Key");
-                    pd.dismiss();
+                    dismissStandardLoadingDialog();
                 }
             });
 
@@ -163,9 +200,7 @@ public class WriteData {
 
     public void updateProfile(Map<String, Object> data,String name, final boolean userModifiedWrite){
         if(user!=null && userModifiedWrite){
-            pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
-            pd.setMessage("Updating data...");
+            showStandardLoadingDialog();
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
                     .build();
@@ -178,14 +213,12 @@ public class WriteData {
                             if (task.isSuccessful()) {
                                 toastMessage("User profile updated.");
                             }
-                            pd.dismiss();
+                            dismissStandardLoadingDialog();
                         }
                     });
         }
         if(!userid.equals("")){
-            pd.show();
-            UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
-            pd.setMessage("Updating data...");
+            showStandardLoadingDialog();
             db.collection("users").document(userid)
                     .set(data, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -194,14 +227,14 @@ public class WriteData {
                             if(!userModifiedWrite){
                                 toastMessage("User profile updated.");
                             }
-                            pd.dismiss();
+                            dismissStandardLoadingDialog();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             toastMessage("Error writing document");
-                            pd.dismiss();
+                            dismissStandardLoadingDialog();
                         }
                     });
 
@@ -240,7 +273,6 @@ public class WriteData {
     }
 
     private void showStandardLoadingDialog() {
-        pd.setCancelable(false);
         pd.setMessage("Caricamento in corso...");
         pd.show();
         UsefulMethods.timerDelayRemoveDialog(15000,pd,fragmentManager);
