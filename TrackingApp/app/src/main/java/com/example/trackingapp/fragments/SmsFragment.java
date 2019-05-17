@@ -69,9 +69,6 @@ public class SmsFragment extends Fragment {
     public void saveData() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-
         editor.putString(TEXT_KEYWORD, txtkeyword.getText().toString());
         //editor.putBoolean(SWITCH_ENABLESMS, enableSettings.isChecked());
         editor.putBoolean(SWITCH_GOOGLEMAPS_SMS, swgoogleMapsSMS.isChecked());

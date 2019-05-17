@@ -17,9 +17,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Arrays;
 import java.util.List;
 import static com.example.trackingapp.util.Constants.RC_SIGN_IN;
+
+/**
+ * Activity di log-in/sign-in. Gestisce l'accesso e la registrazione ai servizi dell'app
+ * tramite l'autenticazione di Firebase. Viene utilizzato il modulo preconfezionato
+ * FirebaseUI Android.
+ */
 public class SignInActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

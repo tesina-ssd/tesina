@@ -4,9 +4,7 @@ import android.Manifest;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.example.trackingapp.fragments.AccountSettings;
-import com.example.trackingapp.fragments.FragSettings;
 import com.example.trackingapp.R;
-import com.example.trackingapp.fragments.viewmodels.FollowUserInfoModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,24 +28,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.provider.Settings;
 import android.util.Log;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import static com.example.trackingapp.util.Constants.*;
 
+/**
+ * Acticity principale, gestisce la navigazione all'interno dei fragment che compongono l'applicazione
+ * (host di navigazione), la richiesta dei permessi relativi alle funzionalità dell'app.
+ * All'interno dell'host vengono posizionati i fragment, gestiti attraverso il Navigation Component.
+ */
 public class MainActivity extends AppCompatActivity implements AccountSettings.OnFragmentInteractionListener {
 
-    // lists for permissions
+    // Proprietà relative ai permessi dell'applicazione
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
 
+    /** Ritorna il context corrente */
     public Context getContex (){ return getApplicationContext(); }
 
     @Override
@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Prelevo il navigation controller corrente
         //TODO: così funziona, vedere se si può togliere
         final NavController nav = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-
-
+        // Gestione della navigazione sul click sull'icona profilo
         findViewById(R.id.IconProfileImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
             }
         });
 
+        // Gestione della navigazione sul click sull'icona impostazioni
         findViewById(R.id.IconSettings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
             }
         });
 
+        // Controllo dell'esistenza del documento utente nel database
+        // In caso di nuovo utente il documento non esiste e dovrà essere creato
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userid= FirebaseAuth.getInstance().getUid();
         db.collection("users").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -84,12 +87,16 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 if (task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     if(!doc.exists()){
+                        // Il documento non esiste
                         /*FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction transaction = fm.beginTransaction();
                         transaction.replace(R.id.frameLayout, AccountSettings.newInstance(true),"AccountSettings");
                         transaction.addToBackStack(null);
                         transaction.commit();*/
                     }else{
+                        // Il documento esiste, le informazioni vengono prelevate ed inserite all'interno
+                        // della classe costanti condivisa, per essere accessibili anche offline senza
+                        // dover ogni volta prelevare nuovamente i dati dal database
                         CONNECTED_PHONE_NUMBER= doc.get(KEY_PHONE_CONNECTED_TO_USER).toString();
                         ALARM_PHONE_NUMBER =( doc.get(KEY_ALARM_PHONE).toString());
                         // Caricamento dell'immagine di profilo nella barra superiore
@@ -102,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 }
             }
         });
-        // we add permissions we need to request location of the users
+
+        // Definizione dei permessi necessari all'applicazione
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.SEND_SMS);
         permissions.add(Manifest.permission.RECEIVE_SMS);
@@ -111,12 +119,12 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         permissions.add(Manifest.permission.CALL_PHONE);
         permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             permissions.add(Manifest.permission.FOREGROUND_SERVICE);
         }
-*/
         permissionsToRequest = permissionsToRequest(permissions);
 
+        // Richiesta dei permessi all'utente
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionsToRequest.size() > 0) {
                 requestPermissions(permissionsToRequest.toArray(
@@ -125,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
         }
     }
 
+    /**
+      * Metodo che a partire da una lista di permessi controlla quelli che non
+      * sono già stati assegnati all'app e ritorna un vettore con i permessi da
+      * richiedere
+      */
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
         ArrayList<String> result = new ArrayList<>();
 
@@ -136,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         return result;
     }
+
+    /** Metodo che a partire da un permesso determina se è già stato assegnato all'app */
     private boolean hasPermission(String permission) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
@@ -143,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         return true;
     }
+
+    //TODO: Singh commentatela pure tu
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == ALL_PERMISSIONS_RESULT) {

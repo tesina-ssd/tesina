@@ -10,14 +10,27 @@ import android.widget.TextView;
 
 import com.example.trackingapp.R;
 
+/**
+ * Fragment di visualizzazione del codice di connessione
+ */
 public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
 
-    private String connectionCode="";
+    private String connectionCode=""; // Codice di connessione
 
-    private OnConnectionCodeFragmentInteractionListener mListener;
+    /** Interfaccia di comunicazione con il chiamante */
+    public interface OnConnectionCodeFragmentInteractionListener {
+        void onConnectionCodeFragmentCancelPressed();
+        void onConnectionCodeFragmentOkPressed();
+    }
+
+    private OnConnectionCodeFragmentInteractionListener mListener; // Fragment chiamante
 
     public ConnectionCodeFragment() {}
 
+    /**
+     * Genera una nuova istanza di ConnectionCodeFragment
+     * @param connectionCode : il codice di connessione da visualizzare
+     */
     public static ConnectionCodeFragment newInstance(String connectionCode) {
         ConnectionCodeFragment fragment = new ConnectionCodeFragment();
 
@@ -41,6 +54,8 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.connection_code_dialog, container, false);
+
+        // Gestione del click sul tasto cancella
         Button btnCancel = v.findViewById(R.id.ConnectionCode_BtnCanel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +64,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
             }
         });
 
+        // Gestione del click sul tasto ok
         Button btnOk = v.findViewById(R.id.ConnectionCode_BtnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,14 +79,18 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
         return v;
     }
 
+    /** Gestisce il click sul pulsante cancella */
     private void onConnectionCodeFragmentCancelPressed() {
         if (mListener != null) {
+            // Viene demandata l'implementazione del metodo al chiamante
             mListener.onConnectionCodeFragmentCancelPressed();
         }
     }
 
+    /** Gestisce il click sul tasto OK */
     private void onConnectionCodeFragmentOkPressed() {
         if (mListener != null) {
+            // Viene demandata l'implementazione del metodo al chiamante
             mListener.onConnectionCodeFragmentOkPressed();
         }
     }
@@ -78,6 +98,7 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // Connessione con il chiamante mediante l'interfaccia definita
         if (getParentFragment() != null) {
             mListener = (OnConnectionCodeFragmentInteractionListener) getParentFragment();
         } else {
@@ -90,10 +111,5 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-   public interface OnConnectionCodeFragmentInteractionListener {
-        void onConnectionCodeFragmentCancelPressed();
-        void onConnectionCodeFragmentOkPressed();
     }
 }

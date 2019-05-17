@@ -230,7 +230,7 @@ public class UserinfoUpdateService extends Service {
                         sendNotification.sendStopServiceNotification(pendingIntent);
                     }
             }
-            mHandler.postDelayed(this, 11000);
+            mHandler.postDelayed(this, 20000);
         }
     };
 

@@ -36,6 +36,11 @@ import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
 import static com.example.trackingapp.util.Constants.GROUP_PHOTO_FOLDER;
 import static com.example.trackingapp.util.Constants.TRACK_FOLDER;
 
+/**
+ * Dialog di gestione dei fragment che compongono il processo di compilazione
+ * della scheda. I fragment vengono inseriti all'interno del dialog e fatti
+ * scorrere sulla pressione del tasto avanti presente in ogni fragment.
+ */
 public class ConnectionDialog extends DialogFragment implements
         ExcursionSheetFragmentPt1.OnExcursionSheetFragmentPt1InteractionListener,
         ExcursionSheetFragmentPt2.OnExcursionSheetFragmentPt2InteractionListener,
@@ -50,11 +55,13 @@ public class ConnectionDialog extends DialogFragment implements
 
     private Map<String,Object> excursionSheet;
 
+    /** Interfaccia di connessione con il chiamante */
     public interface ConnectionDialogListener {
         void onConnectionDialogOkClicked();
         void onConnectionDialogCancelClicked();
     }
 
+    /** Metodo che istanzia un nuovo dialog */
     static public ConnectionDialog newInstance() {
         ConnectionDialog dialog = new ConnectionDialog();
         return dialog;
@@ -63,6 +70,7 @@ public class ConnectionDialog extends DialogFragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // Connessione con il chiamante tramite l'interfaccia precedentemente definita
         try {
             if(getTargetFragment() != null)
                 // Viene collegato il chiamante
@@ -85,6 +93,7 @@ public class ConnectionDialog extends DialogFragment implements
         db = FirebaseFirestore.getInstance();
         wrd = new WriteData(getContext(),getFragmentManager());
         View v = inflater.inflate(R.layout.connection_dialog, container, false);
+        // Impostazione della trasparenza al background
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -94,11 +103,13 @@ public class ConnectionDialog extends DialogFragment implements
         return v;
     }
 
+    /** Metodo che viene chiamato dal fragment pt1 sulla pressione del tasto cancel */
     @Override
     public void onExcursionSheetFragmentPt1CancelPressed() {
         mListener.onConnectionDialogCancelClicked();
     }
 
+    /** Metodo che viene chiamato dal fragment pt1 sulla pressione del tasto avanti */
     @Override
     public void onExcursionSheetFragmentPt1NextPressed(ExcursionSheetMapBuilder excursionSheet) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -106,11 +117,13 @@ public class ConnectionDialog extends DialogFragment implements
         transaction.replace(R.id.cardViewConnectionDialog,  ExcursionSheetFragmentPt2.newInstance(excursionSheet), "excS2").commit();
     }
 
+    /** Metodo che viene chiamato dal fragment pt2 sulla pressione del tasto cancel */
     @Override
     public void onExcursionSheetFragmentPt2CancelPressed() {
         mListener.onConnectionDialogCancelClicked();
     }
 
+    /** Metodo che viene chiamato dal fragment pt2 sulla pressione del tasto avanti */
     @Override
     public void onExcursionSheetFragmentPt2NextPressed(ExcursionSheetMapBuilder excursionSheet) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -118,11 +131,13 @@ public class ConnectionDialog extends DialogFragment implements
         transaction.replace(R.id.cardViewConnectionDialog,  ExcursionSheetFragmentPt3.newInstance(excursionSheet), "excS3").commit();
     }
 
+    /** Metodo che viene chiamato dal fragment pt3 sulla pressione del tasto cancel */
     @Override
     public void onExcursionSheetFragmentPt3CancelPressed() {
         mListener.onConnectionDialogCancelClicked();
     }
 
+    /** Metodo che viene chiamato dal fragment pt3 sulla pressione del tasto avanti */
     @Override
     public void onExcursionSheetFragmentPt3NextPressed(Map excursionSheet) {
         this.excursionSheet = excursionSheet;
@@ -145,12 +160,14 @@ public class ConnectionDialog extends DialogFragment implements
                 .keysCollection();
     }
 
+    /** Metodo che viene chiamato dal fragment che visualizza il codice sulla pressione del tasto cancel */
     @Override
     public void onConnectionCodeFragmentCancelPressed() {
         mListener.onConnectionDialogCancelClicked();
         UsefulMethods.deleteKeyFromDB();
     }
 
+    /** Metodo che viene chiamato dal fragment che visualizza il codice sulla pressione del tasto ok */
     @Override
     public void onConnectionCodeFragmentOkPressed() {
 
@@ -168,9 +185,11 @@ public class ConnectionDialog extends DialogFragment implements
         mListener.onConnectionDialogOkClicked();
     }
 
-
-
-    private String randomCode( int len ){
+    /**
+     * Metodo che genera un codice randomico
+     * @param len : lunghezza del codice
+     */
+    private String randomCode(int len){
         StringBuilder sb = new StringBuilder( len );
         for( int i = 0; i < len; i++ )
             sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );

@@ -42,7 +42,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import static android.graphics.Color.rgb;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.lineProgress;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.linear;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineGradient;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 public class FollowMapFragment extends Fragment implements FollowConnectionDialog.FollowConnectionDialogListener {
 
@@ -100,11 +109,18 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                                             style.addSource(userPositionGeoJson);
 
                                             style.addLayer(new LineLayer("user-postion-line-layer", "user-postion-line").withProperties(
-                                                    PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-                                                    PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
-                                                    PropertyFactory.lineWidth(4f),
-                                                    PropertyFactory.lineColor(Color.parseColor("#0197f6"))
-                                            ));
+                                                    lineCap(Property.LINE_CAP_ROUND),
+                                                    lineJoin(Property.LINE_JOIN_ROUND),
+                                                    lineWidth(3f),
+                                                    lineGradient(interpolate(
+                                                            linear(), lineProgress(),
+                                                            stop(0f, rgb(6, 1, 255)), // blue
+                                                            stop(0.1f, rgb(59, 118, 227)), // royal blue
+                                                            stop(0.3f, rgb(7, 238, 251)), // cyan
+                                                            stop(0.5f, rgb(0, 255, 42)), // lime
+                                                            stop(0.7f, rgb(255, 252, 0)), // yellow
+                                                            stop(1f, rgb(255, 30, 0)) // red
+                                                    ))));
 
                                             style.addLayer(new SymbolLayer("user-position-layer", "user-position").withProperties(
                                                     iconImage("marker-icon-default")
