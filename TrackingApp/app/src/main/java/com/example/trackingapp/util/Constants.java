@@ -8,7 +8,7 @@ public class Constants {
     public static final String WHO_CALLING = "imcalling";
     public static final String BOOL_CONNECTED_MSG = "connectedmsg";
     public static final String BOOL_ALARM_MSG = "alarmmsg";
-    public static final String KEY_IMAGE_PATH = "PathImg";
+    public static final String KEY_IMAGE_PATH = "ProfilePicture";
     public static final String KEY_USER_PHONE = "NumeroDiTelefono";
     public static final String KEY_PHONE_CONNECTED_TO_USER = "NumeroPersonaConnessa";
     public static final String KEY_ALARM_PHONE = "NumeroDiAllarme";
@@ -34,4 +34,7 @@ public class Constants {
     public static boolean SMS_ENABLE = false;
     public static boolean INTERNET_ENABLE = false;
     public static String CHIAVE_ESCURSIONE = "";
+    public static final String GROUP_PHOTO_FOLDER = "excursion/GroupPhoto";
+    public static final String TRACK_FOLDER = "excursion/Track";
+    public static final String PROFILE_PICTURE_FOLDER = "users/ProfilePicture";
 }

@@ -21,10 +21,10 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
     public static ConnectionCodeFragment newInstance(String connectionCode) {
         ConnectionCodeFragment fragment = new ConnectionCodeFragment();
 
-
         Bundle args = new Bundle();
         args.putString("connectionCode", connectionCode);
         fragment.setArguments(args);
+
         return fragment;
     }
 

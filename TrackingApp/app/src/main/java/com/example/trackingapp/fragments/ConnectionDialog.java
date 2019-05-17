@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.trackingapp.R;
+import com.example.trackingapp.util.ExcursionSheetMapBuilder;
 import com.example.trackingapp.util.UsefulMethods;
 import com.example.trackingapp.util.UserinfoUpdateService;
 import com.example.trackingapp.util.WriteData;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,20 +25,21 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static com.example.trackingapp.util.Constants.AB;
 import static com.example.trackingapp.util.Constants.AUTH;
 import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
-import static com.example.trackingapp.util.Constants.COLLECTION_ESCURSIONE;
+import static com.example.trackingapp.util.Constants.GROUP_PHOTO_FOLDER;
+import static com.example.trackingapp.util.Constants.TRACK_FOLDER;
 
 public class ConnectionDialog extends DialogFragment implements
-        ExcursionSheetFragment.OnExcursionSheetFragmentInteractionListener,
+        ExcursionSheetFragmentPt1.OnExcursionSheetFragmentPt1InteractionListener,
+        ExcursionSheetFragmentPt2.OnExcursionSheetFragmentPt2InteractionListener,
+        ExcursionSheetFragmentPt3.OnExcursionSheetFragmentPt3InteractionListener,
         ConnectionCodeFragment.OnConnectionCodeFragmentInteractionListener {
 
     private static SecureRandom rnd = new SecureRandom();
@@ -86,26 +87,57 @@ public class ConnectionDialog extends DialogFragment implements
         View v = inflater.inflate(R.layout.connection_dialog, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Fragment avantiFragment = ExcursionSheetFragment.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.cardViewConnectionDialog,  avantiFragment, "avantiTest").commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.cardViewConnectionDialog,  ExcursionSheetFragmentPt1.newInstance(), "excS1").commit();
 
         // Viene ritornata la View corrente
         return v;
     }
 
     @Override
-    public void onExcursionSheetFragmentCancelPressed() {
+    public void onExcursionSheetFragmentPt1CancelPressed() {
         mListener.onConnectionDialogCancelClicked();
     }
 
     @Override
-    public void onExcursionSheetFragmentNextPressed(Map<String,Object> excursionSheet) {
+    public void onExcursionSheetFragmentPt1NextPressed(ExcursionSheetMapBuilder excursionSheet) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
+        transaction.replace(R.id.cardViewConnectionDialog,  ExcursionSheetFragmentPt2.newInstance(excursionSheet), "excS2").commit();
+    }
+
+    @Override
+    public void onExcursionSheetFragmentPt2CancelPressed() {
+        mListener.onConnectionDialogCancelClicked();
+    }
+
+    @Override
+    public void onExcursionSheetFragmentPt2NextPressed(ExcursionSheetMapBuilder excursionSheet) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
+        transaction.replace(R.id.cardViewConnectionDialog,  ExcursionSheetFragmentPt3.newInstance(excursionSheet), "excS3").commit();
+    }
+
+    @Override
+    public void onExcursionSheetFragmentPt3CancelPressed() {
+        mListener.onConnectionDialogCancelClicked();
+    }
+
+    @Override
+    public void onExcursionSheetFragmentPt3NextPressed(Map excursionSheet) {
         this.excursionSheet = excursionSheet;
         String connection_Key = randomCode(10);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
         transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
         CHIAVE_ESCURSIONE = connection_Key;
+
+        wrd.uploadFile(Uri.parse((String) excursionSheet.get("photoPath")), GROUP_PHOTO_FOLDER, false, true);
+        wrd.uploadFile(Uri.parse((String) excursionSheet.get("trackPath")), TRACK_FOLDER, false, true);
+
+        excursionSheet.remove("photoPath");
+        excursionSheet.remove("trackPath");
+
         wrd.setDb(db)
                 .setUserid(AUTH.getUid())
                 .setMkey(connection_Key)
