@@ -1,7 +1,6 @@
 package com.example.trackingapp.fragments;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +30,6 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.Property;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
@@ -93,7 +91,6 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                                 @Override
                                 public void onMapReady(@NonNull final MapboxMap mapboxMap) {
                                     FollowMapFragment.this.mapboxMap = mapboxMap;
-
                                     mapboxMap.setStyle(Style.OUTDOORS, new Style.OnStyleLoaded() {
                                         @Override
                                         public void onStyleLoaded(@NonNull Style style) {
@@ -168,6 +165,7 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
     }
 
     private void startFollowing() {
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final DocumentReference excDoc = db.collection("excursion").document(connectionCode);
         excDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {

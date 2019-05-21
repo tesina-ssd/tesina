@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.trackingapp.util.Constants.SHARED_PREFS;
 import static com.example.trackingapp.util.Constants.SWITCH_GOOGLEMAPS_SMS;
@@ -67,7 +69,7 @@ public class SmsFragment extends Fragment {
     }
 
     public void saveData() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(TEXT_KEYWORD, txtkeyword.getText().toString());
         //editor.putBoolean(SWITCH_ENABLESMS, enableSettings.isChecked());

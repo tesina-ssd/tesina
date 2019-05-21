@@ -1,6 +1,7 @@
 package com.example.trackingapp.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,10 +22,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Objects;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.trackingapp.util.Constants.SHARED_PREFS;
+
 public class FollowConnectionDialog extends DialogFragment {
 
     FirebaseFirestore db = null;
-
+    private SharedPreferences sharedPreferences;
     public interface FollowConnectionDialogListener {
         void onFollowConnectionDialogOkClicked(String connectionCode);
         void onFollowConnectionDialogCancelClicked();
@@ -61,17 +67,22 @@ public class FollowConnectionDialog extends DialogFragment {
 
         View v = inflater.inflate(R.layout.follow_connection_dialog, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
+        final SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
         // Viene ritornata la View corrente
         Button btnOk =  v.findViewById(R.id.FollowConnectionDialog_BtnOk);
         Button btnCancel = v.findViewById(R.id.FollowConnectionDialog_BtnCancel);
-
         final TextInputEditText txtConnectionCode = v.findViewById(R.id.FollowConnectionDialod_CodeText);
-
+        txtConnectionCode.setText(sharedPreferences.getString("lastKey",""));
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String connectionCode = txtConnectionCode.getText().toString();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("lastKey",connectionCode);
+                editor.apply();
                 if(connectionCode.equals("")) {
                     txtConnectionCode.setError("Inserire un codice valido");
                 } else {

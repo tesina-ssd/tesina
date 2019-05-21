@@ -25,6 +25,8 @@ import com.squareup.picasso.Picasso;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -34,6 +36,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.example.trackingapp.util.Constants.*;
 
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                         transaction.replace(R.id.frameLayout, AccountSettings.newInstance(true),"AccountSettings");
                         transaction.addToBackStack(null);
                         transaction.commit();*/
+                        nav.navigate(R.id.action_global_accountSettings);
                     }else{
                         // Il documento esiste, le informazioni vengono prelevate ed inserite all'interno
                         // della classe costanti condivisa, per essere accessibili anche offline senza
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                         ALARM_PHONE_NUMBER =( doc.get(KEY_ALARM_PHONE).toString());
                         // Caricamento dell'immagine di profilo nella barra superiore
                         Picasso.get()
-                                .load(doc.get(KEY_IMAGE_PATH).toString())
+                                .load(Objects.requireNonNull(doc.get(KEY_IMAGE_PATH)).toString())
                                 .into((ImageView) findViewById(R.id.IconProfileImage));
                         Log.d("conn",CONNECTED_PHONE_NUMBER);
                         Log.d("alarm",CONNECTED_PHONE_NUMBER);
