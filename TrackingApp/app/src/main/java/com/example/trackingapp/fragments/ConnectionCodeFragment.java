@@ -1,7 +1,9 @@
 package com.example.trackingapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.trackingapp.R;
+
+import static com.example.trackingapp.util.Constants.CHIAVE_ESCURSIONE;
 
 /**
  * Fragment di visualizzazione del codice di connessione
@@ -63,7 +67,18 @@ public class ConnectionCodeFragment extends androidx.fragment.app.Fragment {
                 onConnectionCodeFragmentCancelPressed();
             }
         });
+        v.findViewById(R.id.shareButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("inShae","share");
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"Chiave escursione");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,CHIAVE_ESCURSIONE);
+                startActivity(Intent.createChooser(shareIntent,"Condividi tramite"));
 
+            }
+        });
         // Gestione del click sul tasto ok
         Button btnOk = v.findViewById(R.id.ConnectionCode_BtnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {

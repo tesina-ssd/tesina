@@ -38,17 +38,18 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/ConnectionCodeKeyDialog_Code"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Title" />
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/ConnectionCodeKeyDialog_Code"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="346dp"
+        android:layout_height="73dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="50dp"
         android:background="#d7263d"
         android:fontFamily="@font/poppins_semibold"
@@ -60,9 +61,58 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/ConnectionCode_BtnOk"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Info" />
+        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Info" />-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerConnectionCodeKeyDialog_Code"
+        android:layout_width="353dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ConnectionCode_BtnCanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ConnectionDialog_Info">
+
+        <TextView
+            android:id="@+id/ConnectionCodeKeyDialog_Code"
+            android:layout_width="283dp"
+            android:layout_height="76dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#d7263d"
+            android:fontFamily="@font/poppins_semibold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/shareButton"
+            android:layout_width="48dp"
+            android:layout_height="49dp"
+            android:src="@drawable/ic_share"
+            android:tint="@android:color/black"
+            app:fab_colorNormal="@color/fui_bgGoogle"
+            app:fab_colorPressed="@color/fui_bgGoogle"
+            app:fab_size="mini"
+            android:title="Share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ConnectionCodeKeyDialog_Code"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="58dp"
+            tools:layout_conversion_absoluteWidth="58dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/ConnectionCode_BtnOk"

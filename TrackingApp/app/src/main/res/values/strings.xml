@@ -23,7 +23,7 @@
 
     <string name="str_ConnectionDialog_Title">Codice di connessione</string>
     <string name="str_ConnectionDialog_Info">Fornisci il codice di connessione ad una persona fidata: le darai accesso alle tue informazioni per permettere un tempestivo soccorso</string>
-    <string name="str_ConnectionDialog_BtnOk">OK</string>
+    <string name="str_ConnectionDialog_BtnOk">Inizia Attività</string>
     <string name="str_ConnectionDialog_BtnAvanti">ANNULLA</string>
 
     <string-array name="activities">

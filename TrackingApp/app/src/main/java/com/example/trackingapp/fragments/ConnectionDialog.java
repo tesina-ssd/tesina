@@ -146,9 +146,15 @@ public class ConnectionDialog extends DialogFragment implements
         transaction.setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left);
         transaction.replace(R.id.cardViewConnectionDialog,  ConnectionCodeFragment.newInstance(connection_Key), "connCode").commit();
         CHIAVE_ESCURSIONE = connection_Key;
+        if(!excursionSheet.get("photoPath").equals("")){
+            wrd.uploadFile(Uri.parse((String) excursionSheet.get("photoPath")), GROUP_PHOTO_FOLDER, false, true);
+        }
+        if(!excursionSheet.get("trackPath").equals("")){
+            wrd.uploadFile(Uri.parse((String) excursionSheet.get("trackPath")), TRACK_FOLDER, false, true);
+        }
 
-        wrd.uploadFile(Uri.parse((String) excursionSheet.get("photoPath")), GROUP_PHOTO_FOLDER, false, true);
-        wrd.uploadFile(Uri.parse((String) excursionSheet.get("trackPath")), TRACK_FOLDER, false, true);
+        /*wrd.uploadFile(Uri.parse((String) excursionSheet.get("photoPath")), GROUP_PHOTO_FOLDER, false, true);
+        wrd.uploadFile(Uri.parse((String) excursionSheet.get("trackPath")), TRACK_FOLDER, false, true);*/
 
         excursionSheet.remove("photoPath");
         excursionSheet.remove("trackPath");
