@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.trackingapp.R;
+import com.example.trackingapp.databinding.LayerStyleDialogBinding;
+import com.example.trackingapp.fragments.viewmodels.LayerStyleDialogViewModel;
 import com.mapbox.mapboxsdk.maps.Style;
 
 public class LayerStyleDialog extends DialogFragment {
@@ -44,17 +47,23 @@ public class LayerStyleDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.layer_style_dialog, container, false);
+        final LayerStyleDialogViewModel viewModel = new LayerStyleDialogViewModel();
+
+        LayerStyleDialogBinding binding = DataBindingUtil.inflate(inflater ,R.layout.layer_style_dialog, container, false);
+        binding.setViewModel(viewModel);
+        View v = binding.getRoot();
+
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ImageButton imgBtnOutDoor =(ImageButton) v.findViewById(R.id.imageViewOutdoor);
-        ImageButton imgBtnSatellite =(ImageButton) v.findViewById(R.id.imageViewSat);
-        ImageButton imgBtnMbStreets =(ImageButton) v.findViewById(R.id.imageViewMbStreets);
+        ImageButton imgBtnOutDoor = v.findViewById(R.id.imageViewOutdoor);
+        ImageButton imgBtnSatellite = v.findViewById(R.id.imageViewSat);
+        ImageButton imgBtnMbStreets = v.findViewById(R.id.imageViewMbStreets);
 
         imgBtnOutDoor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onLayerStyleClicked(Style.OUTDOORS);
+                viewModel.setOutdoorSelected(true);
             }
         });
 
@@ -62,6 +71,7 @@ public class LayerStyleDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onLayerStyleClicked(Style.SATELLITE);
+                viewModel.setSatelliteSelected(true);
             }
         });
 
@@ -69,6 +79,7 @@ public class LayerStyleDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onLayerStyleClicked(Style.MAPBOX_STREETS);
+                viewModel.setStreetSelected(true);
             }
         });
 

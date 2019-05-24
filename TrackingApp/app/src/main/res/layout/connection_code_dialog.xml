@@ -77,12 +77,13 @@
 
         <TextView
             android:id="@+id/ConnectionCodeKeyDialog_Code"
-            android:layout_width="283dp"
+            android:layout_width="0dp"
             android:layout_height="76dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="#d7263d"
             android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textAlignment="center"
@@ -90,26 +91,23 @@
             android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.6" />
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <ImageView
             android:id="@+id/shareButton"
-            android:layout_width="48dp"
-            android:layout_height="49dp"
-            android:src="@drawable/ic_share"
-            android:tint="@android:color/black"
-            app:fab_colorNormal="@color/fui_bgGoogle"
-            app:fab_colorPressed="@color/fui_bgGoogle"
-            app:fab_size="mini"
-            android:title="Share"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ConnectionCodeKeyDialog_Code"
+            app:layout_constraintEnd_toEndOf="@+id/ConnectionCodeKeyDialog_Code"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_absoluteHeight="58dp"
-            tools:layout_conversion_absoluteWidth="58dp" />
+            app:srcCompat="@drawable/ic_share" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
