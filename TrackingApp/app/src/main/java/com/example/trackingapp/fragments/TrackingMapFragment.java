@@ -48,7 +48,7 @@ import static com.example.trackingapp.util.Constants.IS_TRACKING_SERVICE_WORKING
  * Fragment rappresentate la mappa per il tracciamento dell'utente.
  * Contiene una mappa e un menu espandibile tramite un floating action button.
  */
-public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener {
+public class TrackingMapFragment extends Fragment implements ConnectionDialog.ConnectionDialogListener, LayerStyleDialog.LayerStyleDialogInterface {
 
     private FragmentManager fragmentManager = null; //FragmentManager utilizzato per la gestione dei dialog
     private Button btnser;
@@ -57,7 +57,7 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     private static MapboxMap mapbox;
     private TrackingMapFragment thisFragment = this; //Rappresenta l'istanza corrente
     private ConnectionDialog connectionCodeGeneratorDialogFragment = null; // Rappresenta l'istanza di ConnectionCodeDialogFragment
-
+    LayerStyleDialog layerStyleDialog = null;
 
     private final int CONNECTION_DIALOG_REQ_CODE = 1;
     private final String CONNECTION_DIALOG_TAG = "CONN_DIALOG";
@@ -100,6 +100,15 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
                     }
                 });
 
+            }
+        });
+
+        view.findViewById(R.id.menu_item_layer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layerStyleDialog = LayerStyleDialog.newInstance();
+                layerStyleDialog.setTargetFragment((Fragment) thisFragment, 125);
+                layerStyleDialog.show(fragmentManager, "layer-dialog");
             }
         });
 
@@ -324,5 +333,11 @@ public class TrackingMapFragment extends Fragment implements ConnectionDialog.Co
     @Override
     public void onConnectionDialogCancelClicked() {
         connectionCodeGeneratorDialogFragment.dismiss();
+    }
+
+    @Override
+    public void onLayerStyleClicked(String layer) {
+        layerStyleDialog.dismiss();
+        mapbox.setStyle(layer);
     }
 }

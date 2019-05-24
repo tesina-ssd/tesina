@@ -150,4 +150,9 @@
     <string name="changeGpsmode">Gps Mode è selezionato su \"Dispositivo solo  o su BATTERY SAVING\".\nCambia GPS mode su :\"HIGH ACCURACY\"</string>
     <string name="permissionsMessage">I permessi sono necessari per il funzionamento dell\'applicazione.\n\nCliccando su \"cancel\" l\'app verrà chiusa!</string>
 
+    <!--  Layer -->
+    <string name="outdoor">Outdoor</string>
+    <string name="satellite">Satellite</string>
+    <string name="strade">Strade</string>
+
 </resources>

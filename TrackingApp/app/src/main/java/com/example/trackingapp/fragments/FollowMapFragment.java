@@ -51,7 +51,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineGradient;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class FollowMapFragment extends Fragment implements FollowConnectionDialog.FollowConnectionDialogListener {
+public class FollowMapFragment extends Fragment implements FollowConnectionDialog.FollowConnectionDialogListener,  LayerStyleDialog.LayerStyleDialogInterface {
 
     private final String followConnectionDialogTAG = "fllwConnDialogTAG";
     private final int followConnectionDialogRequestCode = 1;
@@ -68,6 +68,7 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
     private GeoJsonSource userPositionLineGeoJson = null;
     private ArrayList<Point> userPostionsArray = new ArrayList<Point>();
     private MapboxMap mapboxMap = null;
+    LayerStyleDialog layerStyleDialog = null;
 
     /**
      * Costruttore base vuoto, richiesto per l'implementazione (non chiedetemi il perchè)
@@ -126,6 +127,16 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                                     });
                                 }
                             });
+
+
+        view.findViewById(R.id.menu_item_layer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layerStyleDialog = LayerStyleDialog.newInstance();
+                layerStyleDialog.setTargetFragment((Fragment) thisFragment, 125);
+                layerStyleDialog.show(fragmentManager, "layer-dialog");
+            }
+        });
 
         view.findViewById(R.id.FollowMapFragment_FabMenu_StartFollowing).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,5 +255,11 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onLayerStyleClicked(String layer) {
+        layerStyleDialog.dismiss();
+        mapboxMap.setStyle(layer);
     }
 }
