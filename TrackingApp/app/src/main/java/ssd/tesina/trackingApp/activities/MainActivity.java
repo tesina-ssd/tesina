@@ -121,7 +121,10 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
 
         // Definizione dei permessi necessari all'applicazione
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissions.add(Manifest.permission.SEND_SMS);
         permissions.add(Manifest.permission.RECEIVE_SMS);
+        permissions.add(Manifest.permission.READ_SMS);
+        permissions.add(Manifest.permission.BROADCAST_SMS);
         permissions.add(Manifest.permission.CALL_PHONE);
         permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
 
