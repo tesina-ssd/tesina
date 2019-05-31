@@ -22,6 +22,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/privacy_policy"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:contentDescription="Privacy Policy"
+            app:layout_constraintEnd_toStartOf="@+id/IconNotification"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_security_black_24dp" />
+
+        <ImageView
             android:id="@+id/IconNotification"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -31,6 +44,7 @@
             android:contentDescription="Notification"
             app:layout_constraintEnd_toStartOf="@+id/IconSettings"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/privacy_policy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_notification" />

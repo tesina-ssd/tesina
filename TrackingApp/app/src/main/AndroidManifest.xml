@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ssd.tesina.trackingApp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.trackingapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -8,30 +9,30 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!--uses-permission android:name="android.permission.READ_PHONE_STATE"/-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" tools:node="remove"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_SMS" tools:node="remove"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" tools:node="remove"/>
 
     <application
-        android:name="ssd.tesina.trackingApp.util.CreateNotficationChannel"
+        android:name=".util.CreateNotficationChannel"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name="ssd.tesina.trackingApp.util.UserinfoUpdateService"
+            android:name=".util.UserinfoUpdateService"
             android:exported="false" />
         <service
-            android:name="ssd.tesina.trackingApp.util.SmsSenderService"
+            android:name=".util.SmsSenderService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name="ssd.tesina.trackingApp.activities.SignInActivity">
+        <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,14 +40,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ssd.tesina.trackingApp.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <receiver android:name="ssd.tesina.trackingApp.util.NotificationReceiver">
+        <receiver android:name=".util.NotificationReceiver">
         </receiver>
 
     </application>
+
 </manifest>

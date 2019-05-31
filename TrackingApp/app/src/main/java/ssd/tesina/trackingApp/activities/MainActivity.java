@@ -4,6 +4,7 @@ import android.Manifest;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -77,7 +78,13 @@ public class MainActivity extends AppCompatActivity implements AccountSettings.O
                 nav.navigate(R.id.action_global_smsFragment);
             }
         });
-
+        findViewById(R.id.privacy_policy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://tracking-app-1b565.firebaseapp.com"));
+                startActivity(browserIntent);
+            }
+        });
         // Controllo dell'esistenza del documento utente nel database
         // In caso di nuovo utente il documento non esiste e dovrà essere creato
         FirebaseFirestore db = FirebaseFirestore.getInstance();
