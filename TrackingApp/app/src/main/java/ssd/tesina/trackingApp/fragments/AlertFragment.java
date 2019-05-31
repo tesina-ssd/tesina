@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import static ssd.tesina.trackingApp.util.Constants.ALARM_PHONE_NUMBER;
+
 /**
  * Fragment di chiamata di soccorso:  viee visualizzata una schermata contenente
  * un avviso di chiamata che può essere disattivato entro 10 secondi, terminato
@@ -50,7 +52,7 @@ public class AlertFragment extends Fragment {
             public void onFinish() {
                 Toast.makeText(getContext(), "Finito!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + "3663186599"));
+                intent.setData(Uri.parse("tel:" + ALARM_PHONE_NUMBER));
                 startActivityForResult(intent, 1);
             }
         }.start();
