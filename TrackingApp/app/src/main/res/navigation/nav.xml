@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.trackingapp.fragments.HomeFragment"
+        android:name="ssd.tesina.trackingApp.fragments.HomeFragment"
         android:label="home_layout"
         tools:layout="@layout/home_layout" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackingMapFragment"
-        android:name="com.example.trackingapp.fragments.TrackingMapFragment"
+        android:name="ssd.tesina.trackingApp.fragments.TrackingMapFragment"
         android:label="tracking_map_fragment"
         tools:layout="@layout/tracking_map_fragment" >
         <action
@@ -28,12 +28,12 @@
     </fragment>
     <fragment
         android:id="@+id/followMapFragment"
-        android:name="com.example.trackingapp.fragments.FollowMapFragment"
+        android:name="ssd.tesina.trackingApp.fragments.FollowMapFragment"
         android:label="follow_map_fragment"
         tools:layout="@layout/follow_map_fragment" />
     <fragment
         android:id="@+id/accountSettings"
-        android:name="com.example.trackingapp.fragments.AccountSettings"
+        android:name="ssd.tesina.trackingApp.fragments.AccountSettings"
         android:label="account_settings"
         tools:layout="@layout/account_settings" />
     <action
@@ -41,7 +41,7 @@
         app:destination="@id/accountSettings" />
     <fragment
         android:id="@+id/smsFragment"
-        android:name="com.example.trackingapp.fragments.SmsFragment"
+        android:name="ssd.tesina.trackingApp.fragments.SmsFragment"
         android:label="sms_settings"
         tools:layout="@layout/sms_settings" />
     <action
@@ -49,7 +49,7 @@
         app:destination="@id/smsFragment" />
     <fragment
         android:id="@+id/alertFragment"
-        android:name="com.example.trackingapp.fragments.AlertFragment"
+        android:name="ssd.tesina.trackingApp.fragments.AlertFragment"
         android:label="fragment_alert"
         tools:layout="@layout/fragment_alert" />
 </navigation>

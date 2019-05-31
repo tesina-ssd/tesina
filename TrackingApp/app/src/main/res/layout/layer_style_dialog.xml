@@ -2,10 +2,10 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <import type="com.example.trackingapp.fragments.viewmodels.LayerStyleDialogViewModel"/>
+        <import type="ssd.tesina.trackingApp.fragments.viewmodels.LayerStyleDialogViewModel"/>
         <variable
             name="viewModel"
-            type="com.example.trackingapp.fragments.viewmodels.LayerStyleDialogViewModel" />
+            type="ssd.tesina.trackingApp.fragments.viewmodels.LayerStyleDialogViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/baseConnectionDialog"

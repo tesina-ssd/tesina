@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <import type="com.example.trackingapp.fragments.viewmodels.FollowUserInfoModel"/>
+        <import type="ssd.tesina.trackingApp.fragments.viewmodels.FollowUserInfoModel"/>
         <variable
             name="viewModel"
-            type="com.example.trackingapp.fragments.viewmodels.FollowUserInfoModel" />
+            type="ssd.tesina.trackingApp.fragments.viewmodels.FollowUserInfoModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
