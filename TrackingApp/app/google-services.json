@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "441065289528-g03a5al7eebuhfernuqei3ormb58usur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ssd.tesina.trackingApp",
+            "certificate_hash": "e0023e6105302dccc7c6048256c600172be16424"
+          }
+        },
+        {
           "client_id": "441065289528-qtel3d1726i7q9gck7tpjjns1q11eo4p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

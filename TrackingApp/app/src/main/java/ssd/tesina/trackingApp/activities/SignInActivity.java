@@ -44,6 +44,7 @@ public class SignInActivity extends AppCompatActivity {
                     .Builder(R.layout.activity_sign_in)
                     .setGoogleButtonId(R.id.google_button) // Selezione dell'id pulsante di accesso con Google nel layout
                     .setEmailButtonId(R.id.email_button) // Selezione dell'id del pulsante di accesso con l'email nel layout
+                    .setTosAndPrivacyPolicyId(R.id.privacyToSCheck)
                     .build();
 
             // Selezione dei metodi di accesso consentiti
@@ -60,6 +61,7 @@ public class SignInActivity extends AppCompatActivity {
                             .setTheme(R.style.AppTheme) // Impostazione del tema da applicare al layout
                             .setIsSmartLockEnabled(false)// Disattivazione di smartLock
                             .setAlwaysShowSignInMethodScreen(true)
+                            .setTosAndPrivacyPolicyUrls("https://tracking-app-1b565.firebaseapp.com/", "https://tracking-app-1b565.firebaseapp.com/")
                             .build(),
                     Constants.RC_SIGN_IN);
         }

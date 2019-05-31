@@ -7,18 +7,15 @@ import androidx.databinding.BaseObservable;
 import java.io.Serializable;
 
 public class LayerStyleDialogViewModel extends BaseObservable implements Serializable {
-    private boolean streetSelected = false;
-    private boolean satelliteSelected = false;
-    private boolean outdoorSelected = false;
 
-    private int color = Color.parseColor("#409fff");
+    private static boolean streetSelected = false;
+    private static boolean satelliteSelected = false;
+    private static boolean outdoorSelected = false;
+
+    private final int color = Color.parseColor("#409fff");
 
     public int getColor() {
         return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
     }
 
     public boolean isStreetSelected() {

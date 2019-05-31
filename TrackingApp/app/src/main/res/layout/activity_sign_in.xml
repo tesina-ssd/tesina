@@ -17,9 +17,9 @@
         android:textAppearance="@android:style/TextAppearance.Material.Display1"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,14 +28,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="100dp"
         android:backgroundTint="#ffffff"
         app:borderWidth="0dp"
         app:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/privacyToSCheck"
         app:layout_constraintEnd_toStartOf="@+id/facebook_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/twitter_button"
+        app:layout_constraintTop_toBottomOf="@+id/title_alternative_login"
         app:srcCompat="@drawable/logo_google" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -45,15 +45,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="100dp"
         android:backgroundTint="#ffffff"
         app:borderWidth="0dp"
         app:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/google_button"
         app:layout_constraintEnd_toStartOf="@+id/google_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/google_button"
         app:srcCompat="@drawable/logo_twitter" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -63,35 +63,33 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="100dp"
         android:backgroundTint="#ffffff"
         app:borderWidth="0dp"
         app:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/google_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/google_button"
+        app:layout_constraintTop_toTopOf="@+id/google_button"
         app:srcCompat="@drawable/logo_facebook" />
 
     <TextView
         android:id="@+id/title_alternative_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/string_title_alternative_login"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/google_button"
-        app:layout_constraintEnd_toEndOf="@+id/email_button"
-        app:layout_constraintStart_toStartOf="@+id/email_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_button" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="171dp"
         android:layout_height="140dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/email_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,19 +101,31 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="150dp"
         android:layout_height="44dp"
-        android:background="@drawable/fui_idp_button_background_anonymous"
         android:fontFamily="@font/poppins_semibold"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:text="@string/string_email_button"
         android:textAlignment="center"
-        app:backgroundTint="#a17988"
+        app:backgroundTint="#d7263d"
         app:cornerRadius="50dp"
         app:icon="@drawable/icon_outline_mail_24"
         app:layout_constraintBottom_toTopOf="@+id/title_alternative_login"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <CheckBox
+        android:id="@+id/privacyToSCheck"
+        android:layout_width="251dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:text="Ho letto e accetto le condizioni d'uso"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
