@@ -98,7 +98,7 @@ public class FollowInfoDialog extends DialogFragment {
 
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()) {
-                                viewModel.setPicPath(document.getString("PathImg"));
+                                viewModel.setPicPath(document.getString("ProfilePicture"));
                                 viewModel.setName(document.getString("Username"));
 
                                 FragmentTransaction transaction = fragmentManager.beginTransaction();
