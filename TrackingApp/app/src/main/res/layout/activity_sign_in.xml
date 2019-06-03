@@ -117,10 +117,9 @@
 
     <CheckBox
         android:id="@+id/privacyToSCheck"
-        android:layout_width="251dp"
+        android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
-        android:text="Ho letto e accetto le condizioni d'uso"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

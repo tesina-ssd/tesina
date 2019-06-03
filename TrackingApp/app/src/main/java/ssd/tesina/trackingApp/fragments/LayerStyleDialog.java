@@ -9,15 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import ssd.tesina.trackingApp.R;
 import ssd.tesina.trackingApp.databinding.LayerStyleDialogBinding;
 import ssd.tesina.trackingApp.fragments.viewmodels.LayerStyleDialogViewModel;
+
 import com.mapbox.mapboxsdk.maps.Style;
 
 public class LayerStyleDialog extends DialogFragment {
+
+    private LayerStyleDialogViewModel viewModel;
 
     public interface LayerStyleDialogInterface {
         void onLayerStyleClicked(String layer);
@@ -25,9 +29,22 @@ public class LayerStyleDialog extends DialogFragment {
 
     LayerStyleDialogInterface mListener = null;
 
-    static LayerStyleDialog newInstance() {
+    static LayerStyleDialog newInstance(LayerStyleDialogViewModel viewModel) {
         LayerStyleDialog dialog = new LayerStyleDialog();
+
+        Bundle args = new Bundle();
+        args.putSerializable("viewModel", viewModel);
+        dialog.setArguments(args);
+
         return dialog;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            viewModel = (LayerStyleDialogViewModel) getArguments().getSerializable("viewModel");
+        }
     }
 
     @Override
@@ -45,8 +62,6 @@ public class LayerStyleDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        final LayerStyleDialogViewModel viewModel = new LayerStyleDialogViewModel();
 
         LayerStyleDialogBinding binding = DataBindingUtil.inflate(inflater ,R.layout.layer_style_dialog, container, false);
         binding.setViewModel(viewModel);

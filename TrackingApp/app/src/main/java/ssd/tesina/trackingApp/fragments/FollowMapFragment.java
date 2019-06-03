@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import ssd.tesina.trackingApp.R;
+import ssd.tesina.trackingApp.fragments.viewmodels.LayerStyleDialogViewModel;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -129,10 +131,11 @@ public class FollowMapFragment extends Fragment implements FollowConnectionDialo
                             });
 
 
+        final LayerStyleDialogViewModel layerStyleDialogViewModel = new LayerStyleDialogViewModel(false, false, true);
         view.findViewById(R.id.menu_item_layer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layerStyleDialog = LayerStyleDialog.newInstance();
+                layerStyleDialog = LayerStyleDialog.newInstance(layerStyleDialogViewModel);
                 layerStyleDialog.setTargetFragment((Fragment) thisFragment, 125);
                 layerStyleDialog.show(fragmentManager, "layer-dialog");
             }

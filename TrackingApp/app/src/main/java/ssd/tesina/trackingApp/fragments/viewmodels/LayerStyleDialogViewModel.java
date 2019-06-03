@@ -8,11 +8,17 @@ import java.io.Serializable;
 
 public class LayerStyleDialogViewModel extends BaseObservable implements Serializable {
 
-    private static boolean streetSelected = false;
-    private static boolean satelliteSelected = false;
-    private static boolean outdoorSelected = false;
+    private boolean streetSelected;
+    private boolean satelliteSelected;
+    private boolean outdoorSelected;
 
     private final int color = Color.parseColor("#409fff");
+
+    public LayerStyleDialogViewModel(boolean streetSelected, boolean satelliteSelected, boolean outdoorSelected) {
+        this.streetSelected = streetSelected;
+        this.satelliteSelected = satelliteSelected;
+        this.outdoorSelected = outdoorSelected;
+    }
 
     public int getColor() {
         return color;
